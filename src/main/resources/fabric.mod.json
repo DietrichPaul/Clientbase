@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "id": "clientbase",
+  "version": "${version}",
+
+  "name": "ClientBase",
+  "description": "This mod is godlike in combat.",
+  "authors": [
+    "Paul Dietrich"
+  ],
+  "contact": {
+    "homepage": "https://fabricmc.net/",
+    "sources": "https://github.com/FabricMC/fabric-example-mod"
+  },
+
+  "license": "CC0-1.0",
+  "icon": "assets/clientbase/icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "de.dietrichpaul.clientbase.entrypoints.ClientBaseEntrypoint"
+    ]
+  },
+  "mixins": [
+    "clientbase.mixins.json"
+  ],
+  "accessWidener" : "clientbase.accesswidener",
+  "depends": {
+    "fabricloader": ">=0.14.14",
+    "fabric-api": "*",
+    "minecraft": "~1.19.3",
+    "java": ">=17"
+  }
+}

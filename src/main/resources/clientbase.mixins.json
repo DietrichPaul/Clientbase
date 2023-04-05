@@ -1,0 +1,25 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "de.dietrichpaul.clientbase.injection.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "hack.AbstractBlockMixin",
+    "hack.BlockMixin",
+    "test.EntityMixin"
+  ],
+  "client": [
+    "base.MinecraftClientMixin",
+    "command.ChatInputSuggestorMixin",
+    "command.ChatScreenMixin",
+    "event.GameRendererMixin",
+    "event.InGameHudMixin",
+    "event.KeyBindingMixin",
+    "event.MinecraftClientMixin",
+    "hack.BlockModelRendererMixin",
+    "test.TitleScreenMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

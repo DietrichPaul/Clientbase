@@ -94,13 +94,13 @@ public abstract class Component extends Renderer2D implements ActionListener {
 
     protected abstract Dimension getComponentMinimalSize();
 
-    protected abstract void renderComponent(MatrixStack matrices, int mouseX, int mouseY, float delta);
+    protected abstract void renderComponent(MatrixStack matrices, float mouseX, float mouseY, float delta);
 
     public void addToScreen(Screen screen) {
         throw new UnsupportedOperationException();
     }
 
-    public final void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+    public final void render(MatrixStack matrices, float mouseX, float mouseY, float delta) {
         if (background != 0) {
             fill(matrices, x, y, x + width, y + height, background);
         }

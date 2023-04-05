@@ -46,7 +46,7 @@ public class Image extends Component {
     }
 
     @Override
-    protected void renderComponent(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+    protected void renderComponent(MatrixStack matrices, float mouseX, float mouseY, float delta) {
         Identifier identifier = icon.get();
         RenderSystem.setShaderTexture(0, identifier);
         RenderSystem.enableBlend();

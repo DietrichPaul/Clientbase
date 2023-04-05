@@ -73,7 +73,7 @@ public class Label extends Component {
     }
 
     @Override
-    protected void renderComponent(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+    protected void renderComponent(MatrixStack matrices, float mouseX, float mouseY, float delta) {
         Text text = textSupplier.get();
         float width = tr.getWidth(text);
         if (!dropShadow) {

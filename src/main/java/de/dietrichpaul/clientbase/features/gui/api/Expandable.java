@@ -69,7 +69,7 @@ public class Expandable extends BoxPanel {
     }
 
     @Override
-    protected void renderComponent(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+    protected void renderComponent(MatrixStack matrices, float mouseX, float mouseY, float delta) {
         if (dragging) {
             dragging = GLFW.glfwGetMouseButton(mc.getWindow().getHandle(), GLFW.GLFW_MOUSE_BUTTON_LEFT) == GLFW.GLFW_PRESS;
         }

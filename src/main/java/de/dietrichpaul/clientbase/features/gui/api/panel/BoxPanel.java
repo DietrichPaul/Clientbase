@@ -95,7 +95,7 @@ public class BoxPanel extends ParentComponent {
     }
 
     @Override
-    protected void renderComponent(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+    protected void renderComponent(MatrixStack matrices, float mouseX, float mouseY, float delta) {
         float compX = 0;
         float compY = 0;
         for (int i = 0; i < children.size(); i++) {

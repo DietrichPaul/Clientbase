@@ -25,8 +25,10 @@ public class ScreenAdapter implements Element, Selectable, Drawable {
 
     @Override
     public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+        float mX = (float) (component.mc.mouse.getX() * component.mc.getWindow().getScaledWidth() / component.mc.getWindow().getWidth());
+        float mY = (float) (component.mc.mouse.getY() * component.mc.getWindow().getScaledHeight() / component.mc.getWindow().getHeight());
         component.reduceSize();
-        component.render(matrices, mouseX, mouseY, delta);
+        component.render(matrices, mX, mY, delta);
     }
 
     @Override

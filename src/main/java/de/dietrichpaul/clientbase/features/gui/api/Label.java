@@ -80,7 +80,6 @@ public class Label extends Component {
         if (!dropShadow) {
             tr.render(matrices, text, contentX + (contentWidth - width) * textX, contentY + (contentHeight - tr.getLineHeight()) * textY, textColor);
         } else {
-            System.out.println("DROP SHADOW");
             tr.renderWithShadow(matrices, text, contentX + (contentWidth - width) * textX, contentY + (contentHeight - tr.getLineHeight()) * textY, textColor);
         }
     }

@@ -16,8 +16,7 @@
     "event.InGameHudMixin",
     "event.KeyBindingMixin",
     "event.MinecraftClientMixin",
-    "hack.BlockModelRendererMixin",
-    "test.TitleScreenMixin"
+    "hack.BlockModelRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1

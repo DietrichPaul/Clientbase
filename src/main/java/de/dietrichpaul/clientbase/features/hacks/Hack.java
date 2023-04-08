@@ -42,6 +42,10 @@ public class Hack {
         }
     }
 
+    public HackCategory getCategory() {
+        return category;
+    }
+
     public void toggle() {
         setToggled(!isToggled());
     }

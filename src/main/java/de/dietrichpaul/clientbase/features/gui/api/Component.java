@@ -1,5 +1,7 @@
 package de.dietrichpaul.clientbase.features.gui.api;
 
+import de.dietrichpaul.clientbase.ClientBase;
+import de.dietrichpaul.clientbase.features.gui.api.font.FontAtlas;
 import de.dietrichpaul.clientbase.util.render.Renderer2D;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
@@ -29,7 +31,7 @@ public abstract class Component extends Renderer2D implements ActionListener {
     private List<ActionListener> listeners = new LinkedList<>();
 
     protected MinecraftClient mc = MinecraftClient.getInstance();
-    protected TextRenderer tr = mc.textRenderer;
+    protected FontAtlas tr = ClientBase.getInstance().getVerdana();
 
     public float getX() {
         return x;

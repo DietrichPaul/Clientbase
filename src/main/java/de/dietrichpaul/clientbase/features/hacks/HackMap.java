@@ -2,6 +2,7 @@ package de.dietrichpaul.clientbase.features.hacks;
 
 import de.dietrichpaul.clientbase.features.hacks.combat.KillAuraHack;
 import de.dietrichpaul.clientbase.features.hacks.movement.SprintHack;
+import de.dietrichpaul.clientbase.features.hacks.render.ClickGuiHack;
 import de.dietrichpaul.clientbase.features.hacks.render.HudHack;
 import de.dietrichpaul.clientbase.features.hacks.world.XRayHack;
 
@@ -20,6 +21,7 @@ public class HackMap {
     public SprintHack sprint = new SprintHack();
 
     // render
+    public ClickGuiHack clickGui = new ClickGuiHack();
     public HudHack hud = new HudHack();
 
     // world
@@ -33,6 +35,7 @@ public class HackMap {
         register(sprint);
 
         // render
+        register(clickGui);
         register(hud);
 
         // world

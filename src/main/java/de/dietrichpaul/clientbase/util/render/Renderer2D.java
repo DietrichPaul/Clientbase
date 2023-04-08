@@ -5,7 +5,6 @@ import ladysnake.satin.api.managed.ManagedCoreShader;
 import ladysnake.satin.api.managed.ShaderEffectManager;
 import ladysnake.satin.api.managed.uniform.Uniform1f;
 import ladysnake.satin.api.managed.uniform.Uniform2f;
-import net.minecraft.client.gl.ShaderProgram;
 import net.minecraft.client.render.*;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
@@ -22,6 +21,9 @@ public class Renderer2D {
     private static Uniform2f circleShaderCenter;
     private static Uniform1f circleShaderRadius;
 
+    public static ManagedCoreShader msdfShader;
+    public static Uniform1f msdfShaderPxRange;
+
     public static void loadShaders() {
         ShaderEffectManager shaderEffectManager = ShaderEffectManager.getInstance();
         fillCircleShader = shaderEffectManager.manageCoreShader(new Identifier("clientbase", "fill_circle"));
@@ -32,6 +34,9 @@ public class Renderer2D {
         circleShader = shaderEffectManager.manageCoreShader(new Identifier("clientbase", "circle"));
         circleShaderCenter = circleShader.findUniform2f("Center");
         circleShaderRadius = circleShader.findUniform1f("Radius");
+
+        msdfShader = shaderEffectManager.manageCoreShader(new Identifier("clientbase", "msdf"), VertexFormats.POSITION_TEXTURE_COLOR);
+        msdfShaderPxRange = msdfShader.findUniform1f("pxRange");
     }
 
     public static void drawCircle(MatrixStack matrices, float x, float y, float radius, int color) {

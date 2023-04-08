@@ -26,6 +26,7 @@ public class Expandable extends BoxPanel {
 
     public Expandable(Button header) {
         this.header = header;
+        setGap(0);
         header.addListener(new ActionListener() {
             @Override
             public void mouseClicked(float mouseX, float mouseY, int button) {
@@ -37,6 +38,13 @@ public class Expandable extends BoxPanel {
             }
         });
         addComponent(header);
+    }
+
+    @Override
+    protected Dimension getComponentMinimalSize() {
+        if (content != null)
+            return super.getComponentMinimalSize().union(new Dimension(content.getComponentMinimalSize().getWidth(), 0));
+        return super.getComponentMinimalSize();
     }
 
     public Button getHeader() {

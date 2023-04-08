@@ -1,5 +1,6 @@
 package de.dietrichpaul.clientbase.features.gui.api;
 
+import de.dietrichpaul.clientbase.ClientBase;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 
@@ -61,7 +62,7 @@ public class Label extends Component {
 
     @Override
     protected Dimension getComponentMinimalSize() {
-        return new Dimension(tr.getWidth(textSupplier.get()), tr.fontHeight);
+        return new Dimension(tr.getWidth(textSupplier.get()), ClientBase.getInstance().getVerdana().getLineHeight());
     }
 
     public void setTextX(float textX) {
@@ -75,11 +76,12 @@ public class Label extends Component {
     @Override
     protected void renderComponent(MatrixStack matrices, float mouseX, float mouseY, float delta) {
         Text text = textSupplier.get();
-        float width = tr.getWidth(text);
+        float width = tr.getWidth(textSupplier.get().getString());
         if (!dropShadow) {
-            tr.draw(matrices, text, contentX + (contentWidth - width) * textX, contentY + (contentHeight - tr.fontHeight) * textY, textColor);
+            tr.render(matrices, text, contentX + (contentWidth - width) * textX, contentY + (contentHeight - tr.getLineHeight()) * textY, textColor);
         } else {
-            tr.drawWithShadow(matrices, text, contentX + (contentWidth - width) * textX, contentY + (contentHeight - tr.fontHeight) * textY, textColor);
+            System.out.println("DROP SHADOW");
+            tr.renderWithShadow(matrices, text, contentX + (contentWidth - width) * textX, contentY + (contentHeight - tr.getLineHeight()) * textY, textColor);
         }
     }
 

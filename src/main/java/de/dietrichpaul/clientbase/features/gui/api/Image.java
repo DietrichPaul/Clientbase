@@ -33,7 +33,7 @@ public class Image extends Component {
         this.preferredSize = preferredSize;
     }
 
-    public void updateIMage(Identifier icon, Dimension preferredSize) {
+    public void updateImage(Identifier icon, Dimension preferredSize) {
         updateImage(() -> icon, preferredSize);
     }
 

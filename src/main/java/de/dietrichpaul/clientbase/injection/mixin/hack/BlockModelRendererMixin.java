@@ -15,9 +15,4 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(BlockModelRenderer.class)
 public class BlockModelRendererMixin {
 
-    @Inject(method = "renderQuad", at = @At("HEAD"))
-    public void onRenderQuad(BlockRenderView world, BlockState state, BlockPos pos, VertexConsumer vertexConsumer, MatrixStack.Entry matrixEntry, BakedQuad quad, float brightness0, float brightness1, float brightness2, float brightness3, int light0, int light1, int light2, int light3, int overlay, CallbackInfo ci) {
-        System.out.println(quad.hasColor());
-    }
-
 }

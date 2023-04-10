@@ -5,11 +5,15 @@ import com.darkmagician6.eventapi.EventTarget;
 import de.dietrichpaul.clientbase.event.KeyPressedStateEvent;
 import de.dietrichpaul.clientbase.features.hacks.Hack;
 import de.dietrichpaul.clientbase.features.hacks.HackCategory;
+import de.dietrichpaul.clientbase.properties.impl.BooleanProperty;
 
 public class SprintHack extends Hack {
 
+    private final BooleanProperty allDirection = new BooleanProperty("AllDirection", false);
+
     public SprintHack() {
         super("Sprint", HackCategory.MOVEMENT);
+        addProperty(allDirection);
     }
 
     @Override

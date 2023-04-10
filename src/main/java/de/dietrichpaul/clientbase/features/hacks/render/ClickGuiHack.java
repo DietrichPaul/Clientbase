@@ -17,6 +17,7 @@ public class ClickGuiHack extends Hack {
 
     public ClickGuiHack() {
         super("ClickGui", HackCategory.COMBAT);
+        doNotSaveState();
     }
 
     @Override

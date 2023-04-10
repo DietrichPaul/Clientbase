@@ -13,11 +13,21 @@ public class Label extends Component {
 
     private Supplier<Text> textSupplier;
 
+    private float size = 8;
+
     private int textColor = 0xff000000;
     private boolean dropShadow = false;
 
     public Label(Supplier<Text> textSupplier) {
         this.textSupplier = textSupplier;
+    }
+
+    public void setSize(float size) {
+        this.size = size;
+    }
+
+    public float getSize() {
+        return size;
     }
 
     public Label(Text text) {
@@ -62,7 +72,7 @@ public class Label extends Component {
 
     @Override
     protected Dimension getComponentMinimalSize() {
-        return new Dimension(tr.getWidth(textSupplier.get()), ClientBase.getInstance().getVerdana().getLineHeight());
+        return new Dimension(tr.getWidth(textSupplier.get(), size), ClientBase.getInstance().getVerdana().getLineHeight(size));
     }
 
     public void setTextX(float textX) {
@@ -76,11 +86,11 @@ public class Label extends Component {
     @Override
     protected void renderComponent(MatrixStack matrices, float mouseX, float mouseY, float delta) {
         Text text = textSupplier.get();
-        float width = tr.getWidth(textSupplier.get().getString());
+        float width = tr.getWidth(textSupplier.get().getString(), size);
         if (!dropShadow) {
-            tr.render(matrices, text, contentX + (contentWidth - width) * textX, contentY + (contentHeight - tr.getLineHeight()) * textY, textColor);
+            tr.render(matrices, text, contentX + (contentWidth - width) * textX, contentY + (contentHeight - tr.getLineHeight(size)) * textY, size, textColor);
         } else {
-            tr.renderWithShadow(matrices, text, contentX + (contentWidth - width) * textX, contentY + (contentHeight - tr.getLineHeight()) * textY, textColor);
+            tr.renderWithShadow(matrices, text, contentX + (contentWidth - width) * textX, contentY + (contentHeight - tr.getLineHeight(size)) * textY, size, textColor);
         }
     }
 

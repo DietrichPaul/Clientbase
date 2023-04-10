@@ -21,4 +21,9 @@ public class MinecraftClientMixin {
         ClientBase.getInstance().stop();
     }
 
+    @Inject(method = "render", at = @At("HEAD"))
+    public void onRender(boolean tick, CallbackInfo ci) {
+        ClientBase.getInstance().drawFrame();
+    }
+
 }

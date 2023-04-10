@@ -1,4 +1,4 @@
-package de.dietrichpaul.clientbase.features.gui.clickgui;
+package de.dietrichpaul.clientbase.features.gui.clickgui.ext;
 
 import de.dietrichpaul.clientbase.features.gui.api.ActionListener;
 import de.dietrichpaul.clientbase.features.gui.api.Button;
@@ -14,11 +14,14 @@ public class HackButton extends Expandable {
         super(new Button(() -> Text.literal(hack.getName()).styled(style
                 -> style.withFormatting(hack.isToggled() ? Formatting.WHITE : Formatting.GRAY))));
         getHeader().setBackground(0);
-        addListener(new ActionListener() {
+        getHeader().addListener(new ActionListener() {
             @Override
             public void mouseClicked(float mouseX, float mouseY, int button) {
                 if (button == GLFW.GLFW_MOUSE_BUTTON_LEFT) {
                     hack.toggle();
+                } else if (button == GLFW.GLFW_MOUSE_BUTTON_RIGHT) {
+                    if (isExpanded()) collapse();
+                    else expand();
                 }
             }
         });

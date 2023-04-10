@@ -1,8 +1,14 @@
 package de.dietrichpaul.clientbase.features.gui.clickgui;
 
 import de.dietrichpaul.clientbase.ClientBase;
+import de.dietrichpaul.clientbase.features.gui.api.Component;
+import de.dietrichpaul.clientbase.features.gui.clickgui.ext.CategoryPanel;
+import de.dietrichpaul.clientbase.features.gui.clickgui.ext.HackButton;
+import de.dietrichpaul.clientbase.features.gui.clickgui.ext.HackList;
+import de.dietrichpaul.clientbase.features.gui.clickgui.ext.PropertyList;
 import de.dietrichpaul.clientbase.features.hacks.Hack;
 import de.dietrichpaul.clientbase.features.hacks.HackCategory;
+import de.dietrichpaul.clientbase.properties.Property;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
@@ -26,9 +32,19 @@ public class ClickGuiScreen extends Screen {
                 }
 
                 HackButton hackPanel = new HackButton(hack);
+                hackPanel.setOrientation(-1);
                 hackPanel.getHeader().setBackground(0);
 
+                PropertyList propertyList = new PropertyList();
+                propertyList.setOrientation(-1);
 
+                for (Property property : hack.getProperties()) {
+                    Component clickGuiComponent = property.getClickGuiComponent();
+                    if (clickGuiComponent != null)
+                        propertyList.addComponent(clickGuiComponent);
+                }
+
+                hackPanel.setContent(propertyList);
                 hackList.addComponent(hackPanel);
             }
 

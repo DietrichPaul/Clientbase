@@ -1,5 +1,6 @@
-package de.dietrichpaul.clientbase.features.gui.clickgui;
+package de.dietrichpaul.clientbase.features.gui.clickgui.ext;
 
+import de.dietrichpaul.clientbase.ClientBase;
 import de.dietrichpaul.clientbase.features.gui.api.ActionListener;
 import de.dietrichpaul.clientbase.features.gui.api.Button;
 import de.dietrichpaul.clientbase.features.gui.api.Expandable;
@@ -20,7 +21,8 @@ public class CategoryPanel extends Expandable {
                 }
             }
         });
-        getHeader().setBackground(0xfff76b00);
+        getHeader().setBackground(ClientBase.CONTRAST);
+        getHeader().getLabel().setSize(9);
         getHeader().getLabel().setDropShadow(true);
         setBackground(0x80000000);
         setOrientation(-1);

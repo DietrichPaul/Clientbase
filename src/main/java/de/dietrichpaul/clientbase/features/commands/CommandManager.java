@@ -32,8 +32,10 @@ public class CommandManager {
 
     public void registerBuiltInCommands() {
         register(new AboutCommand());
+        register(new BindCommand());
         register(new FriendCommand());
         register(new HelpCommand());
+        register(new PropertyCommand());
         register(new SayCommand());
         register(new ToggleCommand());
     }

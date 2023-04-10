@@ -105,10 +105,18 @@ public class FontAtlas {
     }
 
     public void render(MatrixStack matrices, Text text, float x, float y, int color) {
-        render(matrices, text.asOrderedText(), x, y, color);
+        render(matrices, text.asOrderedText(), x, y, size, color);
+    }
+
+    public void render(MatrixStack matrices, Text text, float x, float y, float size, int color) {
+        render(matrices, text.asOrderedText(), x, y, size, color);
     }
 
     public void render(MatrixStack matrices, OrderedText text, float x, float y, int color) {
+        render(matrices, text, x, y, size, color);
+    }
+
+    public void render(MatrixStack matrices, OrderedText text, float x, float y, float size, int color) {
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
         RenderSystem.setShaderTexture(0, tex.getGlId());
@@ -143,13 +151,13 @@ public class FontAtlas {
                 textColor[1] = ColorHelper.Argb.getGreen(rgb);
                 textColor[2] = ColorHelper.Argb.getBlue(rgb);
             }
-            textX += visit(model, bufferBuilder, glyph, textX, y, alpha);
+            textX += visit(model, bufferBuilder, glyph, textX, y, size, alpha);
             return true;
         });
         BufferRenderer.drawWithGlobalProgram(bufferBuilder.end());
     }
 
-    private float visit(Matrix4f model, BufferBuilder bufferBuilder, Glyph glyph, float x, float y, int alpha) {
+    private float visit(Matrix4f model, BufferBuilder bufferBuilder, Glyph glyph, float x, float y, float size, int alpha) {
         if (glyph.getpRight() - glyph.getpLeft() != 0) {
             float x0 = x + glyph.getpLeft() * size;
             float x1 = x + glyph.getpRight() * size;
@@ -167,7 +175,11 @@ public class FontAtlas {
         return size * glyph.getAdvance();
     }
 
-    public void render(MatrixStack matrices, String text, float x, float y, int color) {
+    public void render(MatrixStack matrixStack, String text, float x, float y, int color) {
+        render(matrixStack, text, x, y, size, color);
+    }
+
+    public void render(MatrixStack matrices, String text, float x, float y, float size, int color) {
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
         RenderSystem.setShaderTexture(0, tex.getGlId());
@@ -225,10 +237,18 @@ public class FontAtlas {
     }
 
     public float getWidth(Text text) {
-        return getWidth(text.asOrderedText());
+        return getWidth(text, size);
+    }
+
+    public float getWidth(Text text, float size) {
+        return getWidth(text.asOrderedText(), size);
     }
 
     public float getWidth(OrderedText text) {
+        return getWidth(text, size);
+    }
+
+    public float getWidth(OrderedText text, float size) {
         float[] sum = new float[1];
         text.accept((index, style, codePoint) -> {
             Glyph glyph = glyphs[codePoint];
@@ -243,6 +263,10 @@ public class FontAtlas {
     }
 
     public float getWidth(String text) {
+        return getWidth(text, size);
+    }
+
+    public float getWidth(String text, float size) {
         float sum = 0;
         for (int i = 0; i < text.length(); i++) {
 
@@ -262,31 +286,48 @@ public class FontAtlas {
     }
 
     public float getLineHeight() {
+        return getLineHeight(size);
+    }
+
+    public float getLineHeight(float size) {
         return fontMetrics.getLineHeight() * size;
+    }
+
+
+    public void renderWithShadow(MatrixStack matrices, Text text, float x, float y, int color) {
+        renderWithShadow(matrices, text, x, y, size, color);
+    }
+
+    public void renderWithShadow(MatrixStack matrices, OrderedText text, float x, float y, int color) {
+        renderWithShadow(matrices, text, x, y, size, color);
+    }
+
+    public void renderWithShadow(MatrixStack matrices, String text, float x, float y, int color) {
+        renderWithShadow(matrices, text, x, y, size, color);
     }
 
     /*
     Schlecht gemacht: hier kommt ne eigene methode hin fürs batching mit boolean dropShadow für farbe
     und setShaderColor muss weg
      */
-    public void renderWithShadow(MatrixStack matrices, Text text, float x, float y, int color) {
+    public void renderWithShadow(MatrixStack matrices, Text text, float x, float y, float size, int color) {
         RenderSystem.setShaderColor(0.25F, 0.25F, 0.25F, 1.0F);
-        render(matrices, text, x + 0.75F, y + 0.75F, color);
+        render(matrices, text, x + 0.75F, y + 0.75F,size, color);
         RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
-        render(matrices, text, x, y, color);
+        render(matrices, text, x, y,size, color);
     }
 
-    public void renderWithShadow(MatrixStack matrices, OrderedText text, float x, float y, int color) {
+    public void renderWithShadow(MatrixStack matrices, OrderedText text, float x, float y, float size, int color) {
         RenderSystem.setShaderColor(0.25F, 0.25F, 0.25F, 1.0F);
-        render(matrices, text, x + 0.75F, y + 0.75F, color);
+        render(matrices, text, x + 0.75F, y + 0.75F,size, color);
         RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
-        render(matrices, text, x, y, color);
+        render(matrices, text, x, y,size, color);
     }
 
-    public void renderWithShadow(MatrixStack matrices, String text, float x, float y, int color) {
+    public void renderWithShadow(MatrixStack matrices, String text, float x, float y, float size, int color) {
         RenderSystem.setShaderColor(0.25F, 0.25F, 0.25F, 1.0F);
-        render(matrices, text, x + 0.75F, y + 0.75F, color);
+        render(matrices, text, x + 0.75F, y + 0.75F,size, color);
         RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
-        render(matrices, text, x, y, color);
+        render(matrices, text, x, y,size, color);
     }
 }

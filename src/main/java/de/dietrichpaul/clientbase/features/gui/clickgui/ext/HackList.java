@@ -1,4 +1,4 @@
-package de.dietrichpaul.clientbase.features.gui.clickgui;
+package de.dietrichpaul.clientbase.features.gui.clickgui.ext;
 
 import de.dietrichpaul.clientbase.features.gui.api.panel.BoxPanel;
 

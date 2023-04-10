@@ -7,6 +7,7 @@ import de.dietrichpaul.clientbase.properties.impl.FloatProperty;
 import de.dietrichpaul.clientbase.properties.impl.IntProperty;
 import de.dietrichpaul.clientbase.properties.impl.TargetProperty;
 import de.dietrichpaul.clientbase.util.MathUtil;
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.util.math.MathHelper;
@@ -45,6 +46,9 @@ public class AimbotRotationSpoof extends RotationSpoof {
         Vec3d camera = mc.player.getCameraPosVec(1.0F);
         for (Iterator<Entity> iterator = mc.world.getEntities().iterator(); iterator.hasNext() && targets.size() < maxTargets.getValue(); ) {
             Entity entity = iterator.next();
+            if (entity == null || entity instanceof ClientPlayerEntity)
+                continue;
+
             if (!targetProperty.filter(entity)) // entity ist kein target
                 continue;
 

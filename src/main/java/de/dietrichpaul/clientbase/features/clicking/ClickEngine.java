@@ -1,7 +1,7 @@
 package de.dietrichpaul.clientbase.features.clicking;
 
 import de.dietrichpaul.clientbase.event.KeyPressedStateListener;
-import de.florianmichael.dietrichevents.EventDispatcher;
+import de.dietrichpaul.clientbase.ClientBase;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
@@ -25,7 +25,7 @@ public class ClickEngine implements ClickCallback, KeyPressedStateListener {
     private MinecraftClient mc = MinecraftClient.getInstance();
 
     public ClickEngine() {
-        EventDispatcher.g().subscribe(KeyPressedStateListener.class, this);
+        ClientBase.getInstance().getEventDispatcher().subscribe(KeyPressedStateListener.class, this);
     }
 
     public void add(ClickSpoof clickSpoof) {

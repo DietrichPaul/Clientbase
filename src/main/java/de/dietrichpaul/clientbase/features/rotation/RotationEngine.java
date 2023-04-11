@@ -8,7 +8,7 @@ import de.dietrichpaul.clientbase.event.rotate.SendRotationListener;
 import de.dietrichpaul.clientbase.features.rotation.strafe.StrafeMode;
 import de.dietrichpaul.clientbase.util.math.rtx.Raytrace;
 import de.dietrichpaul.clientbase.util.math.rtx.RaytraceUtil;
-import de.florianmichael.dietrichevents.EventDispatcher;
+import de.dietrichpaul.clientbase.ClientBase;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.util.math.MathHelper;
 
@@ -47,15 +47,15 @@ public class RotationEngine implements SendRotationListener, RaytraceListener, S
     protected MinecraftClient mc = MinecraftClient.getInstance();
 
     public RotationEngine() {
-        EventDispatcher.g().subscribe(SendRotationListener.class, this);
-        EventDispatcher.g().subscribe(RaytraceListener.class, this);
-        EventDispatcher.g().subscribe(StrafeListener.class, this);
-        EventDispatcher.g().subscribe(RotationGetListener.class, this);
-        EventDispatcher.g().subscribe(RotationSetListener.class, this);
-        EventDispatcher.g().subscribe(JumpListener.class, this);
-        EventDispatcher.g().subscribe(StrafeInputListener.class, this);
-        EventDispatcher.g().subscribe(MoveCameraListener.class, this);
-        EventDispatcher.g().subscribe(PreTickRaytraceListener.class, this);
+        ClientBase.getInstance().getEventDispatcher().subscribe(SendRotationListener.class, this);
+        ClientBase.getInstance().getEventDispatcher().subscribe(RaytraceListener.class, this);
+        ClientBase.getInstance().getEventDispatcher().subscribe(StrafeListener.class, this);
+        ClientBase.getInstance().getEventDispatcher().subscribe(RotationGetListener.class, this);
+        ClientBase.getInstance().getEventDispatcher().subscribe(RotationSetListener.class, this);
+        ClientBase.getInstance().getEventDispatcher().subscribe(JumpListener.class, this);
+        ClientBase.getInstance().getEventDispatcher().subscribe(StrafeInputListener.class, this);
+        ClientBase.getInstance().getEventDispatcher().subscribe(MoveCameraListener.class, this);
+        ClientBase.getInstance().getEventDispatcher().subscribe(PreTickRaytraceListener.class, this);
     }
 
     public void add(RotationSpoof spoof) {

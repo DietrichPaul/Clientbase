@@ -4,7 +4,7 @@ import de.dietrichpaul.clientbase.event.KeyPressedStateListener;
 import de.dietrichpaul.clientbase.features.hacks.Hack;
 import de.dietrichpaul.clientbase.features.hacks.HackCategory;
 import de.dietrichpaul.clientbase.properties.impl.BooleanProperty;
-import de.florianmichael.dietrichevents.EventDispatcher;
+import de.dietrichpaul.clientbase.ClientBase;
 
 public class SprintHack extends Hack implements KeyPressedStateListener {
 
@@ -17,12 +17,12 @@ public class SprintHack extends Hack implements KeyPressedStateListener {
 
     @Override
     protected void onEnable() {
-        EventDispatcher.g().subscribe(KeyPressedStateListener.class, this);
+        ClientBase.getInstance().getEventDispatcher().subscribe(KeyPressedStateListener.class, this);
     }
 
     @Override
     protected void onDisable() {
-        EventDispatcher.g().unsubscribe(KeyPressedStateListener.class, this);
+        ClientBase.getInstance().getEventDispatcher().unsubscribe(KeyPressedStateListener.class, this);
     }
 
     @Override

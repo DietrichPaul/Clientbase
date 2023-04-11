@@ -68,8 +68,6 @@ public class ClientBase implements SimpleSynchronousResourceReloadListener {
      */
     public void init() {
         this.eventDispatcher = EventDispatcher.create(key -> new Object2ObjectArrayMap<>());
-        this.eventDispatcher.setErrorHandler(throwable -> {
-        });
         ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(this);
         Renderer2D.loadShaders();
         this.commandManager = new CommandManager(); // command manager braucht die static instanz, deshalb hier

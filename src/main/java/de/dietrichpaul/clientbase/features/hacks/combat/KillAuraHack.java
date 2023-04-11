@@ -1,6 +1,5 @@
 package de.dietrichpaul.clientbase.features.hacks.combat;
 
-import com.darkmagician6.eventapi.EventManager;
 import de.dietrichpaul.clientbase.features.clicking.ClickCallback;
 import de.dietrichpaul.clientbase.features.clicking.ClickSpoof;
 import de.dietrichpaul.clientbase.features.hacks.Hack;
@@ -16,16 +15,6 @@ public class KillAuraHack extends Hack implements ClickSpoof {
         aimbot = new AimbotRotationSpoof(this, addPropertyGroup("Rotations"));
         cb.getRotationEngine().add(aimbot);
         cb.getClickEngine().add(this);
-    }
-
-    @Override
-    protected void onEnable() {
-        EventManager.register(this);
-    }
-
-    @Override
-    protected void onDisable() {
-        EventManager.unregister(this);
     }
 
     @Override

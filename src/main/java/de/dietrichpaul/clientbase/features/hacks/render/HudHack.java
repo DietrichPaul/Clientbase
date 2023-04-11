@@ -1,24 +1,21 @@
 package de.dietrichpaul.clientbase.features.hacks.render;
 
-import com.darkmagician6.eventapi.EventManager;
-import com.darkmagician6.eventapi.EventTarget;
 import de.dietrichpaul.clientbase.ClientBase;
-import de.dietrichpaul.clientbase.event.Render2DEvent;
+import de.dietrichpaul.clientbase.event.Render2DListener;
 import de.dietrichpaul.clientbase.features.gui.api.font.FontAtlas;
 import de.dietrichpaul.clientbase.features.hacks.Hack;
 import de.dietrichpaul.clientbase.features.hacks.HackCategory;
 import de.dietrichpaul.clientbase.util.render.ColorUtil;
 import de.dietrichpaul.clientbase.util.render.Renderer2D;
+import de.florianmichael.dietrichevents.EventDispatcher;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.text.Text;
 
-import java.awt.*;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
-public class HudHack extends Hack {
+public class HudHack extends Hack implements Render2DListener {
 
     public HudHack() {
         super("HUD", HackCategory.RENDER);
@@ -48,18 +45,18 @@ public class HudHack extends Hack {
         }
     }
 
-    @EventTarget
-    public void onRender2D(Render2DEvent event) {
-        renderActiveHacks(event.getMatrices());
+    @Override
+    public void onRender2D(MatrixStack matrices, float tickDelta) {
+        renderActiveHacks(matrices);
     }
 
     @Override
     protected void onEnable() {
-        EventManager.register(this);
+        EventDispatcher.g().subscribe(Render2DListener.class, this);
     }
 
     @Override
     protected void onDisable() {
-        EventManager.unregister(this);
+        EventDispatcher.g().unsubscribe(Render2DListener.class, this);
     }
 }

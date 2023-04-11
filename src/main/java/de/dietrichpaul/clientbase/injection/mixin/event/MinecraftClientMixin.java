@@ -1,7 +1,7 @@
 package de.dietrichpaul.clientbase.injection.mixin.event;
 
-import com.darkmagician6.eventapi.EventManager;
-import de.dietrichpaul.clientbase.event.PreTickRaytraceEvent;
+import de.dietrichpaul.clientbase.event.PreTickRaytraceListener;
+import de.florianmichael.dietrichevents.EventDispatcher;
 import net.minecraft.client.MinecraftClient;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -13,7 +13,6 @@ public class MinecraftClientMixin {
 
     @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/GameRenderer;updateTargetedEntity(F)V", shift = At.Shift.BEFORE))
     public void onPreRaytrace(CallbackInfo ci) {
-        EventManager.call(PreTickRaytraceEvent.INSTANCE);
+        EventDispatcher.g().post(new PreTickRaytraceListener.PreTickRaytraceEvent());
     }
-
 }

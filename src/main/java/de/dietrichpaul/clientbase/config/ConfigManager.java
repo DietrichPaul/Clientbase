@@ -1,16 +1,15 @@
 package de.dietrichpaul.clientbase.config;
 
-import com.darkmagician6.eventapi.EventManager;
-import com.darkmagician6.eventapi.EventTarget;
 import de.dietrichpaul.clientbase.config.list.HackConfig;
-import de.dietrichpaul.clientbase.event.UpdateEvent;
+import de.dietrichpaul.clientbase.event.UpdateListener;
+import de.florianmichael.dietrichevents.EventDispatcher;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-public class ConfigManager {
+public class ConfigManager implements UpdateListener {
 
     private final Set<AbstractConfig> configs = new LinkedHashSet<>();
 
@@ -33,7 +32,8 @@ public class ConfigManager {
     }
 
     public void start() {
-        EventManager.register(this);
+        EventDispatcher.g().subscribe(UpdateListener.class, this);
+
         for (AbstractConfig config : this.configs) {
             if (config.getType() == ConfigType.PRE) {
                 try {
@@ -45,8 +45,8 @@ public class ConfigManager {
         }
     }
 
-    @EventTarget
-    public void onUpdate(UpdateEvent event) {
+    @Override
+    public void onUpdate() {
         for (AbstractConfig config : this.configs) {
             try {
                 if (config.getType() == ConfigType.IN_GAME)
@@ -55,6 +55,6 @@ public class ConfigManager {
                 e.printStackTrace();
             }
         }
-        EventManager.unregister(this);
+        EventDispatcher.g().unsubscribe(UpdateListener.class, this);
     }
 }

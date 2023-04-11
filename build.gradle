@@ -10,6 +10,11 @@ loom {
 	accessWidenerPath = file("src/main/resources/clientbase.accesswidener")
 }
 
+configurations {
+	implementation.extendsFrom libs
+	api.extendsFrom libs
+}
+
 repositories {
 	maven {
 		name = "Ladysnake Mods"
@@ -32,9 +37,10 @@ dependencies {
 
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 	modImplementation "io.github.ladysnake:satin:${satin_version}"
-
 	include "io.github.ladysnake:satin:${satin_version}"
-	include "com.github.FlorianMichael:DietrichEvents:${dietrichevents_version}"
+
+	// libs is for shadowed jars
+	libs "com.github.FlorianMichael:DietrichEvents:${project.dietrichevents_version}"
 }
 
 processResources {

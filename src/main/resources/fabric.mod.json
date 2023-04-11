@@ -6,11 +6,12 @@
   "name": "ClientBase",
   "description": "This mod is godlike in combat.",
   "authors": [
-    "Paul Dietrich"
+    "Paul Dietrich",
+    "FlorianMichael"
   ],
   "contact": {
-    "homepage": "https://fabricmc.net/",
-    "sources": "https://github.com/FabricMC/fabric-example-mod"
+    "homepage": "https://github.com/DietrichPaul",
+    "sources": "https://github.com/DietrichPaul/Clientbase"
   },
 
   "license": "CC0-1.0",

@@ -1,6 +1,6 @@
 package de.dietrichpaul.clientbase.features.rotation.strafe.impl;
 
-import de.dietrichpaul.clientbase.event.StrafeInputEvent;
+import de.dietrichpaul.clientbase.event.StrafeInputListener;
 import de.dietrichpaul.clientbase.features.rotation.strafe.CorrectMovement;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -9,11 +9,11 @@ import net.minecraft.util.math.Vec3d;
 public class BreezilyFix extends CorrectMovement {
 
     @Override
-    public void edit(float serverYaw, StrafeInputEvent event) {
-        if (event.getMoveSideways() == 0 && event.getMoveForward() == 0)
+    public void edit(float serverYaw, StrafeInputListener.StrafeInputEvent event) {
+        if (event.moveSideways == 0 && event.moveForward == 0)
             return;
 
-        double angle = mc.player.getYaw() + Math.toDegrees(Math.atan2(-event.getMoveSideways(), event.getMoveForward()));
+        double angle = mc.player.getYaw() + Math.toDegrees(Math.atan2(-event.moveSideways, event.moveForward));
 
         // cos(a): a=0 -> 1, a=45 -> 0.5, a=90 -> 0
         // cos(0) = 1; 1² = 1
@@ -31,8 +31,8 @@ public class BreezilyFix extends CorrectMovement {
         );
 
         double sollAngle = Math.toDegrees(Math.atan2(mc.player.getX() - goTo.x, goTo.z - mc.player.getZ()));
-        event.setMoveForward((int) Math.round(Math.cos(Math.toRadians(sollAngle - serverYaw))));
-        event.setMoveSideways((int) Math.round(-Math.sin(Math.toRadians(sollAngle - serverYaw))));
+        event.moveForward = (int) Math.round(Math.cos(Math.toRadians(sollAngle - serverYaw)));
+        event.moveSideways = (int) Math.round(-Math.sin(Math.toRadians(sollAngle - serverYaw)));
     }
 
 }

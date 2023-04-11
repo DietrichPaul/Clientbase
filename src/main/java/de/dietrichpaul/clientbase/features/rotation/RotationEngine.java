@@ -1,16 +1,14 @@
 package de.dietrichpaul.clientbase.features.rotation;
 
-import com.darkmagician6.eventapi.EventManager;
-import com.darkmagician6.eventapi.EventTarget;
 import de.dietrichpaul.clientbase.ClientBase;
 import de.dietrichpaul.clientbase.event.*;
-import de.dietrichpaul.clientbase.event.rotate.RotateGetEvent;
-import de.dietrichpaul.clientbase.event.rotate.RotateSetEvent;
-import de.dietrichpaul.clientbase.event.rotate.SendPitchEvent;
-import de.dietrichpaul.clientbase.event.rotate.SendYawEvent;
+import de.dietrichpaul.clientbase.event.rotate.RotationGetListener;
+import de.dietrichpaul.clientbase.event.rotate.RotationSetListener;
+import de.dietrichpaul.clientbase.event.rotate.SendRotationListener;
 import de.dietrichpaul.clientbase.features.rotation.strafe.StrafeMode;
 import de.dietrichpaul.clientbase.util.math.rtx.Raytrace;
 import de.dietrichpaul.clientbase.util.math.rtx.RaytraceUtil;
+import de.florianmichael.dietrichevents.EventDispatcher;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.util.math.MathHelper;
 
@@ -20,7 +18,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class RotationEngine {
+public class RotationEngine implements SendRotationListener, RaytraceListener, StrafeListener, RotationGetListener, RotationSetListener, JumpListener, StrafeInputListener, MoveCameraListener, PreTickRaytraceListener {
 
     private Set<RotationSpoof> spoofs = new HashSet<>();
 
@@ -49,7 +47,15 @@ public class RotationEngine {
     protected MinecraftClient mc = MinecraftClient.getInstance();
 
     public RotationEngine() {
-        EventManager.register(this);
+        EventDispatcher.g().subscribe(SendRotationListener.class, this);
+        EventDispatcher.g().subscribe(RaytraceListener.class, this);
+        EventDispatcher.g().subscribe(StrafeListener.class, this);
+        EventDispatcher.g().subscribe(RotationGetListener.class, this);
+        EventDispatcher.g().subscribe(RotationSetListener.class, this);
+        EventDispatcher.g().subscribe(JumpListener.class, this);
+        EventDispatcher.g().subscribe(StrafeInputListener.class, this);
+        EventDispatcher.g().subscribe(MoveCameraListener.class, this);
+        EventDispatcher.g().subscribe(PreTickRaytraceListener.class, this);
     }
 
     public void add(RotationSpoof spoof) {
@@ -125,83 +131,18 @@ public class RotationEngine {
         confirmedClientRotation = true;
     }
 
-    @EventTarget
-    public void onSendYaw(SendYawEvent event) {
-        if (rotating)
-            event.setYaw(rotations[0]);
-    }
-
-    @EventTarget
-    public void onSendPitch(SendPitchEvent event) {
-        if (rotating)
-            event.setPitch(rotations[1]);
-    }
-
-    @EventTarget
-    public void onRaytrace(RaytraceEvent event) {
+    @Override
+    public void onMoveCamera(float tickDelta) {
         if (rotating) {
-            event.setCancelled(true);
-            Raytrace result;
-            if (!raytrace && hasTarget) {
-                result = prevSpoof.getTarget();
-            } else {
-                result = RaytraceUtil.raytrace(mc, mc.getCameraEntity(), rotations, prevRotations, prevSpoof.getRange(), event.getTickDelta());
-            }
-            mc.targetedEntity = result.target();
-            mc.crosshairTarget = result.hitResult();
-        }
-    }
-
-    @EventTarget
-    public void onStrafeInput(StrafeInputEvent event) {
-        if (strafeMode.getCorrectMovement() != null) {
-            if (rotating) strafeMode.getCorrectMovement().edit(rotations[0], event);
-            else strafeMode.getCorrectMovement().reset();
-        }
-    }
-
-    @EventTarget
-    public void onRotateGet(RotateGetEvent event) {
-        event.setYaw(rotations[0]);
-        event.setPitch(rotations[1]);
-    }
-
-    @EventTarget
-    public void onRotationSet(RotateSetEvent event) {
-        if (event.isYaw())
-            rotations[0] = event.getYaw();
-        if (event.isPitch())
-            rotations[1] = event.getPitch();
-    }
-
-    @EventTarget
-    public void onJump(JumpEvent event) {
-        if (rotating) {
-            event.setYaw(rotations[0]);
-        }
-    }
-
-    @EventTarget
-    public void onStrafe(StrafeEvent event) {
-        if (rotating && strafeMode.isFixYaw()) {
-            event.setYaw(rotations[0]);
-        }
-    }
-
-    @EventTarget
-    public void onMoveCamera(MoveCameraEvent event) {
-        if (rotating) {
-            if (lockView) {
-                rotate(false, event.getTickDelta());
-            }
+            if (lockView) rotate(false, tickDelta);
         } else {
             rotations[0] = mc.player.getYaw();
             rotations[1] = mc.player.getPitch();
         }
     }
 
-    @EventTarget
-    public void onPreTickRaytrace(PreTickRaytraceEvent event) {
+    @Override
+    public void onPreTickRaytrace() {
         prevRotations[0] = rotations[0];
         prevRotations[1] = rotations[1];
         Optional<RotationSpoof> spoofOpt = spoofs.stream()
@@ -225,6 +166,63 @@ public class RotationEngine {
         }
         reportedRotations[0] = rotations[0];
         reportedRotations[1] = rotations[1];
+    }
+
+    @Override
+    public void onRaytrace(RaytraceEvent event) {
+        if (rotating) {
+            event.cancel();
+            Raytrace result;
+            if (!raytrace && hasTarget) {
+                result = prevSpoof.getTarget();
+            } else {
+                result = RaytraceUtil.raytrace(mc, mc.getCameraEntity(), rotations, prevRotations, prevSpoof.getRange(), event.tickDelta);
+            }
+            mc.targetedEntity = result.target();
+            mc.crosshairTarget = result.hitResult();
+        }
+    }
+
+    @Override
+    public void onGetRotation(RotationGetEvent event) {
+        event.yaw = rotations[0];
+        event.pitch = rotations[1];
+    }
+
+    @Override
+    public void onSetRotation(float yaw, float pitch, boolean isYaw, boolean isPitch) {
+        if (isYaw) rotations[0] = yaw;
+        if (isPitch) rotations[1] = pitch;
+    }
+
+    @Override
+    public void onSendYaw(SendRotationEvent event) {
+        if (rotating) event.value = rotations[0];
+    }
+
+    @Override
+    public void onSendPitch(SendRotationEvent event) {
+        if (rotating) event.value = rotations[1];
+    }
+
+    @Override
+    public void onStrafeInput(StrafeInputEvent event) {
+        if (strafeMode.getCorrectMovement() != null) {
+            if (rotating) strafeMode.getCorrectMovement().edit(rotations[0], event);
+            else strafeMode.getCorrectMovement().reset();
+        }
+    }
+
+    @Override
+    public void onJump(JumpEvent event) {
+        if (rotating) event.yaw = rotations[0];
+    }
+
+    @Override
+    public void onStrafe(StrafeEvent event) {
+        if (rotating && strafeMode.isFixYaw()) {
+            event.yaw = rotations[0];
+        }
     }
 
     public void limitDeltaRotation(float[] from, float[] to, float limitYaw, float limitPitch, float partialTicks) {

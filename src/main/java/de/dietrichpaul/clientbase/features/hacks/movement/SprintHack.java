@@ -1,13 +1,12 @@
 package de.dietrichpaul.clientbase.features.hacks.movement;
 
-import com.darkmagician6.eventapi.EventManager;
-import com.darkmagician6.eventapi.EventTarget;
-import de.dietrichpaul.clientbase.event.KeyPressedStateEvent;
+import de.dietrichpaul.clientbase.event.KeyPressedStateListener;
 import de.dietrichpaul.clientbase.features.hacks.Hack;
 import de.dietrichpaul.clientbase.features.hacks.HackCategory;
 import de.dietrichpaul.clientbase.properties.impl.BooleanProperty;
+import de.florianmichael.dietrichevents.EventDispatcher;
 
-public class SprintHack extends Hack {
+public class SprintHack extends Hack implements KeyPressedStateListener {
 
     private final BooleanProperty allDirection = new BooleanProperty("AllDirection", false);
 
@@ -18,17 +17,16 @@ public class SprintHack extends Hack {
 
     @Override
     protected void onEnable() {
-        EventManager.register(this);
+        EventDispatcher.g().subscribe(KeyPressedStateListener.class, this);
     }
 
     @Override
     protected void onDisable() {
-        EventManager.unregister(this);
+        EventDispatcher.g().unsubscribe(KeyPressedStateListener.class, this);
     }
 
-    @EventTarget
+    @Override
     public void onKeyPressedState(KeyPressedStateEvent event) {
-        if (event.getKeyBinding() == mc.options.sprintKey)
-            event.setPressed(true);
+        if (event.keyBinding == mc.options.sprintKey) event.pressed = true;
     }
 }

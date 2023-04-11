@@ -1,7 +1,7 @@
 package de.dietrichpaul.clientbase.features.clicking;
 
-import com.darkmagician6.eventapi.EventTarget;
-import de.dietrichpaul.clientbase.event.KeyPressedStateEvent;
+import de.dietrichpaul.clientbase.event.KeyPressedStateListener;
+import de.florianmichael.dietrichevents.EventDispatcher;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
@@ -13,7 +13,7 @@ import net.minecraft.util.math.Direction;
 
 import java.util.*;
 
-public class ClickEngine implements ClickCallback {
+public class ClickEngine implements ClickCallback, KeyPressedStateListener {
 
     private final Set<ClickSpoof> spoofs = new HashSet<>();
 
@@ -23,6 +23,10 @@ public class ClickEngine implements ClickCallback {
     private boolean enableRight;
 
     private MinecraftClient mc = MinecraftClient.getInstance();
+
+    public ClickEngine() {
+        EventDispatcher.g().subscribe(KeyPressedStateListener.class, this);
+    }
 
     public void add(ClickSpoof clickSpoof) {
         spoofs.add(clickSpoof);
@@ -38,11 +42,10 @@ public class ClickEngine implements ClickCallback {
                 .ifPresent(spoof -> spoof.click(this));
     }
 
-    @EventTarget
-    public void onKeyPressedState(KeyPressedStateEvent event) {
-        if (event.getKeyBinding() == mc.options.attackKey && enableLeft
-                || event.getKeyBinding() == mc.options.useKey && enableRight)
-            event.setPressed(true);
+    @Override
+    public void onKeyPressedState(KeyPressedStateEvent keyPressedStateEvent) {
+        if (keyPressedStateEvent.keyBinding == mc.options.attackKey && enableLeft || keyPressedStateEvent.keyBinding == mc.options.useKey && enableRight)
+            keyPressedStateEvent.pressed = true;
     }
 
     @Override
@@ -99,5 +102,4 @@ public class ClickEngine implements ClickCallback {
         mc.interactionManager.attackEntity(mc.player, entity);
         mc.player.swingHand(Hand.MAIN_HAND);
     }
-
 }

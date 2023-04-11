@@ -1,11 +1,9 @@
 package de.dietrichpaul.clientbase.features;
 
-import com.darkmagician6.eventapi.EventManager;
-import com.darkmagician6.eventapi.EventTarget;
-import com.mojang.brigadier.arguments.StringArgumentType;
 import de.dietrichpaul.clientbase.ClientBase;
-import de.dietrichpaul.clientbase.event.KeyEvent;
+import de.dietrichpaul.clientbase.event.KeyListener;
 import de.dietrichpaul.clientbase.features.hacks.Hack;
+import de.florianmichael.dietrichevents.EventDispatcher;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ChatScreen;
 import net.minecraft.client.util.InputUtil;
@@ -19,26 +17,27 @@ import java.util.Map;
 /*
 TODO Mouse bindings
  */
-public class KeybindingMap {
+public class KeybindingMap implements KeyListener {
 
     private final Map<InputUtil.Key, List<String>> bindings = new LinkedHashMap<>();
 
     public KeybindingMap() {
-        EventManager.register(this);
+        EventDispatcher.g().subscribe(KeyListener.class, this);
 
         // remove this and save in config (default)
         bind(InputUtil.fromTranslationKey("key.keyboard.right.shift"), "ClickGui");
         bind(InputUtil.fromTranslationKey("key.keyboard.r"), "KillAura");
     }
 
-    @EventTarget
-    public void onKey(KeyEvent event) {
-        if (event.getAction() != GLFW.GLFW_PRESS || MinecraftClient.getInstance().currentScreen != null) {
+    @Override
+    public void onKey(int key, int scan, int action, int modifiers) {
+        System.out.println("SDA");
+        if (key != GLFW.GLFW_PRESS || MinecraftClient.getInstance().currentScreen != null) {
             return;
         }
         ChatScreen chat = new ChatScreen("");
         chat.init(MinecraftClient.getInstance(), 0, 0);
-        List<String> messages = getBindings(InputUtil.fromKeyCode(event.getKey(), event.getScan()));
+        List<String> messages = getBindings(InputUtil.fromKeyCode(key, scan));
         if (messages != null) {
             for (String message : messages) {
                 Hack hack = ClientBase.getInstance().getHackMap().getHack(message);

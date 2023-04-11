@@ -1,7 +1,7 @@
 package de.dietrichpaul.clientbase.injection.mixin.event;
 
-import com.darkmagician6.eventapi.EventManager;
-import de.dietrichpaul.clientbase.event.StrafeInputEvent;
+import de.dietrichpaul.clientbase.event.StrafeInputListener;
+import de.florianmichael.dietrichevents.EventDispatcher;
 import net.minecraft.client.input.Input;
 import net.minecraft.client.input.KeyboardInput;
 import org.spongepowered.asm.mixin.Mixin;
@@ -14,12 +14,11 @@ public class KeyboardInputMixin extends Input {
 
     @Inject(method = "tick", at = @At(value = "FIELD", target = "Lnet/minecraft/client/input/KeyboardInput;sneaking:Z", shift = At.Shift.AFTER))
     public void onTick(boolean slowDown, float f, CallbackInfo ci) {
-        StrafeInputEvent event = new StrafeInputEvent((int) movementForward, (int) movementSideways, jumping, sneaking);
-        EventManager.call(event);
-        movementForward = event.getMoveForward();
-        movementSideways = event.getMoveSideways();
-        jumping = event.isJumping();
-        sneaking = event.isSneaking();
-    }
+        final StrafeInputListener.StrafeInputEvent strafeInputEvent = EventDispatcher.g().post(new StrafeInputListener.StrafeInputEvent((int) movementForward, (int) movementSideways, jumping, sneaking));
 
+        movementForward = strafeInputEvent.moveForward;
+        movementSideways = strafeInputEvent.moveSideways;
+        jumping = strafeInputEvent.jumping;
+        sneaking = strafeInputEvent.sneaking;
+    }
 }

@@ -74,7 +74,7 @@ public class Hack extends PropertyGroup {
     }
 
     public void deserializeHack(JsonObject object) {
-        if (saveState) {
+        if (saveState && object.has("state")) {
             setToggled(object.get("state").getAsBoolean());
         }
         deserializeProperties(object.getAsJsonObject("properties"));

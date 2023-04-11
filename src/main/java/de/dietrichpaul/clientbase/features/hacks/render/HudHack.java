@@ -33,15 +33,15 @@ public class HudHack extends Hack implements Render2DListener {
             if (hack.isToggled())
                 hacks.add(hack);
         }
-        hacks.sort(Comparator.comparingInt(h -> -mc.textRenderer.getWidth(h.getName())));
+        hacks.sort(Comparator.comparingDouble(h -> -font.getWidth(h.getName())));
 
         int width = mc.getWindow().getScaledWidth();
-        int y = 0;
+        float y = 0;
         for (Hack hack : hacks) {
-            int tw = mc.textRenderer.getWidth(hack.getName());
-            DrawableHelper.fill(matrices, width - tw - 4, y, width, y + 12, Integer.MIN_VALUE);
-            mc.textRenderer.drawWithShadow(matrices, hack.getName(), width - tw - 2, y + 2, ColorUtil.getRainbow(-y, 0.6F, 1F));
-            y += 12;
+            float tw = font.getWidth(hack.getName());
+            Renderer2D.fill(matrices, width - tw - 4, y, width, y + font.getLineHeight() + 4, Integer.MIN_VALUE);
+            font.renderWithShadow(matrices, hack.getName(), width - tw - 2, y + 2, ColorUtil.getRainbow(-y, 0.6F, 1F));
+            y += font.getLineHeight() + 4;
         }
     }
 

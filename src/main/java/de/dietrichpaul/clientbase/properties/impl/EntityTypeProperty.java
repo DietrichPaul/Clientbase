@@ -1,5 +1,6 @@
 package de.dietrichpaul.clientbase.properties.impl;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
@@ -57,20 +58,21 @@ public class EntityTypeProperty extends Property {
 
     @Override
     public JsonElement serialize() {
-        JsonObject object = new JsonObject();
-        entityTypes.object2BooleanEntrySet().forEach(type
-                -> object.addProperty(type.getKey().getTranslationKey(), type.getBooleanValue()));
-        return object;
+        JsonArray array = new JsonArray();
+        entityTypes.object2BooleanEntrySet().stream()
+                .filter(Object2BooleanMap.Entry::getBooleanValue)
+                .forEach(type -> array.add(type.getKey().getTranslationKey()));
+        return array;
     }
 
     @Override
     public void deserialize(JsonElement element) {
         if (element == null) return;
-        JsonObject object = element.getAsJsonObject();
+        /*JsonObject object = element.getAsJsonObject();
         for (EntityType<?> next : entityTypes.keySet()) {
             entityTypes.removeBoolean(next);
             entityTypes.put(next, object.get(next.getTranslationKey()).getAsBoolean());
-        }
+        }*/
     }
 
     @Override
@@ -83,6 +85,7 @@ public class EntityTypeProperty extends Property {
                                             EntityType<?> type = EntityTypeArgumentType.getEntityType(context, "type");
                                             entityTypes.removeBoolean(type);
                                             entityTypes.put(type, true);
+                                            reportChanges();
                                             // bitte components machen paul
                                             cb.sendChatMessage(Text.of("Added " + I18n.translate(type.getTranslationKey()) + " to " + getName()));
                                             return 1;
@@ -96,7 +99,7 @@ public class EntityTypeProperty extends Property {
                                             EntityType<?> type = EntityTypeArgumentType.getEntityType(context, "type");
                                             entityTypes.removeBoolean(type);
                                             entityTypes.put(type, false);
-                                            System.out.println(entityTypes.getBoolean(type));
+                                            reportChanges();
                                             // bitte components machen paul
                                             cb.sendChatMessage(Text.of("Removed " + I18n.translate(type.getTranslationKey()) + " from " + getName()));
                                             return 1;

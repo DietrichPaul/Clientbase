@@ -14,7 +14,8 @@ public class HackConfig extends JsonObjectConfig {
     @Override
     protected void read(JsonObject element) {
         for (Hack hack : cb.getHackMap().getHacks()) {
-            hack.deserializeHack(element.getAsJsonObject(hack.getName()));
+            if (element.has(hack.getName()))
+                hack.deserializeHack(element.getAsJsonObject(hack.getName()));
         }
     }
 

@@ -8,8 +8,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.MathHelper;
 
 public class ScreenAdapter implements Element, Selectable, Drawable {
-
-    private Component component;
+    private final Component component;
 
     public ScreenAdapter(Component component) {
         this.component = component;
@@ -21,6 +20,16 @@ public class ScreenAdapter implements Element, Selectable, Drawable {
             component.mouseClicked((float) mouseX, (float) mouseY, button);
             return true;
         }
+        return false;
+    }
+
+    @Override
+    public void setFocused(boolean focused) {
+
+    }
+
+    @Override
+    public boolean isFocused() {
         return false;
     }
 

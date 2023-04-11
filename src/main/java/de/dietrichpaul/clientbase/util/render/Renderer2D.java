@@ -54,7 +54,6 @@ public class Renderer2D {
         float j = (float)(color & 255) / 255.0F;
         BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
         RenderSystem.enableBlend();
-        RenderSystem.disableTexture();
         RenderSystem.defaultBlendFunc();
         circleShader.getProgram().lineWidth.set(lw); // IST NICHT NULL >:(
         RenderSystem.setShader(circleShader::getProgram);
@@ -64,7 +63,6 @@ public class Renderer2D {
         bufferBuilder.vertex(matrix, (float)x2, (float)y1, 0.0F).color(g, h, j, f).next();
         bufferBuilder.vertex(matrix, (float)x1, (float)y1, 0.0F).color(g, h, j, f).next();
         BufferRenderer.drawWithGlobalProgram(bufferBuilder.end());
-        RenderSystem.enableTexture();
         RenderSystem.disableBlend();
     }
 
@@ -82,7 +80,6 @@ public class Renderer2D {
         float j = (float)(color & 255) / 255.0F;
         BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
         RenderSystem.enableBlend();
-        RenderSystem.disableTexture();
         RenderSystem.defaultBlendFunc();
         RenderSystem.setShader(fillCircleShader::getProgram);
         bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
@@ -91,7 +88,6 @@ public class Renderer2D {
         bufferBuilder.vertex(matrix, (float)x2, (float)y1, 0.0F).color(g, h, j, f).next();
         bufferBuilder.vertex(matrix, (float)x1, (float)y1, 0.0F).color(g, h, j, f).next();
         BufferRenderer.drawWithGlobalProgram(bufferBuilder.end());
-        RenderSystem.enableTexture();
         RenderSystem.disableBlend();
     }
 

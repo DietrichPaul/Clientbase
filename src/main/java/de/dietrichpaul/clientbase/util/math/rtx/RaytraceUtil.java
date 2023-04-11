@@ -48,7 +48,7 @@ public class RaytraceUtil {
             Vec3d vec3d4 = entityHitResult.getPos();
             double g = camera.squaredDistanceTo(vec3d4);
             if (survivalRange && g > range * range) {
-                crosshairTarget = BlockHitResult.createMissed(vec3d4, Direction.getFacing(rotationVec.x, rotationVec.y, rotationVec.z), new BlockPos(vec3d4));
+                crosshairTarget = BlockHitResult.createMissed(vec3d4, Direction.getFacing(rotationVec.x, rotationVec.y, rotationVec.z), BlockPos.ofFloored(vec3d4));
             } else if (g < squaredReach || crosshairTarget == null) {
                 crosshairTarget = entityHitResult;
                 if (entity2 instanceof LivingEntity || entity2 instanceof ItemFrameEntity) {

@@ -23,7 +23,7 @@ public class BreezilyFix extends CorrectMovement {
         double impactZ = Math.sin(Math.toRadians(angle)) * Math.sin(Math.toRadians(angle));
 
         Vec3d next = mc.player.getPos().add(-Math.sin(Math.toRadians(angle)) * 0.5, 0, Math.cos(Math.toRadians(angle)) * 0.5);
-        Vec3d center = Vec3d.ofCenter(new BlockPos(next));
+        Vec3d center = Vec3d.ofCenter(BlockPos.ofFloored(next));
         Vec3d goTo = new Vec3d(
                 MathHelper.lerp(impactX, next.x, center.x),
                 0,

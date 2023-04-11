@@ -7,7 +7,7 @@ import de.dietrichpaul.clientbase.features.hacks.Hack;
 import de.dietrichpaul.clientbase.features.hacks.HackCategory;
 import de.dietrichpaul.clientbase.util.render.ColorUtil;
 import de.dietrichpaul.clientbase.util.render.Renderer2D;
-import de.florianmichael.dietrichevents.EventDispatcher;
+import de.dietrichpaul.clientbase.ClientBase;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.util.math.MatrixStack;
 
@@ -52,11 +52,11 @@ public class HudHack extends Hack implements Render2DListener {
 
     @Override
     protected void onEnable() {
-        EventDispatcher.g().subscribe(Render2DListener.class, this);
+        ClientBase.getInstance().getEventDispatcher().subscribe(Render2DListener.class, this);
     }
 
     @Override
     protected void onDisable() {
-        EventDispatcher.g().unsubscribe(Render2DListener.class, this);
+        ClientBase.getInstance().getEventDispatcher().unsubscribe(Render2DListener.class, this);
     }
 }

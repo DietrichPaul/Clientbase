@@ -2,7 +2,7 @@ package de.dietrichpaul.clientbase.config;
 
 import de.dietrichpaul.clientbase.config.list.HackConfig;
 import de.dietrichpaul.clientbase.event.UpdateListener;
-import de.florianmichael.dietrichevents.EventDispatcher;
+import de.dietrichpaul.clientbase.ClientBase;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -32,7 +32,7 @@ public class ConfigManager implements UpdateListener {
     }
 
     public void start() {
-        EventDispatcher.g().subscribe(UpdateListener.class, this);
+        ClientBase.getInstance().getEventDispatcher().subscribe(UpdateListener.class, this);
 
         for (AbstractConfig config : this.configs) {
             if (config.getType() == ConfigType.PRE) {
@@ -55,6 +55,6 @@ public class ConfigManager implements UpdateListener {
                 e.printStackTrace();
             }
         }
-        EventDispatcher.g().unsubscribe(UpdateListener.class, this);
+        ClientBase.getInstance().getEventDispatcher().unsubscribe(UpdateListener.class, this);
     }
 }

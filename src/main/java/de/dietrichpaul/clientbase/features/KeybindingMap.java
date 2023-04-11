@@ -3,7 +3,7 @@ package de.dietrichpaul.clientbase.features;
 import de.dietrichpaul.clientbase.ClientBase;
 import de.dietrichpaul.clientbase.event.KeyListener;
 import de.dietrichpaul.clientbase.features.hacks.Hack;
-import de.florianmichael.dietrichevents.EventDispatcher;
+import de.dietrichpaul.clientbase.ClientBase;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ChatScreen;
 import net.minecraft.client.util.InputUtil;
@@ -22,7 +22,7 @@ public class KeybindingMap implements KeyListener {
     private final Map<InputUtil.Key, List<String>> bindings = new LinkedHashMap<>();
 
     public KeybindingMap() {
-        EventDispatcher.g().subscribe(KeyListener.class, this);
+        ClientBase.getInstance().getEventDispatcher().subscribe(KeyListener.class, this);
 
         // remove this and save in config (default)
         bind(InputUtil.fromTranslationKey("key.keyboard.right.shift"), "ClickGui");
@@ -31,8 +31,7 @@ public class KeybindingMap implements KeyListener {
 
     @Override
     public void onKey(int key, int scan, int action, int modifiers) {
-        System.out.println("SDA");
-        if (key != GLFW.GLFW_PRESS || MinecraftClient.getInstance().currentScreen != null) {
+        if (action != GLFW.GLFW_PRESS || MinecraftClient.getInstance().currentScreen != null) {
             return;
         }
         ChatScreen chat = new ChatScreen("");

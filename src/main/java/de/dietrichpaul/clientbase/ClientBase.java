@@ -9,6 +9,9 @@ import de.dietrichpaul.clientbase.features.gui.api.font.FontAtlas;
 import de.dietrichpaul.clientbase.features.hacks.HackMap;
 import de.dietrichpaul.clientbase.features.rotation.RotationEngine;
 import de.dietrichpaul.clientbase.util.render.Renderer2D;
+import de.dietrichpaul.clientbase.ClientBase;
+import de.florianmichael.dietrichevents.EventDispatcher;
+import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
 import net.fabricmc.loader.api.FabricLoader;
@@ -48,6 +51,7 @@ public class ClientBase implements SimpleSynchronousResourceReloadListener {
     private HackMap hackMap;
     private KeybindingMap keybindingMap;
     private RotationEngine rotationEngine;
+    private EventDispatcher eventDispatcher;
 
     // internal
     private File directory;
@@ -63,6 +67,9 @@ public class ClientBase implements SimpleSynchronousResourceReloadListener {
      * pre start
      */
     public void init() {
+        this.eventDispatcher = EventDispatcher.create(key -> new Object2ObjectArrayMap<>());
+        this.eventDispatcher.setErrorHandler(throwable -> {
+        });
         ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(this);
         Renderer2D.loadShaders();
         this.commandManager = new CommandManager(); // command manager braucht die static instanz, deshalb hier
@@ -148,6 +155,10 @@ public class ClientBase implements SimpleSynchronousResourceReloadListener {
 
     public ClickEngine getClickEngine() {
         return clickEngine;
+    }
+
+    public EventDispatcher getEventDispatcher() {
+        return eventDispatcher;
     }
 
     public void drawFrame() {

@@ -12,7 +12,7 @@ public class Hack extends PropertyGroup {
     private boolean toggled;
     private boolean saveState = true;
 
-    protected MinecraftClient mc = MinecraftClient.getInstance();
+    protected static MinecraftClient mc = MinecraftClient.getInstance();
     protected ClientBase cb = ClientBase.getInstance();
 
     public Hack(String name, HackCategory category) {

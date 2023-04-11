@@ -113,6 +113,14 @@ public class AimbotRotationSpoof extends RotationSpoof {
         return rtx;
     }
 
+    public Entity getPrimaryTarget() {
+        return targets.get(0);
+    }
+
+    public List<Entity> getTargets() {
+        return targets;
+    }
+
     public boolean hasTarget() {
         return !targets.isEmpty();
     }

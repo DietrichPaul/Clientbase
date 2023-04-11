@@ -6,13 +6,14 @@
   "mixins": [
     "event.EntityMixin",
     "event.LivingEntityMixin",
-    "rotation.PlayerEntityMixin",
     "hack.AbstractBlockMixin",
     "hack.BlockMixin",
+    "rotation.PlayerEntityMixin",
     "test.EntityMixin"
   ],
   "client": [
     "base.MinecraftClientMixin",
+    "click.MinecraftClientMixin",
     "command.ChatInputSuggestorMixin",
     "command.ChatScreenMixin",
     "event.ClientPlayerEntityMixin",

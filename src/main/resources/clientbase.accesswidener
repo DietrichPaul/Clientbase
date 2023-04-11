@@ -1,3 +1,4 @@
 accessWidener v1 named
 accessible field net/minecraft/client/util/InputUtil$Key KEYS Ljava/util/Map;
+accessible field net/minecraft/client/option/KeyBinding timesPressed I
 accessible method net/minecraft/client/gui/screen/Screen addDrawableChild (Lnet/minecraft/client/gui/Element;)Lnet/minecraft/client/gui/Element;

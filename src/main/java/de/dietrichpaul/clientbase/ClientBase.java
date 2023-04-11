@@ -3,6 +3,7 @@ package de.dietrichpaul.clientbase;
 import de.dietrichpaul.clientbase.config.ConfigManager;
 import de.dietrichpaul.clientbase.features.FriendList;
 import de.dietrichpaul.clientbase.features.KeybindingMap;
+import de.dietrichpaul.clientbase.features.clicking.ClickEngine;
 import de.dietrichpaul.clientbase.features.commands.CommandManager;
 import de.dietrichpaul.clientbase.features.gui.api.font.FontAtlas;
 import de.dietrichpaul.clientbase.features.hacks.HackMap;
@@ -32,19 +33,15 @@ public class ClientBase implements SimpleSynchronousResourceReloadListener {
     private static final ClientBase instance = new ClientBase();
 
     // meta
-    public static final ModMetadata METADATA = FabricLoader.getInstance()
-            .getModContainer("clientbase").orElseThrow().getMetadata();
+    public static final ModMetadata METADATA = FabricLoader.getInstance().getModContainer("clientbase").orElseThrow().getMetadata();
     public static final String NAME = METADATA.getName();
     public static final String VERSION = METADATA.getVersion().getFriendlyString();
-    public static final String AUTHORS = METADATA.getAuthors().stream().map(Person::getName)
-            .collect(Collectors.joining(", "));
-    public static final MutableText PREFIX = Text.literal("")
-            .append(Text.literal("[").formatted(Formatting.DARK_GRAY))
-            .append(Text.literal(NAME).formatted(Formatting.RED))
-            .append(Text.literal("]").formatted(Formatting.DARK_GRAY));
+    public static final String AUTHORS = METADATA.getAuthors().stream().map(Person::getName).collect(Collectors.joining(", "));
+    public static final MutableText PREFIX = Text.literal("").append(Text.literal("[").formatted(Formatting.DARK_GRAY)).append(Text.literal(NAME).formatted(Formatting.RED)).append(Text.literal("]").formatted(Formatting.DARK_GRAY));
 
     // features
     private ConfigManager configManager;
+    private ClickEngine clickEngine;
     private CommandManager commandManager;
     private FriendList friendList;
     private FontAtlas verdana;
@@ -69,6 +66,7 @@ public class ClientBase implements SimpleSynchronousResourceReloadListener {
         ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(this);
         Renderer2D.loadShaders();
         this.commandManager = new CommandManager(); // command manager braucht die static instanz, deshalb hier
+        this.clickEngine = new ClickEngine();
         this.friendList = new FriendList();
         this.rotationEngine = new RotationEngine();
         this.hackMap = new HackMap();
@@ -146,6 +144,10 @@ public class ClientBase implements SimpleSynchronousResourceReloadListener {
 
     public FontAtlas getVerdana() {
         return verdana;
+    }
+
+    public ClickEngine getClickEngine() {
+        return clickEngine;
     }
 
     public void drawFrame() {

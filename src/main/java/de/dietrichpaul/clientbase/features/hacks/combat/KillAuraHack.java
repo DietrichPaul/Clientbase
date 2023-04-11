@@ -1,18 +1,13 @@
 package de.dietrichpaul.clientbase.features.hacks.combat;
 
 import com.darkmagician6.eventapi.EventManager;
+import de.dietrichpaul.clientbase.features.clicking.ClickCallback;
+import de.dietrichpaul.clientbase.features.clicking.ClickSpoof;
 import de.dietrichpaul.clientbase.features.hacks.Hack;
 import de.dietrichpaul.clientbase.features.hacks.HackCategory;
-import de.dietrichpaul.clientbase.features.rotation.RotationSpoof;
 import de.dietrichpaul.clientbase.features.rotation.impl.AimbotRotationSpoof;
-import de.dietrichpaul.clientbase.util.MathUtil;
-import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.math.Vec3d;
 
-import java.util.*;
-
-public class KillAuraHack extends Hack {
+public class KillAuraHack extends Hack implements ClickSpoof {
 
     private final AimbotRotationSpoof aimbot;
 
@@ -20,6 +15,7 @@ public class KillAuraHack extends Hack {
         super("KillAura", HackCategory.COMBAT);
         aimbot = new AimbotRotationSpoof(this, addPropertyGroup("Rotations"));
         cb.getRotationEngine().add(aimbot);
+        cb.getClickEngine().add(this);
     }
 
     @Override
@@ -32,4 +28,19 @@ public class KillAuraHack extends Hack {
         EventManager.unregister(this);
     }
 
+    @Override
+    public boolean canClick() {
+        return aimbot.hasTarget();
+    }
+
+    @Override
+    public int getPriority() {
+        return aimbot.getPriority();
+    }
+
+    @Override
+    public void click(ClickCallback callback) {
+        if (Math.random() < 0.75)
+            callback.left();
+    }
 }

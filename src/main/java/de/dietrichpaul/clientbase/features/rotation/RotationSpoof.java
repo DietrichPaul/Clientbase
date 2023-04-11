@@ -1,10 +1,12 @@
 package de.dietrichpaul.clientbase.features.rotation;
 
 import de.dietrichpaul.clientbase.ClientBase;
+import de.dietrichpaul.clientbase.features.rotation.strafe.StrafeMode;
 import de.dietrichpaul.clientbase.properties.PropertyGroup;
 import de.dietrichpaul.clientbase.properties.impl.BooleanProperty;
 import de.dietrichpaul.clientbase.properties.impl.EnumProperty;
 import de.dietrichpaul.clientbase.properties.impl.FloatProperty;
+import de.dietrichpaul.clientbase.util.math.rtx.Raytrace;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.util.math.MathHelper;
 
@@ -21,17 +23,22 @@ public abstract class RotationSpoof {
     private final FloatProperty maxPitchSpeed = new FloatProperty("Max Pitch Speed", 20, 1, 180);
     private final BooleanProperty rotateBack = new BooleanProperty("Rotate Back", false);
     private final BooleanProperty lockView = new BooleanProperty("Lock View", false);
+    private final BooleanProperty raytraceProperty = new BooleanProperty("Raytrace", true);
     private final EnumProperty<SensitivityFix> sensitivityFixProperty = new EnumProperty<>("SensitivityFix",
             SensitivityFix.APPROXIMATE, SensitivityFix.values(), SensitivityFix.class);
+    private final EnumProperty<StrafeMode> strafeModeProperty = new EnumProperty<>("Strafe",
+            StrafeMode.SILENT, StrafeMode.values(), StrafeMode.class);
 
     public RotationSpoof(PropertyGroup propertyGroup) {
         propertyGroup.addProperty(minYawSpeed);
         propertyGroup.addProperty(maxYawSpeed);
         propertyGroup.addProperty(minPitchSpeed);
         propertyGroup.addProperty(maxPitchSpeed);
+        propertyGroup.addProperty(raytraceProperty);
         propertyGroup.addProperty(rotateBack);
         propertyGroup.addProperty(lockView);
         propertyGroup.addProperty(sensitivityFixProperty);
+        propertyGroup.addProperty(strafeModeProperty);
     }
 
     /**
@@ -67,5 +74,19 @@ public abstract class RotationSpoof {
 
     public SensitivityFix getSensitivityFix() {
         return sensitivityFixProperty.getValue();
+    }
+
+    public StrafeMode getStrafeMode() {
+        return strafeModeProperty.getValue();
+    }
+
+    public abstract Raytrace getTarget();
+
+    public float getRange() {
+        return 3.0F;
+    }
+
+    public boolean raytrace() {
+        return raytraceProperty.getState();
     }
 }

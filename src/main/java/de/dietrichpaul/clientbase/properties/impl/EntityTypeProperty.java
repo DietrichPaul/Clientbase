@@ -18,9 +18,8 @@ import org.apache.commons.lang3.ArrayUtils;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
-public class TargetProperty extends Property {
+public class EntityTypeProperty extends Property {
 
     private static List<EntityType<?>> notAttackable = Arrays.asList(
             EntityType.AREA_EFFECT_CLOUD,
@@ -43,7 +42,7 @@ public class TargetProperty extends Property {
     private Object2BooleanMap<EntityType<?>> entityTypes = new Object2BooleanRBTreeMap<>(Comparator.comparing(entityType
             -> I18n.translate(entityType.getTranslationKey())));
 
-    public TargetProperty(String name, boolean onlyAttackable, EntityType<?>... defaultEnabled) {
+    public EntityTypeProperty(String name, boolean onlyAttackable, EntityType<?>... defaultEnabled) {
         super(name);
         Registries.ENTITY_TYPE.forEach(entityType -> {
             if (!onlyAttackable || !notAttackable.contains(entityType)) {

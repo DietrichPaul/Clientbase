@@ -3,12 +3,14 @@ package de.dietrichpaul.clientbase.features.rotation;
 import com.darkmagician6.eventapi.EventManager;
 import com.darkmagician6.eventapi.EventTarget;
 import de.dietrichpaul.clientbase.ClientBase;
-import de.dietrichpaul.clientbase.event.JumpEvent;
-import de.dietrichpaul.clientbase.event.MoveCameraEvent;
-import de.dietrichpaul.clientbase.event.PreTickRaytraceEvent;
-import de.dietrichpaul.clientbase.event.StrafeEvent;
+import de.dietrichpaul.clientbase.event.*;
 import de.dietrichpaul.clientbase.event.rotate.RotateGetEvent;
 import de.dietrichpaul.clientbase.event.rotate.RotateSetEvent;
+import de.dietrichpaul.clientbase.event.rotate.SendPitchEvent;
+import de.dietrichpaul.clientbase.event.rotate.SendYawEvent;
+import de.dietrichpaul.clientbase.features.rotation.strafe.StrafeMode;
+import de.dietrichpaul.clientbase.util.math.rtx.Raytrace;
+import de.dietrichpaul.clientbase.util.math.rtx.RaytraceUtil;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.util.math.MathHelper;
 
@@ -28,10 +30,12 @@ public class RotationEngine {
     private boolean rotating;
     private boolean hasTarget;
     private boolean confirmedClientRotation = true;
+
+    private boolean raytrace;
     private boolean rotateBack;
     private boolean lockView;
-
     private SensitivityFix sensitivityFix;
+    private StrafeMode strafeMode;
 
     private float yawSpeed = Float.NaN;
     private float pitchSpeed = Float.NaN;
@@ -55,6 +59,8 @@ public class RotationEngine {
     private void rotate(boolean tick, float partialTicks) {
         RotationSpoof spoof = prevSpoof;
         if (tick) {
+            raytrace = spoof.raytrace();
+            strafeMode = spoof.getStrafeMode();
             sensitivityFix = spoof.getSensitivityFix();
             lockView = spoof.lockView();
             rotateBack = spoof.rotateBack();
@@ -120,6 +126,41 @@ public class RotationEngine {
     }
 
     @EventTarget
+    public void onSendYaw(SendYawEvent event) {
+        if (rotating)
+            event.setYaw(rotations[0]);
+    }
+
+    @EventTarget
+    public void onSendPitch(SendPitchEvent event) {
+        if (rotating)
+            event.setPitch(rotations[1]);
+    }
+
+    @EventTarget
+    public void onRaytrace(RaytraceEvent event) {
+        if (rotating) {
+            event.setCancelled(true);
+            Raytrace result;
+            if (!raytrace && hasTarget) {
+                result = prevSpoof.getTarget();
+            } else {
+                result = RaytraceUtil.raytrace(mc, mc.getCameraEntity(), rotations, prevRotations, prevSpoof.getRange(), event.getTickDelta());
+            }
+            mc.targetedEntity = result.target();
+            mc.crosshairTarget = result.hitResult();
+        }
+    }
+
+    @EventTarget
+    public void onStrafeInput(StrafeInputEvent event) {
+        if (strafeMode.getCorrectMovement() != null) {
+            if (rotating) strafeMode.getCorrectMovement().edit(rotations[0], event);
+            else strafeMode.getCorrectMovement().reset();
+        }
+    }
+
+    @EventTarget
     public void onRotateGet(RotateGetEvent event) {
         event.setYaw(rotations[0]);
         event.setPitch(rotations[1]);
@@ -142,7 +183,7 @@ public class RotationEngine {
 
     @EventTarget
     public void onStrafe(StrafeEvent event) {
-        if (rotating) { // TODO toggleable
+        if (rotating && strafeMode.isFixYaw()) {
             event.setYaw(rotations[0]);
         }
     }

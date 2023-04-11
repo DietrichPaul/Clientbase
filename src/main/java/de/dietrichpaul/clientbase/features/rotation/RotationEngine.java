@@ -133,6 +133,8 @@ public class RotationEngine implements SendRotationListener, RaytraceListener, S
 
     @Override
     public void onMoveCamera(float tickDelta) {
+        if (mc.player == null)
+            return;
         if (rotating) {
             if (lockView) rotate(false, tickDelta);
         } else {
@@ -143,6 +145,8 @@ public class RotationEngine implements SendRotationListener, RaytraceListener, S
 
     @Override
     public void onPreTickRaytrace() {
+        if (mc.player == null)
+            return;
         prevRotations[0] = rotations[0];
         prevRotations[1] = rotations[1];
         Optional<RotationSpoof> spoofOpt = spoofs.stream()
@@ -207,6 +211,9 @@ public class RotationEngine implements SendRotationListener, RaytraceListener, S
 
     @Override
     public void onStrafeInput(StrafeInputEvent event) {
+        if (strafeMode == null)
+            return;
+
         if (strafeMode.getCorrectMovement() != null) {
             if (rotating) strafeMode.getCorrectMovement().edit(rotations[0], event);
             else strafeMode.getCorrectMovement().reset();

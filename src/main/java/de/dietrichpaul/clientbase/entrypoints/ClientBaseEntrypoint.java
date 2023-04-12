@@ -9,5 +9,4 @@ public class ClientBaseEntrypoint implements ClientModInitializer {
     public void onInitializeClient() {
         ClientBase.getInstance().init();
     }
-
 }

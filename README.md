@@ -1,4 +1,5 @@
 # Clientbase
+This mod is godlike in combat.
 
 ## Setup
 

@@ -8,7 +8,7 @@ import de.dietrichpaul.clientbase.event.rotate.SendRotationListener;
 import de.dietrichpaul.clientbase.features.rotation.strafe.StrafeMode;
 import de.dietrichpaul.clientbase.util.math.rtx.Raytrace;
 import de.dietrichpaul.clientbase.util.math.rtx.RaytraceUtil;
-import de.dietrichpaul.clientbase.ClientBase;
+import de.dietrichpaul.clientbase.util.render.OpenGL;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.util.math.MathHelper;
 
@@ -274,7 +274,7 @@ public class RotationEngine implements SendRotationListener, RaytraceListener, S
             }
             case APPROXIMATE, REAL -> {
                 double iterationsNeeded = (sensitivityFix == SensitivityFix.APPROXIMATE ?
-                        ThreadLocalRandom.current().nextDouble(20, 60) : ClientBase.getInstance().getFps())
+                        ThreadLocalRandom.current().nextDouble(20, 60) : OpenGL.getFps())
                         / 20.0;
                 iterationsNeeded *= partialTicks;
                 int iterations = MathHelper.floor(iterationsNeeded + partialIterations);

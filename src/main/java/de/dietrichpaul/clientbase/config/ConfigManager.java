@@ -10,7 +10,6 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 public class ConfigManager implements UpdateListener {
-
     private final Set<AbstractConfig> configs = new LinkedHashSet<>();
 
     public HackConfig hack = new HackConfig();

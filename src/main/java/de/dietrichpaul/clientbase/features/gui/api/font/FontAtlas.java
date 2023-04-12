@@ -4,13 +4,10 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.mojang.blaze3d.systems.RenderSystem;
-import de.dietrichpaul.clientbase.ClientBase;
-import de.dietrichpaul.clientbase.util.render.Renderer2D;
-import net.minecraft.client.MinecraftClient;
+import de.dietrichpaul.clientbase.util.render.api.Renderer2D;
 import net.minecraft.client.render.*;
 import net.minecraft.client.texture.NativeImage;
 import net.minecraft.client.texture.NativeImageBackedTexture;
-import net.minecraft.client.texture.TextureManager;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.text.OrderedText;
@@ -20,7 +17,6 @@ import net.minecraft.util.math.ColorHelper;
 import org.joml.Matrix4f;
 
 import java.io.*;
-import java.util.Optional;
 
 // https://github.com/Chlumsky/msdf-atlas-gen
 //

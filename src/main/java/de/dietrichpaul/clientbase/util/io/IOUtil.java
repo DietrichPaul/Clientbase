@@ -12,7 +12,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 public class IOUtil {
-
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
     @SuppressWarnings("unchecked")
@@ -31,5 +30,4 @@ public class IOUtil {
             e.printStackTrace();
         }
     }
-
 }

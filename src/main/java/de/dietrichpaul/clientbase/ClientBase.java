@@ -8,8 +8,7 @@ import de.dietrichpaul.clientbase.features.commands.CommandManager;
 import de.dietrichpaul.clientbase.features.gui.api.font.FontAtlas;
 import de.dietrichpaul.clientbase.features.hacks.HackMap;
 import de.dietrichpaul.clientbase.features.rotation.RotationEngine;
-import de.dietrichpaul.clientbase.util.render.Renderer2D;
-import de.dietrichpaul.clientbase.ClientBase;
+import de.dietrichpaul.clientbase.util.render.api.Renderer2D;
 import de.florianmichael.dietrichevents.EventDispatcher;
 import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
@@ -24,7 +23,6 @@ import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
-import org.lwjgl.glfw.GLFW;
 
 import java.io.File;
 import java.io.IOException;
@@ -55,9 +53,6 @@ public class ClientBase implements SimpleSynchronousResourceReloadListener {
 
     // internal
     private File directory;
-    private MinecraftClient mc = MinecraftClient.getInstance();
-    private double prevGLTime = Double.NaN;
-    private double fps;
 
     public static ClientBase getInstance() {
         return instance;
@@ -81,7 +76,7 @@ public class ClientBase implements SimpleSynchronousResourceReloadListener {
     }
 
     private void loadIO() {
-        this.directory = new File(mc.runDirectory, NAME);
+        this.directory = new File(MinecraftClient.getInstance().runDirectory, NAME);
         //noinspection ResultOfMethodCallIgnored
         this.directory.mkdir();
     }
@@ -114,7 +109,7 @@ public class ClientBase implements SimpleSynchronousResourceReloadListener {
     public void sendChatMessage(Text text) {
         text = Text.literal("").append(text).formatted(Formatting.GRAY); // &r -> &7
         Text line = Text.literal("").append(PREFIX).append(" ").append(text); // prefix + " " + text
-        mc.inGameHud.getChatHud().addMessage(line);
+        MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(line);
     }
 
     public ConfigManager getConfigManager() {
@@ -157,20 +152,5 @@ public class ClientBase implements SimpleSynchronousResourceReloadListener {
 
     public EventDispatcher getEventDispatcher() {
         return eventDispatcher;
-    }
-
-    public void drawFrame() {
-        if (Double.isNaN(prevGLTime)) {
-            prevGLTime = GLFW.glfwGetTime();
-            return;
-        }
-        double time = GLFW.glfwGetTime();
-        double delta = time - prevGLTime;
-        fps = 1.0 / delta;
-        prevGLTime = time;
-    }
-
-    public double getFps() {
-        return fps;
     }
 }

@@ -139,7 +139,7 @@ public class ClientBase implements SimpleSynchronousResourceReloadListener {
 
     @Override
     public Identifier getFabricId() {
-        return new Identifier("dyson:staubsauger");
+        return new Identifier("clientbase", "reload_fonts");
     }
 
     @Override

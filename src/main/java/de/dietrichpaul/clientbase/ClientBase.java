@@ -88,7 +88,7 @@ public class ClientBase implements SimpleSynchronousResourceReloadListener {
 
     private void loadFonts(ResourceManager manager) {
         try {
-            verdana = new FontAtlas(manager, "verdana");
+            verdana = new FontAtlas(manager, "calibri");
         } catch (IOException e) {
             throw new RuntimeException("Couldn't load fonts", e);
         }

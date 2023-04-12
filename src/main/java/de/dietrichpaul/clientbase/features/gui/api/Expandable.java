@@ -73,11 +73,6 @@ public class Expandable extends BoxPanel {
     }
 
     @Override
-    public void addToScreen(Screen screen) {
-        screen.addDrawableChild(new ScreenAdapter(this));
-    }
-
-    @Override
     protected void renderComponent(MatrixStack matrices, float mouseX, float mouseY, float delta) {
         if (dragging) {
             dragging = GLFW.glfwGetMouseButton(mc.getWindow().getHandle(), GLFW.GLFW_MOUSE_BUTTON_LEFT) == GLFW.GLFW_PRESS;

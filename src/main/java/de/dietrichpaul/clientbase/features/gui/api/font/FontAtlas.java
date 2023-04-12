@@ -290,7 +290,8 @@ public class FontAtlas {
     }
 
     public float getLineHeight(float size) {
-        return fontMetrics.getLineHeight() * size;
+        System.out.println(fontMetrics.getAscender());
+        return (fontMetrics.getAscender() - fontMetrics.getUnderlineY()) * size;
     }
 
 

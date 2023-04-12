@@ -37,7 +37,6 @@ public class ScreenAdapter implements Element, Selectable, Drawable {
     public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         float mX = (float) (component.mc.mouse.getX() * component.mc.getWindow().getScaledWidth() / component.mc.getWindow().getWidth());
         float mY = (float) (component.mc.mouse.getY() * component.mc.getWindow().getScaledHeight() / component.mc.getWindow().getHeight());
-        component.reduceSize();
         component.setX(MathHelper.clamp(component.getX(), 0, component.mc.getWindow().getScaledWidth() - component.width));
         component.setY(MathHelper.clamp(component.getY(), 0, component.mc.getWindow().getScaledHeight() - component.height));
         component.render(matrices, mX, mY, delta);

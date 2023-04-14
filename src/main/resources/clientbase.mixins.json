@@ -3,15 +3,13 @@
   "minVersion": "0.8",
   "package": "de.dietrichpaul.clientbase.injection.mixin",
   "compatibilityLevel": "JAVA_17",
-  "mixins": [
+  "client": [
     "event.EntityMixin",
     "event.LivingEntityMixin",
     "hack.AbstractBlockMixin",
     "hack.BlockMixin",
     "rotation.PlayerEntityMixin",
-    "test.EntityMixin"
-  ],
-  "client": [
+    "test.EntityMixin",
     "base.MinecraftClientMixin",
     "click.MinecraftClientMixin",
     "command.ChatInputSuggestorMixin",

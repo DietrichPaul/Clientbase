@@ -14,7 +14,7 @@ public class KeyboardInputMixin extends Input {
 
     @Inject(method = "tick", at = @At(value = "FIELD", target = "Lnet/minecraft/client/input/KeyboardInput;sneaking:Z", shift = At.Shift.AFTER))
     public void onTick(boolean slowDown, float f, CallbackInfo ci) {
-        final StrafeInputListener.StrafeInputEvent strafeInputEvent = ClientBase.getInstance().getEventDispatcher().post(new StrafeInputListener.StrafeInputEvent((int) movementForward, (int) movementSideways, jumping, sneaking));
+        final StrafeInputListener.StrafeInputEvent strafeInputEvent = ClientBase.INSTANCE.getEventDispatcher().post(new StrafeInputListener.StrafeInputEvent((int) movementForward, (int) movementSideways, jumping, sneaking));
 
         movementForward = strafeInputEvent.moveForward;
         movementSideways = strafeInputEvent.moveSideways;

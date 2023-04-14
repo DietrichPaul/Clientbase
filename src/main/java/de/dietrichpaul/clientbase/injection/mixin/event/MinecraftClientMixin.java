@@ -13,6 +13,6 @@ public class MinecraftClientMixin {
 
     @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/GameRenderer;updateTargetedEntity(F)V", shift = At.Shift.BEFORE))
     public void onPreRaytrace(CallbackInfo ci) {
-        ClientBase.getInstance().getEventDispatcher().post(new PreTickRaytraceListener.PreTickRaytraceEvent());
+        ClientBase.INSTANCE.getEventDispatcher().post(new PreTickRaytraceListener.PreTickRaytraceEvent());
     }
 }

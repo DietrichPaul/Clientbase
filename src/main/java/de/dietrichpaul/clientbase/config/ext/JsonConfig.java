@@ -3,7 +3,7 @@ package de.dietrichpaul.clientbase.config.ext;
 import com.google.gson.JsonElement;
 import de.dietrichpaul.clientbase.config.AbstractConfig;
 import de.dietrichpaul.clientbase.config.ConfigType;
-import de.dietrichpaul.clientbase.util.io.IOUtil;
+import de.dietrichpaul.clientbase.util.jvm.IOUtil;
 
 public abstract class JsonConfig<T extends JsonElement> extends AbstractConfig {
 

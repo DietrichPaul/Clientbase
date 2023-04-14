@@ -14,12 +14,12 @@ public class MinecraftClientMixin {
 
     @Inject(method = "<init>", at = @At(value = "FIELD", target = "Lnet/minecraft/client/MinecraftClient;inGameHud:Lnet/minecraft/client/gui/hud/InGameHud;", shift = At.Shift.AFTER, ordinal = 0))
     public void onStart(RunArgs args, CallbackInfo ci) {
-        ClientBase.getInstance().start();
+        ClientBase.INSTANCE.init();
     }
 
     @Inject(method = "stop", at = @At("HEAD"))
     public void onStop(CallbackInfo ci) {
-        ClientBase.getInstance().stop();
+        ClientBase.INSTANCE.stop();
     }
 
     @Inject(method = "render", at = @At("HEAD"))

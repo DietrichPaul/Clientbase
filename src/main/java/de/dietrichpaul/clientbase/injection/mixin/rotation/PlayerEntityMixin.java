@@ -1,7 +1,7 @@
 package de.dietrichpaul.clientbase.injection.mixin.rotation;
 
 import de.dietrichpaul.clientbase.ClientBase;
-import de.dietrichpaul.clientbase.features.rotation.RotationEngine;
+import de.dietrichpaul.clientbase.feature.engine.rotation.RotationEngine;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -21,7 +21,7 @@ public abstract class PlayerEntityMixin extends LivingEntity {
     @Redirect(method = "tickNewAi", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;getYaw()F"))
     public float getYaw(PlayerEntity instance) {
         if (instance instanceof ClientPlayerEntity) {
-            RotationEngine engine = ClientBase.getInstance().getRotationEngine();
+            RotationEngine engine = ClientBase.INSTANCE.getRotationEngine();
             if (engine.isRotating())
                 return engine.getYaw();
         }

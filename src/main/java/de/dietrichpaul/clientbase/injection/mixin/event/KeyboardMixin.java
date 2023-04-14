@@ -13,6 +13,6 @@ public class KeyboardMixin {
 
     @Inject(method = "onKey", at = @At("HEAD"))
     public void onKey(long window, int key, int scancode, int action, int modifiers, CallbackInfo ci) {
-        ClientBase.getInstance().getEventDispatcher().post(new KeyListener.KeyEvent(key, scancode, action, modifiers));
+        ClientBase.INSTANCE.getEventDispatcher().post(new KeyListener.KeyEvent(key, scancode, action, modifiers));
     }
 }

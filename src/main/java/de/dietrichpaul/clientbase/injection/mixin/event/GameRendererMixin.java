@@ -14,12 +14,12 @@ public class GameRendererMixin {
 
     @Inject(method = "updateTargetedEntity", at = @At("HEAD"), cancellable = true)
     public void onUpdateTargetedEntity(float tickDelta, CallbackInfo ci) {
-        final RaytraceListener.RaytraceEvent raytraceEvent = ClientBase.getInstance().getEventDispatcher().post(new RaytraceListener.RaytraceEvent(tickDelta));
+        final RaytraceListener.RaytraceEvent raytraceEvent = ClientBase.INSTANCE.getEventDispatcher().post(new RaytraceListener.RaytraceEvent(tickDelta));
         if (raytraceEvent.isCancelled()) ci.cancel();
     }
 
     @Inject(method = "render", at = @At(value = "FIELD", target = "Lnet/minecraft/client/MinecraftClient;skipGameRender:Z", shift = At.Shift.BEFORE))
     public void onRender(float tickDelta, long startTime, boolean tick, CallbackInfo ci) {
-        ClientBase.getInstance().getEventDispatcher().post(new MoveCameraListener.MoveCameraEvent(tickDelta));
+        ClientBase.INSTANCE.getEventDispatcher().post(new MoveCameraListener.MoveCameraEvent(tickDelta));
     }
 }

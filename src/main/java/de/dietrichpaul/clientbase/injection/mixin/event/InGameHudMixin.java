@@ -14,6 +14,6 @@ public class InGameHudMixin {
 
     @Inject(method = "render", at = @At("TAIL"))
     public void onPostRender(MatrixStack matrices, float tickDelta, CallbackInfo ci) {
-        ClientBase.getInstance().getEventDispatcher().post(new Render2DListener.Render2DEvent(matrices, tickDelta));
+        ClientBase.INSTANCE.getEventDispatcher().post(new Render2DListener.Render2DEvent(matrices, tickDelta));
     }
 }

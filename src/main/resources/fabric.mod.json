@@ -20,7 +20,7 @@
   "environment": "*",
   "entrypoints": {
     "client": [
-      "de.dietrichpaul.clientbase.entrypoints.ClientBaseEntrypoint"
+      "de.dietrichpaul.clientbase.ClientBase"
     ]
   },
   "mixins": [

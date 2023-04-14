@@ -3,7 +3,7 @@ package de.dietrichpaul.clientbase.config.list;
 import com.google.gson.JsonObject;
 import de.dietrichpaul.clientbase.config.ConfigType;
 import de.dietrichpaul.clientbase.config.ext.json.JsonObjectConfig;
-import de.dietrichpaul.clientbase.features.hacks.Hack;
+import de.dietrichpaul.clientbase.feature.hack.Hack;
 
 public class HackConfig extends JsonObjectConfig {
 
@@ -13,7 +13,7 @@ public class HackConfig extends JsonObjectConfig {
 
     @Override
     protected void read(JsonObject element) {
-        for (Hack hack : cb.getHackMap().getHacks()) {
+        for (Hack hack : cb.getHackList().getHacks()) {
             if (element.has(hack.getName()))
                 hack.deserializeHack(element.getAsJsonObject(hack.getName()));
         }
@@ -21,7 +21,7 @@ public class HackConfig extends JsonObjectConfig {
 
     @Override
     protected void write(JsonObject element) {
-        for (Hack hack : cb.getHackMap().getHacks()) {
+        for (Hack hack : cb.getHackList().getHacks()) {
             element.add(hack.getName(), hack.serializeHack());
         }
     }

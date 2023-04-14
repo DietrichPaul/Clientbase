@@ -12,7 +12,7 @@ public class MinecraftClientMixin {
 
     @Inject(method = "handleInputEvents", at = @At("HEAD"))
     public void onHandleInputEvents(CallbackInfo ci) {
-        ClientBase.getInstance().getClickEngine().update();
+        ClientBase.INSTANCE.getClickEngine().update();
     }
 
 }

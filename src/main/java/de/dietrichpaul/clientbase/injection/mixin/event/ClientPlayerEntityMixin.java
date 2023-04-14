@@ -26,24 +26,24 @@ public abstract class ClientPlayerEntityMixin extends AbstractClientPlayerEntity
 
     @Redirect(method = "sendMovementPackets", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;getYaw()F"))
     public float onGetYaw(ClientPlayerEntity instance) {
-        SendRotationListener.SendRotationEvent sendRotationEvent = ClientBase.getInstance().getEventDispatcher().post(new SendRotationListener.SendRotationEvent(instance.getYaw(), SendRotationListener.Type.YAW));
+        SendRotationListener.SendRotationEvent sendRotationEvent = ClientBase.INSTANCE.getEventDispatcher().post(new SendRotationListener.SendRotationEvent(instance.getYaw(), SendRotationListener.Type.YAW));
         return sendRotationEvent.value;
     }
 
     @Redirect(method = "sendMovementPackets", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;getPitch()F"))
     public float onGetPitch(ClientPlayerEntity instance) {
-        SendRotationListener.SendRotationEvent sendRotationEvent = ClientBase.getInstance().getEventDispatcher().post(new SendRotationListener.SendRotationEvent(instance.getPitch(), SendRotationListener.Type.PITCH));
+        SendRotationListener.SendRotationEvent sendRotationEvent = ClientBase.INSTANCE.getEventDispatcher().post(new SendRotationListener.SendRotationEvent(instance.getPitch(), SendRotationListener.Type.PITCH));
         return sendRotationEvent.value;
     }
 
     @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/AbstractClientPlayerEntity;tick()V", shift = At.Shift.BEFORE))
     public void onUpdate(CallbackInfo ci) {
-        ClientBase.getInstance().getEventDispatcher().post(new UpdateListener.UpdateEvent());
+        ClientBase.INSTANCE.getEventDispatcher().post(new UpdateListener.UpdateEvent());
     }
 
     @Override
     protected void setRotation(float yaw, float pitch) {
         super.setRotation(yaw, pitch);
-        ClientBase.getInstance().getEventDispatcher().post(new RotationSetListener.RotationSetEvent(getYaw(), getPitch(), true, true));
+        ClientBase.INSTANCE.getEventDispatcher().post(new RotationSetListener.RotationSetEvent(getYaw(), getPitch(), true, true));
     }
 }

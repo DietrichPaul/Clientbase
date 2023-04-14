@@ -13,6 +13,6 @@ public class KeyBindingMixin {
 
     @Inject(method = "isPressed", at = @At("RETURN"), cancellable = true)
     public void onIsPressed(CallbackInfoReturnable<Boolean> cir) {
-        cir.setReturnValue(ClientBase.getInstance().getEventDispatcher().post(new KeyPressedStateListener.KeyPressedStateEvent((KeyBinding) (Object) this, cir.getReturnValueZ())).pressed);
+        cir.setReturnValue(ClientBase.INSTANCE.getEventDispatcher().post(new KeyPressedStateListener.KeyPressedStateEvent((KeyBinding) (Object) this, cir.getReturnValueZ())).pressed);
     }
 }

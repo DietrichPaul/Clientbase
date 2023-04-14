@@ -1,7 +1,7 @@
 package de.dietrichpaul.clientbase.injection.mixin.hack;
 
 import de.dietrichpaul.clientbase.ClientBase;
-import de.dietrichpaul.clientbase.features.hacks.world.XRayHack;
+import de.dietrichpaul.clientbase.feature.hack.world.XRayHack;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
@@ -17,7 +17,7 @@ public class BlockMixin {
 
     @Inject(method = "shouldDrawSide", at = @At("HEAD"), cancellable = true)
     private static void onDrawSide(BlockState state, BlockView world, BlockPos pos, Direction side, BlockPos otherPos, CallbackInfoReturnable<Boolean> cir) {
-        XRayHack xRay = ClientBase.getInstance().getHackMap().xRay;
+        XRayHack xRay = ClientBase.INSTANCE.getHackList().xRay;
         if (xRay.isToggled()) {
             cir.setReturnValue(xRay.isVisible(state));
         }

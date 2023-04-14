@@ -3,8 +3,7 @@ package de.dietrichpaul.clientbase.injection.mixin.event;
 import de.dietrichpaul.clientbase.ClientBase;
 import de.dietrichpaul.clientbase.event.JumpListener;
 import de.dietrichpaul.clientbase.event.rotate.RotationGetListener;
-import de.dietrichpaul.clientbase.features.rotation.RotationEngine;
-import de.dietrichpaul.clientbase.ClientBase;
+import de.dietrichpaul.clientbase.feature.engine.rotation.RotationEngine;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -30,7 +29,7 @@ public abstract class LivingEntityMixin extends Entity {
         if (!(instance instanceof ClientPlayerEntity)) {
             return instance.getYaw();
         }
-        return ClientBase.getInstance().getEventDispatcher().post(new RotationGetListener.RotationGetEvent(getYaw(), getPitch())).yaw;
+        return ClientBase.INSTANCE.getEventDispatcher().post(new RotationGetListener.RotationGetEvent(getYaw(), getPitch())).yaw;
     }
 
     @Redirect(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;getYaw()F", ordinal = 0))
@@ -38,7 +37,7 @@ public abstract class LivingEntityMixin extends Entity {
         if (!(instance instanceof ClientPlayerEntity)) {
             return instance.getYaw();
         }
-        return ClientBase.getInstance().getEventDispatcher().post(new RotationGetListener.RotationGetEvent(getYaw(), getPitch())).yaw;
+        return ClientBase.INSTANCE.getEventDispatcher().post(new RotationGetListener.RotationGetEvent(getYaw(), getPitch())).yaw;
     }
 
     @Redirect(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;getPitch()F", ordinal = 1))
@@ -46,7 +45,7 @@ public abstract class LivingEntityMixin extends Entity {
         if (!(instance instanceof ClientPlayerEntity)) {
             return instance.getPitch();
         }
-        return ClientBase.getInstance().getEventDispatcher().post(new RotationGetListener.RotationGetEvent(getYaw(), getPitch())).pitch;
+        return ClientBase.INSTANCE.getEventDispatcher().post(new RotationGetListener.RotationGetEvent(getYaw(), getPitch())).pitch;
     }
 
     @Redirect(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;getPitch()F", ordinal = 0))
@@ -54,13 +53,13 @@ public abstract class LivingEntityMixin extends Entity {
         if (!(instance instanceof ClientPlayerEntity)) {
             return instance.getPitch();
         }
-        return ClientBase.getInstance().getEventDispatcher().post(new RotationGetListener.RotationGetEvent(getYaw(), getPitch())).pitch;
+        return ClientBase.INSTANCE.getEventDispatcher().post(new RotationGetListener.RotationGetEvent(getYaw(), getPitch())).pitch;
     }
 
     @Redirect(method = "jump", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;getYaw()F"))
     public float getJumpYaw(LivingEntity instance) {
         if (instance instanceof ClientPlayerEntity) {
-            return ClientBase.getInstance().getEventDispatcher().post(new JumpListener.JumpEvent(instance.getYaw())).yaw;
+            return ClientBase.INSTANCE.getEventDispatcher().post(new JumpListener.JumpEvent(instance.getYaw())).yaw;
         }
         return instance.getYaw();
     }
@@ -68,7 +67,7 @@ public abstract class LivingEntityMixin extends Entity {
     @Redirect(method = "turnHead", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;getYaw()F"))
     public float getBodyYaw(LivingEntity instance) {
         if (instance instanceof ClientPlayerEntity) {
-            RotationEngine engine = ClientBase.getInstance().getRotationEngine();
+            RotationEngine engine = ClientBase.INSTANCE.getRotationEngine();
             if (engine.isRotating())
                 return engine.getYaw();
         }

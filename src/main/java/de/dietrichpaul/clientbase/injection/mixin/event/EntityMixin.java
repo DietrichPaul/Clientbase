@@ -13,7 +13,7 @@ public class EntityMixin {
 
     @Redirect(method = "updateVelocity", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;getYaw()F"))
     public float getStrafeYaw(Entity instance) {
-        if (instance instanceof ClientPlayerEntity) return ClientBase.getInstance().getEventDispatcher().post(new StrafeListener.StrafeEvent(instance.getYaw())).yaw;
+        if (instance instanceof ClientPlayerEntity) return ClientBase.INSTANCE.getEventDispatcher().post(new StrafeListener.StrafeEvent(instance.getYaw())).yaw;
 
         return instance.getYaw();
     }

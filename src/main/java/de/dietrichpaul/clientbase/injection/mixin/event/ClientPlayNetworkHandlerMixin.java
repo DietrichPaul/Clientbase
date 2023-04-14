@@ -14,6 +14,6 @@ public class ClientPlayNetworkHandlerMixin {
 
     @Inject(method = "onGameJoin", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;setYaw(F)V"))
     public void onFlipPlayer(GameJoinS2CPacket packet, CallbackInfo ci) {
-        ClientBase.getInstance().getEventDispatcher().post(new RotationSetListener.RotationSetEvent(-180, 0, true, false));
+        ClientBase.INSTANCE.getEventDispatcher().post(new RotationSetListener.RotationSetEvent(-180, 0, true, false));
     }
 }

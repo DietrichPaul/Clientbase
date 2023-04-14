@@ -7,7 +7,7 @@ import java.io.IOException;
 
 public abstract class AbstractConfig {
 
-    protected ClientBase cb = ClientBase.getInstance();
+    protected ClientBase cb = ClientBase.INSTANCE;
 
     private final String name;
     private final File file;

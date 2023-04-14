@@ -54,7 +54,7 @@ public class ClientBase implements ClientModInitializer {
     public final static String VERSION = METADATA.getVersion().getFriendlyString();
     public final static String AUTHORS = METADATA.getAuthors().stream().map(Person::getName).collect(Collectors.joining(", "));
 
-    public final static ClientBase INSTANCE = new ClientBase();
+    public static ClientBase INSTANCE;
 
     private final EventDispatcher eventDispatcher = EventDispatcher.create(key -> new Object2ObjectArrayMap<>());
     private final File directory = new File(MinecraftClient.getInstance().runDirectory, NAME);
@@ -72,6 +72,8 @@ public class ClientBase implements ClientModInitializer {
     // Pre Init - Before Minecraft
     @Override
     public void onInitializeClient() {
+        INSTANCE = this;
+
         this.directory.mkdir();
         Renderer2D.loadShaders();
 

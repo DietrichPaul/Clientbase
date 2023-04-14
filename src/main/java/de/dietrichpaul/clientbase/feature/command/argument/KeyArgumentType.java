@@ -16,11 +16,7 @@ import java.util.Locale;
 import java.util.concurrent.CompletableFuture;
 
 public class KeyArgumentType implements ArgumentType<InputUtil.Key> {
-
     private final DynamicCommandExceptionType UNKNOWN_KEY = new DynamicCommandExceptionType(k -> Text.literal("Unknown key: " + k));
-
-    private KeyArgumentType() {
-    }
 
     public static KeyArgumentType key() {
         return new KeyArgumentType();

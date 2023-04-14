@@ -17,12 +17,8 @@ import java.util.Locale;
 import java.util.concurrent.CompletableFuture;
 
 public class KeyBindingArgumentType implements ArgumentType<InputUtil.Key> {
-
     private final DynamicCommandExceptionType UNKNOWN_KEY = new DynamicCommandExceptionType(k -> Text.literal("Unknown key: " + k));
     private final DynamicCommandExceptionType UNBOUND_KEY = new DynamicCommandExceptionType(k -> Text.literal("Unbound key: " + k));
-
-    private KeyBindingArgumentType() {
-    }
 
     public static KeyBindingArgumentType boundKey() {
         return new KeyBindingArgumentType();

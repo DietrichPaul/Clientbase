@@ -14,10 +14,8 @@ public class ClickGuiHack extends Hack {
 
     @Override
     protected void onEnable() {
-        RenderSystem.recordRenderCall(() -> {
-            mc.setScreen(new ClickGuiScreen());
-        });
+        RenderSystem.recordRenderCall(() -> mc.setScreen(new ClickGuiScreen()));
+
         setToggled(false);
     }
-
 }

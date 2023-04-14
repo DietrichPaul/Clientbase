@@ -21,7 +21,6 @@ import java.util.Set;
 import java.util.TreeSet;
 
 public class CommandList {
-
     public final static char COMMAND_PREFIX = '#';
 
     private final CommandDispatcher<CommandSource> dispatcher = new CommandDispatcher<>();

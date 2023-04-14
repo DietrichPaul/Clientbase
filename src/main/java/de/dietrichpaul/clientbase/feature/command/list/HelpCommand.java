@@ -13,7 +13,6 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.math.MathHelper;
 
 public class HelpCommand extends Command {
-
     private final static int commandsPerPage = 5;
 
     public HelpCommand() {

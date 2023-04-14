@@ -14,12 +14,9 @@ import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
 
 public class EnumArgumentType<T extends Enum<T>> implements ArgumentType<T> {
+    private final static DynamicCommandExceptionType UNKNOWN_FIELD = new DynamicCommandExceptionType(name -> Text.literal("Unknown enum field " + name + "."));
 
-
-    private final static DynamicCommandExceptionType UNKNOWN_FIELD
-            = new DynamicCommandExceptionType(name -> Text.literal("Unknown enum field " + name + "."));
-
-    private T[] values;
+    private final T[] values;
 
     private EnumArgumentType(T[] values) {
         this.values = values;

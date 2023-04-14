@@ -9,11 +9,9 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.command.CommandSource;
 
 public abstract class Command implements Comparable<Command> {
-
-    private String name;
+    private final String name;
 
     protected MinecraftClient mc = MinecraftClient.getInstance();
-
 
     public Command(String name) {
         this.name = name;
@@ -21,10 +19,6 @@ public abstract class Command implements Comparable<Command> {
 
     public abstract void buildCommand(LiteralArgumentBuilder<CommandSource> root);
 
-    /*
-    wenn ich nicht faul wäre, machte ich einen LiteralArgumentBuilder,
-    der in der execute methode keinen rückgabewert braucht >:(
-    */
     protected static LiteralArgumentBuilder<CommandSource> literal(String name) {
         return LiteralArgumentBuilder.literal(name);
     }

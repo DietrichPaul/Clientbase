@@ -14,11 +14,10 @@ public class ToggleCommand extends Command {
 
     @Override
     public void buildCommand(LiteralArgumentBuilder<CommandSource> root) {
-        root.then(argument("hack", HackArgumentType.hack())
-                .executes(ctx -> {
+        root.then(argument("hack", HackArgumentType.hack()).executes(ctx -> {
                     Hack hack = HackArgumentType.getHack(ctx, "hack");
                     hack.toggle();
                     return 1;
-                }));
+        }));
     }
 }

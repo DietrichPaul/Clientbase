@@ -22,7 +22,7 @@ public class FriendCommand extends Command {
         super("friend");
     }
 
-    private int list(CommandContext<CommandSource> ctx, int page) {
+    private int list(int page) {
         String[] friends = ClientBase.INSTANCE.getFriendList().getFriends().toArray(new String[0]);
         if (friends.length == 0) {
             ChatUtil.sendChatMessage(Text.literal("You don't have any friends.").formatted(Formatting.RED));
@@ -63,11 +63,11 @@ public class FriendCommand extends Command {
     @Override
     public void buildCommand(LiteralArgumentBuilder<CommandSource> root) {
         root
-                .executes(ctx -> list(ctx, 1))
+                .executes(ctx -> list(1))
                 .then(literal("list")
-                        .executes(ctx -> list(ctx, 1))
+                        .executes(ctx -> list(1))
                         .then(argument("page", IntegerArgumentType.integer())
-                                .executes(ctx -> list(ctx, IntegerArgumentType.getInteger(ctx, "page")))))
+                                .executes(ctx -> list(IntegerArgumentType.getInteger(ctx, "page")))))
                 .then(literal("add")
                         .then(argument("name", StringArgumentType.word())
                                 .suggests(new PlayerSuggestor())

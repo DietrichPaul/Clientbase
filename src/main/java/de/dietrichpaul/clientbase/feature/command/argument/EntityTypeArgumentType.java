@@ -19,10 +19,9 @@ import java.util.concurrent.CompletableFuture;
 import java.util.function.Predicate;
 
 public class EntityTypeArgumentType implements ArgumentType<EntityType<?>> {
-
     public final static Dynamic2CommandExceptionType NOT_FOUND_EXCEPTION = new Dynamic2CommandExceptionType((element, type) -> Text.translatable("argument.resource.not_found", element, type));
 
-    private Predicate<EntityType<?>> filter;
+    private final Predicate<EntityType<?>> filter;
 
     private EntityTypeArgumentType(Predicate<EntityType<?>> filter) {
         this.filter = filter;

@@ -24,5 +24,4 @@ public class XRayHack extends Hack {
     public boolean isVisible(BlockState block) {
         return block.getBlock() == Blocks.DIAMOND_ORE;
     }
-
 }

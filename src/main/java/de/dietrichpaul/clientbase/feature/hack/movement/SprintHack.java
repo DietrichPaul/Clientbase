@@ -7,7 +7,6 @@ import de.dietrichpaul.clientbase.property.impl.BooleanProperty;
 import de.dietrichpaul.clientbase.ClientBase;
 
 public class SprintHack extends Hack implements KeyPressedStateListener {
-
     private final BooleanProperty allDirection = new BooleanProperty("AllDirection", false);
 
     public SprintHack() {

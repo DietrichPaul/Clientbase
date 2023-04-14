@@ -15,12 +15,7 @@ import net.minecraft.text.Text;
 import java.util.concurrent.CompletableFuture;
 
 public class HackArgumentType implements ArgumentType<Hack> {
-
-    private final static DynamicCommandExceptionType HACK_DOES_NOT_EXIST =
-            new DynamicCommandExceptionType(name -> Text.of("The hack " + name + " does not exist."));
-
-    private HackArgumentType() {
-    }
+    private final static DynamicCommandExceptionType HACK_DOES_NOT_EXIST = new DynamicCommandExceptionType(name -> Text.of("The hack " + name + " does not exist."));
 
     public static HackArgumentType hack() {
         return new HackArgumentType();

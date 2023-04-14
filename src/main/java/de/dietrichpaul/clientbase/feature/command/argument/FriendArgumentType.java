@@ -14,12 +14,7 @@ import net.minecraft.text.Text;
 import java.util.concurrent.CompletableFuture;
 
 public class FriendArgumentType implements ArgumentType<String> {
-
-    private final static DynamicCommandExceptionType NOT_FRIENDS
-            = new DynamicCommandExceptionType(name -> Text.literal("You are not friends with " + name + "."));
-
-    private FriendArgumentType() {
-    }
+    private final static DynamicCommandExceptionType NOT_FRIENDS = new DynamicCommandExceptionType(name -> Text.literal("You are not friends with " + name + "."));
 
     public static FriendArgumentType friend() {
         return new FriendArgumentType();
@@ -39,8 +34,6 @@ public class FriendArgumentType implements ArgumentType<String> {
 
     @Override
     public <S> CompletableFuture<Suggestions> listSuggestions(CommandContext<S> context, SuggestionsBuilder builder) {
-        return new Suggestor(builder)
-                .addAll(ClientBase.INSTANCE.getFriendList().getFriends())
-                .buildFuture();
+        return new Suggestor(builder).addAll(ClientBase.INSTANCE.getFriendList().getFriends()).buildFuture();
     }
 }

@@ -31,11 +31,12 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class RotationEngine implements SendRotationListener, RaytraceListener, StrafeListener, RotationGetListener, RotationSetListener, JumpListener, StrafeInputListener, MoveCameraListener, PreTickRaytraceListener {
 
-    private Set<RotationSpoof> spoofs = new HashSet<>();
+    private final Set<RotationSpoof> spoofs = new HashSet<>();
 
-    private float[] prevRotations = new float[2];
-    private float[] reportedRotations = new float[2];
-    private float[] rotations = new float[2];
+    private final float[] prevRotations = new float[2];
+    private final float[] reportedRotations = new float[2];
+    private final float[] rotations = new float[2];
+
     private boolean rotating;
     private boolean hasTarget;
     private boolean confirmedClientRotation = true;

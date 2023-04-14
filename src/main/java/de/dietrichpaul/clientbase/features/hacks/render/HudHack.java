@@ -26,18 +26,8 @@ public class HudHack extends Hack implements Render2DListener {
     }
 
     private void renderActiveHacks(MatrixStack matrices) {
-        RenderSystem.setShaderTexture(0, new Identifier("clientbase", "amongus.png"));
-        matrices.push();
-        float time = (float) GLFW.glfwGetTime() * 1;
-        float xa = (MathHelper.cos(time / 8)) * 6 * mc.getWindow().getScaledWidth();
-        float ya = (MathHelper.sin(time) + 1) * 0.5F * mc.getWindow().getScaledHeight();
-        matrices.translate(xa + 150 / 2F, ya + 150 / 2F, 0);
-        matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(700 * (float) GLFW.glfwGetTime()));
-        matrices.translate(-(xa + 150 / 2F), -(ya + 150 / 2F), 0);
-        Renderer2D.drawTexture(matrices, xa, ya, 150, 150 * 1.2165F);
-        matrices.pop();
-        //FontAtlas logo = ClientBase.getInstance().getAmongUs();
-        //logo.renderWithShadow(matrices, "Ashura)", 4 / 2F, 4 / 2F, 32, 0xff8000b0);
+        FontAtlas logo = ClientBase.getInstance().getVerdana();
+        logo.renderWithShadow(matrices, ClientBase.NAME, 4 / 2F, 4 / 2F, 18, -1);
 
         FontAtlas font = ClientBase.getInstance().getVerdana();
 

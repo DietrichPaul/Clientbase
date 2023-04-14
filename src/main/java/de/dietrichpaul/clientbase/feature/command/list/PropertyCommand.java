@@ -1,6 +1,7 @@
 package de.dietrichpaul.clientbase.feature.command.list;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import de.dietrichpaul.clientbase.ClientBase;
 import de.dietrichpaul.clientbase.feature.command.Command;
 import de.dietrichpaul.clientbase.feature.hack.Hack;
 import de.dietrichpaul.clientbase.property.Property;
@@ -34,8 +35,8 @@ public class PropertyCommand extends Command {
     }
 
     @Override
-    public void buildCommand(LiteralArgumentBuilder<CommandSource> root) { // TODO
-        for (Hack hack : cb.getHackList().getHacks()) {
+    public void buildCommand(LiteralArgumentBuilder<CommandSource> root) {
+        for (Hack hack : ClientBase.INSTANCE.getHackList().getHacks()) {
             buildGroup(hack, root, hack.getName());
         }
     }

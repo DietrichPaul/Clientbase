@@ -5,10 +5,8 @@ import de.dietrichpaul.clientbase.ClientBase;
 import java.io.File;
 import java.io.IOException;
 
+@SuppressWarnings("ResultOfMethodCallIgnored")
 public abstract class AbstractConfig {
-
-    protected ClientBase cb = ClientBase.INSTANCE;
-
     private final String name;
     private final File file;
     private boolean loaded;
@@ -17,7 +15,7 @@ public abstract class AbstractConfig {
     public AbstractConfig(String name, ConfigType type) {
         this.name = name;
         this.type = type;
-        this.file = new File(cb.getDirectory(), this.name);
+        this.file = new File(ClientBase.INSTANCE.getDirectory(), this.name);
     }
 
     public ConfigType getType() {

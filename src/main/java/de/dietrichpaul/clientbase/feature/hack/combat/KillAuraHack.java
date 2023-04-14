@@ -1,5 +1,6 @@
 package de.dietrichpaul.clientbase.feature.hack.combat;
 
+import de.dietrichpaul.clientbase.ClientBase;
 import de.dietrichpaul.clientbase.event.UpdateListener;
 import de.dietrichpaul.clientbase.feature.engine.clicking.ClickCallback;
 import de.dietrichpaul.clientbase.feature.engine.clicking.ClickSpoof;
@@ -30,18 +31,18 @@ public class KillAuraHack extends Hack implements UpdateListener, ClickSpoof {
         addProperty(smartClickingProperty);
 
         aimbot = new AimbotRotationSpoof(this, addPropertyGroup("Rotations"));
-        cb.getRotationEngine().add(aimbot);
-        cb.getClickEngine().add(this);
+        ClientBase.INSTANCE.getRotationEngine().add(aimbot);
+        ClientBase.INSTANCE.getClickEngine().add(this);
     }
 
     @Override
     protected void onEnable() {
-        cb.getEventDispatcher().subscribe(UpdateListener.class, this);
+        ClientBase.INSTANCE.getEventDispatcher().subscribe(UpdateListener.class, this);
     }
 
     @Override
     protected void onDisable() {
-        cb.getEventDispatcher().unsubscribe(UpdateListener.class, this);
+        ClientBase.INSTANCE.getEventDispatcher().unsubscribe(UpdateListener.class, this);
     }
 
     @Override
@@ -74,12 +75,11 @@ public class KillAuraHack extends Hack implements UpdateListener, ClickSpoof {
     }
 
     enum SmartClickingMode {
-
         NONE("None", bot -> true),
         DELAY("Delay", bot -> mc.player.getAttackCooldownProgress(0) >= 1);
 
-        private String name;
-        private Predicate<AimbotRotationSpoof> click;
+        private final String name;
+        private final Predicate<AimbotRotationSpoof> click;
 
         SmartClickingMode(String name, Predicate<AimbotRotationSpoof> click) {
             this.name = name;

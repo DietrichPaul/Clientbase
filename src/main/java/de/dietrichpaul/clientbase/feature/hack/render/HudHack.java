@@ -26,9 +26,8 @@ public class HudHack extends Hack implements Render2DListener {
         FontAtlas font = ClientBase.INSTANCE.getFontList().getVerdana();
 
         List<Hack> hacks = new LinkedList<>();
-        for (Hack hack : cb.getHackList().getHacks()) {
-            if (hack.isToggled())
-                hacks.add(hack);
+        for (Hack hack : ClientBase.INSTANCE.getHackList().getHacks()) {
+            if (hack.isToggled()) hacks.add(hack);
         }
         hacks.sort(Comparator.comparingDouble(h -> -font.getWidth(h.getName())));
 

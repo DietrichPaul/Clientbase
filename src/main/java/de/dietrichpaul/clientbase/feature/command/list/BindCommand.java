@@ -3,6 +3,7 @@ package de.dietrichpaul.clientbase.feature.command.list;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
+import de.dietrichpaul.clientbase.ClientBase;
 import de.dietrichpaul.clientbase.feature.command.Command;
 import de.dietrichpaul.clientbase.feature.command.argument.KeyArgumentType;
 import de.dietrichpaul.clientbase.feature.command.argument.KeyBindingArgumentType;
@@ -21,7 +22,6 @@ public class BindCommand extends Command {
 
     @Override
     public void buildCommand(LiteralArgumentBuilder<CommandSource> root) {
-        // was ist mit list?!
         root.then(
                 literal("add").then(
                         argument("key", KeyArgumentType.key())
@@ -38,14 +38,14 @@ public class BindCommand extends Command {
 
     private int remove(CommandContext<CommandSource> ctx) {
         InputUtil.Key key = KeyArgumentType.getKey(ctx, "key");
-        cb.getKeybindingList().unbind(key);
+        ClientBase.INSTANCE.getKeybindingList().unbind(key);
         ChatUtil.sendChatMessage(Text.literal("Unbound everything from: " + I18n.translate(key.getTranslationKey())));
         return 1;
     }
     private int add(CommandContext<CommandSource> ctx) {
         InputUtil.Key key = KeyArgumentType.getKey(ctx, "key");
         String message = StringArgumentType.getString(ctx, "message");
-        cb.getKeybindingList().bind(key, message);
+        ClientBase.INSTANCE.getKeybindingList().bind(key, message);
         ChatUtil.sendChatMessage(Text.literal("Bound: " + I18n.translate(key.getTranslationKey()) + " -> " + message));
         return 1;
     }

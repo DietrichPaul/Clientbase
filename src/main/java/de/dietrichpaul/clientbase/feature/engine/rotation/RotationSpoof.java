@@ -15,7 +15,6 @@ public abstract class RotationSpoof {
     public final static RotationEngine engine = ClientBase.INSTANCE.getRotationEngine();
 
     protected MinecraftClient mc = MinecraftClient.getInstance();
-    protected ClientBase cb = ClientBase.INSTANCE;
 
     private final FloatProperty minYawSpeed = new FloatProperty("Min Yaw Speed", 20, 1, 180);
     private final FloatProperty maxYawSpeed = new FloatProperty("Max Yaw Speed", 30, 1, 180);

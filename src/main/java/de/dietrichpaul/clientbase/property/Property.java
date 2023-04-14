@@ -10,10 +10,8 @@ import net.minecraft.command.CommandSource;
 
 public abstract class Property {
 
-    private String name;
+    private final String name;
     PropertyGroup parent;
-
-    protected ClientBase cb = ClientBase.INSTANCE;
 
     public Property(String name) {
         this.name = name;

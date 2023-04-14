@@ -4,7 +4,7 @@ public enum HackCategory {
 
     COMBAT("Combat"), MOVEMENT("Movement"), RENDER("Render"), WORLD("World");
 
-    private String name;
+    private final String name;
 
     HackCategory(String name) {
         this.name = name;

@@ -4,8 +4,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 public class FriendList {
-
-    private Set<String> friends = new TreeSet<>();
+    private final Set<String> friends = new TreeSet<>();
 
     public void add(String name) {
         friends.add(name);

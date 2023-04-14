@@ -3,8 +3,8 @@ package de.dietrichpaul.clientbase.feature;
 import de.dietrichpaul.clientbase.ClientBase;
 import de.dietrichpaul.clientbase.event.KeyListener;
 import de.dietrichpaul.clientbase.feature.hack.Hack;
+import de.dietrichpaul.clientbase.util.minecraft.ChatUtil;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.ChatScreen;
 import net.minecraft.client.util.InputUtil;
 import org.lwjgl.glfw.GLFW;
 
@@ -17,7 +17,6 @@ import java.util.Map;
 TODO Mouse bindings
  */
 public class KeybindingList implements KeyListener {
-
     private final Map<InputUtil.Key, List<String>> bindings = new LinkedHashMap<>();
 
     public KeybindingList() {
@@ -33,8 +32,6 @@ public class KeybindingList implements KeyListener {
         if (action != GLFW.GLFW_PRESS || MinecraftClient.getInstance().currentScreen != null) {
             return;
         }
-        ChatScreen chat = new ChatScreen("");
-        chat.init(MinecraftClient.getInstance(), 0, 0);
         List<String> messages = getBindings(InputUtil.fromKeyCode(key, scan));
         if (messages != null) {
             for (String message : messages) {
@@ -44,7 +41,7 @@ public class KeybindingList implements KeyListener {
                     continue;
                 }
 
-                chat.sendMessage(message, false); // dafür brauche ich eine util
+                ChatUtil.sendChatMessageToServer(message);
             }
         }
     }

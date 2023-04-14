@@ -7,13 +7,13 @@ import net.minecraft.client.MinecraftClient;
 
 public class Hack extends PropertyGroup {
 
-    private String name;
-    private HackCategory category;
+    private final String name;
+    private final HackCategory category;
+
     private boolean toggled;
     private boolean saveState = true;
 
     protected static MinecraftClient mc = MinecraftClient.getInstance();
-    protected ClientBase cb = ClientBase.INSTANCE;
 
     public Hack(String name, HackCategory category) {
         this.name = name;
@@ -26,14 +26,11 @@ public class Hack extends PropertyGroup {
 
     @Override
     public void reportChanges() {
-        cb.getConfigList().hack.save();
+        ClientBase.INSTANCE.getConfigList().hack.save();
     }
 
-    protected void onEnable() {
-    }
-
-    protected void onDisable() {
-    }
+    protected void onEnable() {}
+    protected void onDisable() {}
 
     public String getName() {
         return name;

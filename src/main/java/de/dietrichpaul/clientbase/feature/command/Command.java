@@ -13,7 +13,6 @@ public abstract class Command implements Comparable<Command> {
     private String name;
 
     protected MinecraftClient mc = MinecraftClient.getInstance();
-    protected ClientBase cb = ClientBase.INSTANCE;
 
 
     public Command(String name) {

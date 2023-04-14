@@ -4,6 +4,7 @@ import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
+import de.dietrichpaul.clientbase.ClientBase;
 import de.dietrichpaul.clientbase.feature.command.Command;
 import de.dietrichpaul.clientbase.feature.command.argument.FriendArgumentType;
 import de.dietrichpaul.clientbase.feature.command.suggestor.PlayerSuggestor;
@@ -22,7 +23,7 @@ public class FriendCommand extends Command {
     }
 
     private int list(CommandContext<CommandSource> ctx, int page) {
-        String[] friends = cb.getFriendList().getFriends().toArray(new String[0]);
+        String[] friends = ClientBase.INSTANCE.getFriendList().getFriends().toArray(new String[0]);
         if (friends.length == 0) {
             ChatUtil.sendChatMessage(Text.literal("You don't have any friends.").formatted(Formatting.RED));
             return 1;
@@ -47,14 +48,14 @@ public class FriendCommand extends Command {
 
     private int add(CommandContext<CommandSource> ctx) {
         String friend = StringArgumentType.getString(ctx, "name");
-        cb.getFriendList().add(friend);
+        ClientBase.INSTANCE.getFriendList().add(friend);
         ChatUtil.sendChatMessage(Text.of("You have made a friendship with " + friend + "."));
         return 1;
     }
 
     private int remove(CommandContext<CommandSource> ctx) {
         String friend = FriendArgumentType.getFriend(ctx, "name");
-        cb.getFriendList().remove(friend);
+        ClientBase.INSTANCE.getFriendList().remove(friend);
         ChatUtil.sendChatMessage(Text.of("You have ended the friendship with " + friend + "."));
         return 1;
     }

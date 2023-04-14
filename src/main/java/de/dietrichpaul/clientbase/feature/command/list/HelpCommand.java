@@ -4,6 +4,7 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
+import de.dietrichpaul.clientbase.ClientBase;
 import de.dietrichpaul.clientbase.feature.command.Command;
 import de.dietrichpaul.clientbase.util.minecraft.ChatUtil;
 import net.minecraft.command.CommandSource;
@@ -20,7 +21,7 @@ public class HelpCommand extends Command {
     }
 
     private int list(CommandContext<CommandSource> ctx, int page) {
-        CommandDispatcher<CommandSource> dispatcher = cb.getCommandList().getDispatcher();
+        CommandDispatcher<CommandSource> dispatcher = ClientBase.INSTANCE.getCommandList().getDispatcher();
         String[] commands = dispatcher.getSmartUsage(dispatcher.getRoot(), ctx.getSource()).values().toArray(new String[0]);
         int pages = MathHelper.ceil(commands.length / (double) commandsPerPage);
 

@@ -12,7 +12,6 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class HackList {
-
     private final Map<String, Hack> hacks = new TreeMap<>();
 
     // combat
@@ -29,7 +28,7 @@ public class HackList {
     // world
     public XRayHack xRay = new XRayHack();
 
-    public void registerBuiltInHacks() {
+    public void registerBuiltIn() {
         // combat
         register(killAura);
 

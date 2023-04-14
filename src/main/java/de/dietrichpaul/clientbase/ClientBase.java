@@ -21,6 +21,21 @@ import java.io.File;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("ResultOfMethodCallIgnored")
+/*
+ * Clientbase by DietrichPaul
+ * <p>
+ * TODO | General
+ *  - BindCommand -> list
+ *  - PropertyCommand
+ *  - Rewrite some chat messages using Components
+ *
+ * TODO | GUI
+ *  - Parent übergeben
+ *  - Erben von Textgröße des Parent Components
+ *  - Designbase
+ *  - Nachkommastellen im Slider bearbeiten
+ *  - Int Support im Slider
+ */
 public class ClientBase implements ClientModInitializer {
     public final static ModMetadata METADATA = FabricLoader.getInstance().getModContainer("clientbase").orElseThrow().getMetadata();
 
@@ -62,7 +77,7 @@ public class ClientBase implements ClientModInitializer {
 
     // Post Init - After Minecraft
     public void init() {
-        this.hackList.registerBuiltInHacks();
+        this.hackList.registerBuiltIn();
         this.commandList.registerBuiltInCommands();
         this.configList.start();
     }

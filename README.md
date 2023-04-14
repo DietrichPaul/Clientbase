@@ -1,4 +1,5 @@
-# Fabric Example Mod
+# Clientbase
+This mod is godlike in combat.
 
 ## Setup
 

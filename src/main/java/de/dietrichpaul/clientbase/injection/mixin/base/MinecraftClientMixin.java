@@ -1,6 +1,7 @@
 package de.dietrichpaul.clientbase.injection.mixin.base;
 
 import de.dietrichpaul.clientbase.ClientBase;
+import de.dietrichpaul.clientbase.util.render.OpenGL;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.RunArgs;
 import org.spongepowered.asm.mixin.Mixin;
@@ -23,7 +24,6 @@ public class MinecraftClientMixin {
 
     @Inject(method = "render", at = @At("HEAD"))
     public void onRender(boolean tick, CallbackInfo ci) {
-        ClientBase.getInstance().drawFrame();
+        OpenGL.drawFrame();
     }
-
 }

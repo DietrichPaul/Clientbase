@@ -2,10 +2,8 @@ package de.dietrichpaul.clientbase.features.gui.api;
 
 import de.dietrichpaul.clientbase.ClientBase;
 import de.dietrichpaul.clientbase.features.gui.api.font.FontAtlas;
-import de.dietrichpaul.clientbase.util.render.Renderer2D;
+import de.dietrichpaul.clientbase.util.render.api.Renderer2D;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gui.ParentElement;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.math.MatrixStack;
 

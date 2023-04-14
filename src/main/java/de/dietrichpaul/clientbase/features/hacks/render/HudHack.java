@@ -6,9 +6,7 @@ import de.dietrichpaul.clientbase.features.gui.api.font.FontAtlas;
 import de.dietrichpaul.clientbase.features.hacks.Hack;
 import de.dietrichpaul.clientbase.features.hacks.HackCategory;
 import de.dietrichpaul.clientbase.util.render.ColorUtil;
-import de.dietrichpaul.clientbase.util.render.Renderer2D;
-import de.dietrichpaul.clientbase.ClientBase;
-import net.minecraft.client.gui.DrawableHelper;
+import de.dietrichpaul.clientbase.util.render.api.Renderer2D;
 import net.minecraft.client.util.math.MatrixStack;
 
 import java.util.Comparator;

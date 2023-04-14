@@ -4,6 +4,9 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
 import com.mojang.brigadier.arguments.FloatArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import de.dietrichpaul.clientbase.features.gui.api.Component;
+import de.dietrichpaul.clientbase.features.gui.api.Label;
+import de.dietrichpaul.clientbase.features.gui.api.Slider;
 import de.dietrichpaul.clientbase.properties.Property;
 import net.minecraft.command.CommandSource;
 import net.minecraft.text.Text;
@@ -34,7 +37,8 @@ public class FloatProperty extends Property {
     }
 
     public void setValue(float value) {
-        this.value = MathHelper.clamp(value, min, max);
+        this.value = MathHelper.clamp((Math.round(value * 10)) / 10F, min, max);
+        reportChanges();
     }
 
     public float getValue() {
@@ -47,6 +51,11 @@ public class FloatProperty extends Property {
 
     public float getMax() {
         return max;
+    }
+
+    @Override
+    public Component getClickGuiComponent() {
+        return new Slider(new Label(Text.of(getName())), this::getValue, this::getMin, this::getMax, this::setValue);
     }
 
     @Override

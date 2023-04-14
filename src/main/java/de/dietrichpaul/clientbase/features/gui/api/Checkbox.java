@@ -15,14 +15,15 @@ public class Checkbox extends BoxPanel {
 
     public Checkbox(Supplier<Text> textSupplier) {
         setAxis(Axis.X);
+        setOrientation(0.5F);
         setGap(4);
-        setMarginX(3);
-        setMarginY(3);
+        setMargin(0, 0);
         setBackground(0);
 
         box = new RawBox();
 
         label = new Label(textSupplier);
+        label.setSize(7);
         label.setTextColor(-1);
 
         addComponent(box);
@@ -48,7 +49,7 @@ public class Checkbox extends BoxPanel {
         private Image icon;
 
         public RawBox() {
-            icon = new Image(new Identifier("clientbase", "gui/check-button.png"), new Dimension(8, 8));
+            icon = new Image(new Identifier("clientbase", "gui/check-button.png"), new Dimension(6, 6));
             icon.setDropShadow(true);
         }
 

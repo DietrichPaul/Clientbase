@@ -13,7 +13,25 @@ public class BorderPanel extends ParentComponent {
 
     private final Component[] components = new Component[Area.values().length];
 
+    private boolean inverse;
+
+    public void setInverse(boolean inverse) {
+        this.inverse = inverse;
+    }
+
+    public boolean isInverse() {
+        return inverse;
+    }
+
     public Component getComponent(Area area) {
+        if (area == Area.PAGE_START && inverse)
+            area = Area.PAGE_END;
+        else if (area == Area.PAGE_END && inverse)
+            area = Area.PAGE_START;
+        if (area == Area.LINE_START && inverse)
+            area = Area.LINE_END;
+        else if (area == Area.LINE_END && inverse)
+            area = Area.LINE_START;
         return components[area.ordinal()];
     }
 

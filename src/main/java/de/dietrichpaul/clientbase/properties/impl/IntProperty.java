@@ -36,6 +36,7 @@ public class IntProperty extends Property {
 
     public void setValue(int value) {
         this.value = MathHelper.clamp(value, min, max);
+        reportChanges();
     }
 
     public int getValue() {

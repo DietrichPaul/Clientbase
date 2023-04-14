@@ -13,7 +13,7 @@ public class Label extends Component {
 
     private Supplier<Text> textSupplier;
 
-    private float size = 8;
+    private float size = 9;
 
     private int textColor = 0xff000000;
     private boolean dropShadow = false;

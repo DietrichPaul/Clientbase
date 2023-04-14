@@ -5,8 +5,8 @@ import de.dietrichpaul.clientbase.features.gui.api.Dimension;
 import de.dietrichpaul.clientbase.features.gui.api.ParentComponent;
 import net.minecraft.client.util.math.MatrixStack;
 
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DynamicGridLayout extends ParentComponent {
 
@@ -27,7 +27,40 @@ public class DynamicGridLayout extends ParentComponent {
 
     @Override
     protected Dimension getComponentMinimalSize() {
-        return null;
+        Dimension[][] sizes = new Dimension[components.length][components[0].length];
+
+        // x und breite berechnen
+        float compX = 0;
+        for (int spalte = 0; spalte < components.length; spalte++) {
+            Component[] inhaltSpalte = components[spalte];
+            float maxWidth = 0;
+            for (int zeile = 0; zeile < inhaltSpalte.length; zeile++) {
+                Component component = inhaltSpalte[zeile];
+                if (component == null)
+                    continue;
+                sizes[spalte][zeile] = component.getMinimalSize();
+                maxWidth = Math.max(maxWidth, sizes[spalte][zeile].getWidth());
+            }
+            compX += maxWidth;
+            if (spalte != components.length - 1)
+                compX += gap;
+        }
+
+        float compY = 0;
+        // y und höhe berechnen
+        for (int zeile = 0; zeile < components[0].length; zeile++) {
+            float maxHeight = 0;
+            for (int spalte = 0; spalte < components.length; spalte++) {
+                Component component = components[spalte][zeile];
+                if (component == null)
+                    continue;
+                maxHeight = Math.max(maxHeight, sizes[spalte][zeile].getHeight());
+            }
+            compY += maxHeight;
+            if (zeile != components[0].length - 1)
+                compY += gap;
+        }
+        return new Dimension(compX, compY);
     }
 
     @Override
@@ -93,6 +126,10 @@ public class DynamicGridLayout extends ParentComponent {
 
     @Override
     public Iterable<Component> children() {
-        return Collections.emptyList();
+        List<Component> componentList = new ArrayList<>();
+        for (Component[] spalte : components)
+            for (Component component : spalte)
+                if (component != null) componentList.add(component);
+        return componentList;
     }
 }

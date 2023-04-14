@@ -25,7 +25,7 @@ import java.util.Optional;
 // https://github.com/Chlumsky/msdf-atlas-gen
 //
 // for linux use wine-package + win32 binary
-// wine msdf-atlas-gen.exe -type msdf -font Verdana.ttf -charset charset.txt -imageout verdana.png -size 128 -pxrange 8 -json verdana.json
+// wine msdf-atlas-gen.exe -type msdf -font verdana.ttf -charset charset.txt -imageout verdana.png -size 256 -pxrange 8 -json verdana.json
 //
 // charset.txt: [30, 255]
 public class FontAtlas {
@@ -40,7 +40,7 @@ public class FontAtlas {
     private int width;
     private int height;
 
-    private float size = 8;
+    private float size = 9;
 
     private Glyph[] glyphs = new Glyph[256];
     private FontMetrics fontMetrics;
@@ -290,10 +290,8 @@ public class FontAtlas {
     }
 
     public float getLineHeight(float size) {
-        System.out.println(fontMetrics.getAscender());
-        return (fontMetrics.getAscender() - fontMetrics.getUnderlineY()) * size;
+        return fontMetrics.getLineHeight() * size;
     }
-
 
     public void renderWithShadow(MatrixStack matrices, Text text, float x, float y, int color) {
         renderWithShadow(matrices, text, x, y, size, color);

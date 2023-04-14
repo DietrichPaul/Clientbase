@@ -28,8 +28,8 @@ public class HudHack extends Hack implements Render2DListener {
     private void renderActiveHacks(MatrixStack matrices) {
         RenderSystem.setShaderTexture(0, new Identifier("clientbase", "amongus.png"));
         matrices.push();
-        float time = (float) GLFW.glfwGetTime() / 4;
-        float xa = (MathHelper.cos(time)) * 2 * mc.getWindow().getScaledWidth();
+        float time = (float) GLFW.glfwGetTime() / 2;
+        float xa = (MathHelper.cos(time / 2)) * 10 * mc.getWindow().getScaledWidth();
         float ya = (MathHelper.sin(time) + 1) / 4 * mc.getWindow().getScaledHeight();
         matrices.translate(xa + 150 / 2F, ya + 150 / 2F, 0);
         matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(700 * (float) GLFW.glfwGetTime()));

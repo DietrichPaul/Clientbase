@@ -21,7 +21,7 @@ import java.io.*;
 // https://github.com/Chlumsky/msdf-atlas-gen
 //
 // for linux use wine-package + win32 binary
-// wine msdf-atlas-gen.exe -type msdf -font verdana.ttf -charset charset.txt -imageout verdana.png -size 256 -pxrange 8 -json verdana.json
+// wine msdf-atlas-gen.exe -type msdf -font verdana.ttf -charset charset.txt -imageout verdana.png -size 128 -pxrange 8 -json verdana.json
 //
 // charset.txt: [30, 255]
 public class FontAtlas {

@@ -1,5 +1,6 @@
 package de.dietrichpaul.clientbase.features.hacks.render;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import de.dietrichpaul.clientbase.ClientBase;
 import de.dietrichpaul.clientbase.event.Render2DListener;
 import de.dietrichpaul.clientbase.features.gui.api.font.FontAtlas;
@@ -8,10 +9,15 @@ import de.dietrichpaul.clientbase.features.hacks.HackCategory;
 import de.dietrichpaul.clientbase.util.render.ColorUtil;
 import de.dietrichpaul.clientbase.util.render.api.Renderer2D;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.RotationAxis;
+import org.lwjgl.glfw.GLFW;
 
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 
 public class HudHack extends Hack implements Render2DListener {
 
@@ -20,11 +26,20 @@ public class HudHack extends Hack implements Render2DListener {
     }
 
     private void renderActiveHacks(MatrixStack matrices) {
+        RenderSystem.setShaderTexture(0, new Identifier("clientbase", "amongus.png"));
+        matrices.push();
+        float time = (float) GLFW.glfwGetTime() / 4;
+        float xa = (MathHelper.cos(time)) * 2 * mc.getWindow().getScaledWidth();
+        float ya = (MathHelper.sin(time) + 1) / 4 * mc.getWindow().getScaledHeight();
+        matrices.translate(xa + 150 / 2F, ya + 150 / 2F, 0);
+        matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(700 * (float) GLFW.glfwGetTime()));
+        matrices.translate(-(xa + 150 / 2F), -(ya + 150 / 2F), 0);
+        Renderer2D.drawTexture(matrices, xa, ya, 150, 150 * 1.2165F);
+        matrices.pop();
+        //FontAtlas logo = ClientBase.getInstance().getAmongUs();
+        //logo.renderWithShadow(matrices, "Ashura)", 4 / 2F, 4 / 2F, 32, 0xff8000b0);
+
         FontAtlas font = ClientBase.getInstance().getVerdana();
-        Renderer2D.fill(matrices, 2, 2, 6 + 2 * font.getWidth(ClientBase.NAME), 6 + 2 * font.getLineHeight(), 0x80ff0000);
-        matrices.scale(2, 2, 2);
-        font.render(matrices, ClientBase.NAME, 4 / 2F, 4 / 2F, -1);
-        matrices.scale(0.5F, 0.5F, 0.5F);
 
         List<Hack> hacks = new LinkedList<>();
         for (Hack hack : cb.getHackMap().getHacks()) {

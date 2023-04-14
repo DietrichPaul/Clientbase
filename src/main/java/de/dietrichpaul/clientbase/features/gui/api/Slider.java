@@ -43,7 +43,7 @@ public class Slider extends BoxPanel {
 
         @Override
         protected Dimension getComponentMinimalSize() {
-            return new Dimension(100, 4);
+            return new Dimension(100, 6);
         }
 
         @Override

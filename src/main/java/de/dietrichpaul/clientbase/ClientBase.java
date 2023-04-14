@@ -46,6 +46,7 @@ public class ClientBase implements SimpleSynchronousResourceReloadListener {
     private CommandManager commandManager;
     private FriendList friendList;
     private FontAtlas verdana;
+    private FontAtlas amongUs;
     private HackMap hackMap;
     private KeybindingMap keybindingMap;
     private RotationEngine rotationEngine;
@@ -84,6 +85,7 @@ public class ClientBase implements SimpleSynchronousResourceReloadListener {
     private void loadFonts(ResourceManager manager) {
         try {
             verdana = new FontAtlas(manager, "verdana");
+            amongUs = new FontAtlas(manager, "amongus");
         } catch (IOException e) {
             throw new RuntimeException("Couldn't load fonts", e);
         }
@@ -140,6 +142,10 @@ public class ClientBase implements SimpleSynchronousResourceReloadListener {
     @Override
     public void reload(ResourceManager manager) {
         loadFonts(manager);
+    }
+
+    public FontAtlas getAmongUs() {
+        return amongUs;
     }
 
     public FontAtlas getVerdana() {

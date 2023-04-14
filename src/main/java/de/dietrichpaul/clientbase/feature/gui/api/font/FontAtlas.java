@@ -1,3 +1,14 @@
+/*
+ * This file is part of Clientbase - https://github.com/DietrichPaul/Clientbase
+ * by DietrichPaul, FlorianMichael and contributors
+ *
+ * To the extent possible under law, the person who associated CC0 with
+ * Clientbase has waived all copyright and related or neighboring rights
+ * to Clientbase.
+ *
+ * You should have received a copy of the CC0 legalcode along with this
+ * work.  If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
+ */
 package de.dietrichpaul.clientbase.feature.gui.api.font;
 
 import com.google.gson.JsonElement;
@@ -29,19 +40,19 @@ public class FontAtlas {
     private final static String FORMATTING_PALETTE = "0123456789abcdefklmnor";
     private final static int[][] FORMATTING_COLOR_PALETTE = new int[32][3];
 
-    private volatile int[] textColor = new int[3];
+    private final int[] textColor = new int[3];
     private volatile float textX;
 
-    private int distanceRange;
-    private int width;
-    private int height;
+    private final int distanceRange;
+    private final int width;
+    private final int height;
 
     private float size = 9;
 
-    private Glyph[] glyphs = new Glyph[256];
-    private FontMetrics fontMetrics;
+    private final Glyph[] glyphs = new Glyph[256];
+    private final FontMetrics fontMetrics;
 
-    private NativeImageBackedTexture tex;
+    private final NativeImageBackedTexture tex;
 
     static {
         // I don't know what this is but 1.8 code

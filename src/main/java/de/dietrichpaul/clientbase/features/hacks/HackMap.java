@@ -1,6 +1,7 @@
 package de.dietrichpaul.clientbase.features.hacks;
 
 import de.dietrichpaul.clientbase.features.hacks.combat.KillAuraHack;
+import de.dietrichpaul.clientbase.features.hacks.movement.FlightHack;
 import de.dietrichpaul.clientbase.features.hacks.movement.SprintHack;
 import de.dietrichpaul.clientbase.features.hacks.render.ClickGuiHack;
 import de.dietrichpaul.clientbase.features.hacks.render.HudHack;
@@ -18,6 +19,7 @@ public class HackMap {
     public KillAuraHack killAura = new KillAuraHack();
 
     // movement
+    public FlightHack flight = new FlightHack();
     public SprintHack sprint = new SprintHack();
 
     // render
@@ -32,6 +34,7 @@ public class HackMap {
         register(killAura);
 
         // movement
+        register(flight);
         register(sprint);
 
         // render
@@ -53,5 +56,4 @@ public class HackMap {
     public Collection<Hack> getHacks() {
         return hacks.values();
     }
-
 }

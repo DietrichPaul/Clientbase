@@ -11,7 +11,7 @@
  */
 package de.dietrichpaul.clientbase.feature;
 
-import de.dietrichpaul.clientbase.feature.gui.api.font.FontAtlas;
+import de.dietrichpaul.clientbase.feature.gui.font.FontAtlas;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
 import net.minecraft.resource.ResourceManager;

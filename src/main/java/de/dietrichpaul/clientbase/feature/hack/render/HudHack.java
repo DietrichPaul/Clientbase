@@ -13,7 +13,7 @@ package de.dietrichpaul.clientbase.feature.hack.render;
 
 import de.dietrichpaul.clientbase.ClientBase;
 import de.dietrichpaul.clientbase.event.Render2DListener;
-import de.dietrichpaul.clientbase.feature.gui.api.font.FontAtlas;
+import de.dietrichpaul.clientbase.feature.gui.font.FontAtlas;
 import de.dietrichpaul.clientbase.feature.hack.Hack;
 import de.dietrichpaul.clientbase.feature.hack.HackCategory;
 import de.dietrichpaul.clientbase.util.render.ColorUtil;

@@ -15,8 +15,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import de.dietrichpaul.clientbase.feature.command.argument.EntityTypeArgumentType;
-import de.dietrichpaul.clientbase.feature.gui.api.*;
-import de.dietrichpaul.clientbase.feature.gui.api.panel.BoxPanel;
 import de.dietrichpaul.clientbase.property.Property;
 import de.dietrichpaul.clientbase.util.minecraft.ChatUtil;
 import it.unimi.dsi.fastutil.objects.Object2BooleanMap;
@@ -65,51 +63,6 @@ public class EntityTypeProperty extends Property {
                 entityTypes.put(entityType, ArrayUtils.contains(defaultEnabled, entityType));
             }
         });
-    }
-
-    /*
-    Paul das hast du echt schlecht gemacht. Dafür brauche ich eine ComboBox, die andere Kompenenten überlappt.
-    Bitte schnellstmöglich den Workaround entsorgen!!!! Das ist der schlechteste Workaround, den ich je geschrieben habe.
-    Schande über mein Haupt. Wenn es bei dieser Lösung bleibt: BOXPANEL MUSS DIE HÖHE BEGRENZEN KÖNNEN!!!!!!
-     */
-    @Override
-    public Component getClickGuiComponent() {
-        Expandable selectionBox = new Expandable(new Button(Text.of(getName())));
-        selectionBox.setOrientation(-1);
-        selectionBox.getHeader().setBackground(0);
-        selectionBox.getHeader().setMargin(0, 0);
-        selectionBox.getHeader().addListener(new ActionListener() {
-            @Override
-            public void mouseClicked(float mouseX, float mouseY, int button) {
-                if (button == GLFW.GLFW_MOUSE_BUTTON_RIGHT) {
-                    if (selectionBox.isExpanded()) selectionBox.collapse();
-                    else selectionBox.expand();
-                }
-            }
-        });
-        selectionBox.setBackground(0xff3b3b3b);
-        BoxPanel content = new BoxPanel();
-        content.setAxis(BoxPanel.Axis.Y);
-        content.setGap(0);
-        content.setMargin(0, 0);
-        content.setOrientation(0);
-
-        for (Object2BooleanMap.Entry<EntityType<?>> entry : entityTypes.object2BooleanEntrySet()) {
-            Checkbox checkbox = new Checkbox(Text.translatable(entry.getKey().getTranslationKey()));
-            checkbox.getBox().setStateSupplier(() -> entityTypes.getBoolean(entry.getKey()));
-            checkbox.addListener(new ActionListener() {
-                @Override
-                public void mouseClicked(float mouseX, float mouseY, int button) {
-                    if (button == GLFW.GLFW_MOUSE_BUTTON_LEFT) {
-                        entityTypes.put(entry.getKey(), !entityTypes.removeBoolean(entry.getKey()));
-                    }
-                }
-            });
-            content.addComponent(checkbox);
-        }
-
-        selectionBox.setContent(content);
-        return selectionBox;
     }
 
     public <T extends Entity> boolean filter(T entity) {

@@ -15,8 +15,6 @@ import com.google.gson.JsonElement;
 import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
-import de.dietrichpaul.clientbase.ClientBase;
-import de.dietrichpaul.clientbase.feature.gui.api.Component;
 import net.minecraft.command.CommandSource;
 
 public abstract class Property {
@@ -41,10 +39,6 @@ public abstract class Property {
     }
 
     public abstract void buildCommand(LiteralArgumentBuilder<CommandSource> root);
-
-    public Component getClickGuiComponent() {
-        return null;
-    }
 
     public void reportChanges() {
         if (parent != null)

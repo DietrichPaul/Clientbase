@@ -15,9 +15,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
 import com.mojang.brigadier.arguments.FloatArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import de.dietrichpaul.clientbase.feature.gui.api.Component;
-import de.dietrichpaul.clientbase.feature.gui.api.Label;
-import de.dietrichpaul.clientbase.feature.gui.api.Slider;
 import de.dietrichpaul.clientbase.property.Property;
 import de.dietrichpaul.clientbase.util.minecraft.ChatUtil;
 import net.minecraft.command.CommandSource;
@@ -63,11 +60,6 @@ public class FloatProperty extends Property {
 
     public float getMax() {
         return max;
-    }
-
-    @Override
-    public Component getClickGuiComponent() {
-        return new Slider(new Label(Text.of(getName())), this::getValue, this::getMin, this::getMax, this::setValue);
     }
 
     @Override

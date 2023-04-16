@@ -15,14 +15,10 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
 import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import de.dietrichpaul.clientbase.feature.gui.api.ActionListener;
-import de.dietrichpaul.clientbase.feature.gui.api.Checkbox;
-import de.dietrichpaul.clientbase.feature.gui.api.Component;
 import de.dietrichpaul.clientbase.property.Property;
 import de.dietrichpaul.clientbase.util.minecraft.ChatUtil;
 import net.minecraft.command.CommandSource;
 import net.minecraft.text.Text;
-import org.lwjgl.glfw.GLFW;
 
 public class BooleanProperty extends Property {
 
@@ -65,21 +61,5 @@ public class BooleanProperty extends Property {
                                 })
                 )
         );
-    }
-
-    @Override
-    public Component getClickGuiComponent() {
-        Checkbox checkbox = new Checkbox(Text.literal(getName()));
-        checkbox.getBox().setColor(0xfff76b00);
-        checkbox.addListener(new ActionListener() {
-            @Override
-            public void mouseClicked(float mouseX, float mouseY, int button) {
-                if (button == GLFW.GLFW_MOUSE_BUTTON_LEFT) {
-                    setState(!state);
-                }
-            }
-        });
-        checkbox.getBox().setStateSupplier(this::getState);
-        return checkbox;
     }
 }

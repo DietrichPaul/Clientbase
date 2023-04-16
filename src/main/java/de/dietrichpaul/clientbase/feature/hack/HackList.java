@@ -15,7 +15,6 @@ import de.dietrichpaul.clientbase.feature.hack.combat.KillAuraHack;
 import de.dietrichpaul.clientbase.feature.hack.movement.FlightHack;
 import de.dietrichpaul.clientbase.feature.hack.movement.SprintHack;
 import de.dietrichpaul.clientbase.feature.hack.render.HudHack;
-import de.dietrichpaul.clientbase.feature.hack.world.XRayHack;
 
 import java.util.Collection;
 import java.util.Map;
@@ -34,9 +33,6 @@ public class HackList {
     // render
     public HudHack hud = new HudHack();
 
-    // world
-    public XRayHack xRay = new XRayHack();
-
     public void registerBuiltIn() {
         // combat
         register(killAura);
@@ -47,9 +43,6 @@ public class HackList {
 
         // render
         register(hud);
-
-        // world
-        register(xRay);
     }
 
     public void register(Hack hack) {

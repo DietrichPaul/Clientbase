@@ -37,15 +37,7 @@ import java.util.stream.Collectors;
  * <p>
  * TODO | General
  *  - BindCommand -> list
- *  - PropertyCommand
  *  - Rewrite some chat messages using Components
- *
- * TODO | GUI
- *  - Parent übergeben
- *  - Erben von Textgröße des Parent Components
- *  - Designbase
- *  - Nachkommastellen im Slider bearbeiten
- *  - Int Support im Slider
  */
 public class ClientBase implements ClientModInitializer {
     public final static ModMetadata METADATA = FabricLoader.getInstance().getModContainer("clientbase").orElseThrow().getMetadata();

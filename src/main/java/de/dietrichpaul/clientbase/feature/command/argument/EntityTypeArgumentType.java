@@ -22,6 +22,7 @@ import de.dietrichpaul.clientbase.feature.command.suggestor.Suggestor;
 import net.minecraft.command.CommandSource;
 import net.minecraft.entity.EntityType;
 import net.minecraft.registry.Registries;
+import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -48,9 +49,7 @@ public class EntityTypeArgumentType implements ArgumentType<EntityType<?>> {
 
     @Override
     public <S> CompletableFuture<Suggestions> listSuggestions(CommandContext<S> context, SuggestionsBuilder builder) {
-        return new Suggestor(builder)
-                .addAll(Registries.ENTITY_TYPE.stream().filter(this.filter).map(Registries.ENTITY_TYPE::getId).map(Identifier::toString))
-                .buildFuture();
+        return CommandSource.suggestIdentifiers(Registries.ENTITY_TYPE.stream().map(EntityType::getId), builder);
     }
 
     @Override

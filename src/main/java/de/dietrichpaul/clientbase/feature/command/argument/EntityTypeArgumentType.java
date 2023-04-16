@@ -49,7 +49,7 @@ public class EntityTypeArgumentType implements ArgumentType<EntityType<?>> {
 
     @Override
     public <S> CompletableFuture<Suggestions> listSuggestions(CommandContext<S> context, SuggestionsBuilder builder) {
-        return CommandSource.suggestIdentifiers(Registries.ENTITY_TYPE.stream().map(EntityType::getId), builder);
+        return CommandSource.suggestIdentifiers(Registries.ENTITY_TYPE.stream().filter(filter).map(EntityType::getId), builder);
     }
 
     @Override

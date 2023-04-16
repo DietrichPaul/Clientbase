@@ -64,14 +64,15 @@ public class IntProperty extends Property {
     @Override
     public void buildCommand(LiteralArgumentBuilder<CommandSource> root) {
         root.then(
-                literal("set").then(
                         argument("value", IntegerArgumentType.integer(min, max))
                                 .executes(ctx -> {
                                     setValue(IntegerArgumentType.getInteger(ctx, "value"));
                                     ChatUtil.sendChatMessage(Text.literal(getName() + " was set to " + getValue()));
                                     return 1;
                                 })
-                )
-        );
+        ).executes(context -> {
+            ChatUtil.sendChatMessage(Text.literal(getName() + " equals " + getValue()));
+            return 1;
+        });
     }
 }

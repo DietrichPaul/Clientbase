@@ -65,14 +65,15 @@ public class FloatProperty extends Property {
     @Override
     public void buildCommand(LiteralArgumentBuilder<CommandSource> root) {
         root.then(
-                literal("set").then(
-                        argument("value", FloatArgumentType.floatArg(min, max))
-                                .executes(ctx -> {
-                                    setValue(FloatArgumentType.getFloat(ctx, "value"));
-                                    ChatUtil.sendChatMessage(Text.literal(getName() + " was set to " + getValue()));
-                                    return 1;
-                                })
-                )
-        );
+                argument("value", FloatArgumentType.floatArg(min, max))
+                        .executes(ctx -> {
+                            setValue(FloatArgumentType.getFloat(ctx, "value"));
+                            ChatUtil.sendChatMessage(Text.literal(getName() + " was set to " + getValue()));
+                            return 1;
+                        })
+        ).executes(context -> {
+            ChatUtil.sendChatMessage(Text.literal(getName() + " equals " + getValue()));
+            return 1;
+        });
     }
 }

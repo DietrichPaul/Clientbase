@@ -27,11 +27,12 @@ import net.minecraft.registry.Registries;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.apache.commons.lang3.ArrayUtils;
-import org.lwjgl.glfw.GLFW;
 
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class EntityTypeProperty extends Property {
 
@@ -117,6 +118,10 @@ public class EntityTypeProperty extends Property {
                                             return 1;
                                         })
                         )
-        );
+        ).executes(context -> {
+            ChatUtil.sendChatMessage(Text.of(getName() + " contains " + entityTypes.object2BooleanEntrySet().stream()
+                    .filter(Object2BooleanMap.Entry::getBooleanValue).map(Map.Entry::getKey).map(EntityType::getTranslationKey).map(I18n::translate).collect(Collectors.joining(", "))));
+            return 1;
+        });
     }
 }

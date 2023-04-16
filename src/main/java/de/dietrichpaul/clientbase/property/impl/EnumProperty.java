@@ -60,14 +60,16 @@ public class EnumProperty<T extends Enum<T>> extends Property {
     @Override
     public void buildCommand(LiteralArgumentBuilder<CommandSource> root) {
         root.then(
-                literal("set")
-                        .then(argument("value", EnumArgumentType.enumField(values))
-                                .executes(context -> {
-                                    T value = EnumArgumentType.getEnumField(context, "value", clazz);
-                                    setValue(value);
-                                    ChatUtil.sendChatMessage(Text.literal(getName() + " was set to " + getValue()));
-                                    return 1;
-                                }))
-        );
+                argument("value", EnumArgumentType.enumField(values))
+                        .executes(context -> {
+                            T value = EnumArgumentType.getEnumField(context, "value", clazz);
+                            setValue(value);
+                            ChatUtil.sendChatMessage(Text.literal(getName() + " was set to " + getValue()));
+                            return 1;
+                        })
+        ).executes(context -> {
+            ChatUtil.sendChatMessage(Text.literal(getName() + " equals " + getValue()));
+            return 1;
+        });
     }
 }

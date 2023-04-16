@@ -52,14 +52,15 @@ public class BooleanProperty extends Property {
     @Override
     public void buildCommand(LiteralArgumentBuilder<CommandSource> root) {
         root.then(
-                literal("set").then(
-                        argument("value", BoolArgumentType.bool())
-                                .executes(ctx -> {
-                                    setState(BoolArgumentType.getBool(ctx, "value"));
-                                    ChatUtil.sendChatMessage(Text.literal(getName() + " was set to " + state));
-                                    return 1;
-                                })
-                )
-        );
+                argument("value", BoolArgumentType.bool())
+                        .executes(ctx -> {
+                            setState(BoolArgumentType.getBool(ctx, "value"));
+                            ChatUtil.sendChatMessage(Text.literal(getName() + " was set to " + state));
+                            return 1;
+                        })
+        ).executes(context -> {
+            ChatUtil.sendChatMessage(Text.literal(getName() + " equals " + getState()));
+            return 1;
+        });
     }
 }

@@ -37,6 +37,11 @@ public enum RotationMode {
         this.method = method;
     }
 
+    @Override
+    public String toString() {
+        return name;
+    }
+
     public RotationMethod getMethod() {
         return method;
     }

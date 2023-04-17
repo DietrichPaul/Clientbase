@@ -69,8 +69,7 @@ public class AimbotRotationSpoof extends RotationSpoof {
     public boolean pickTarget() {
         targets.clear();
         Vec3d camera = mc.player.getCameraPosVec(1.0F);
-        for (Iterator<Entity> iterator = mc.world.getEntities().iterator(); iterator.hasNext() && targets.size() < maxTargets.getValue(); ) {
-            Entity entity = iterator.next();
+        for (Entity entity : mc.world.getEntities()) {
             if (entity == null || entity instanceof ClientPlayerEntity)
                 continue;
 
@@ -93,6 +92,10 @@ public class AimbotRotationSpoof extends RotationSpoof {
             targets.add(entity);
         }
         targets.sort(priorityProperty.getValue().getComparator());
+        while (targets.size() > maxTargets.getValue()) {
+            targets.remove(targets.size() - 1);
+        }
+        System.out.println(targets);
         return !targets.isEmpty();
     }
     @Override

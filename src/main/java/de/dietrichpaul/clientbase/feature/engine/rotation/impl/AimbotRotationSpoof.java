@@ -95,7 +95,6 @@ public class AimbotRotationSpoof extends RotationSpoof {
         while (targets.size() > maxTargets.getValue()) {
             targets.remove(targets.size() - 1);
         }
-        System.out.println(targets);
         return !targets.isEmpty();
     }
     @Override

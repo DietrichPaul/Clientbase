@@ -12,6 +12,7 @@
 package de.dietrichpaul.clientbase.feature.hack.combat;
 
 import de.dietrichpaul.clientbase.ClientBase;
+import de.dietrichpaul.clientbase.event.TargetPickListener;
 import de.dietrichpaul.clientbase.event.UpdateListener;
 import de.dietrichpaul.clientbase.feature.engine.clicking.ClickCallback;
 import de.dietrichpaul.clientbase.feature.engine.clicking.ClickSpoof;
@@ -24,7 +25,7 @@ import net.minecraft.util.math.MathHelper;
 
 import java.util.function.Predicate;
 
-public class KillAuraHack extends Hack implements UpdateListener, ClickSpoof {
+public class KillAuraHack extends Hack implements UpdateListener,TargetPickListener, ClickSpoof {
     private final AimbotRotationSpoof aimbot;
 
     private IntProperty maxCPSProperty = new IntProperty("MaxCPS", 20, 0, 20);
@@ -49,11 +50,13 @@ public class KillAuraHack extends Hack implements UpdateListener, ClickSpoof {
     @Override
     protected void onEnable() {
         ClientBase.INSTANCE.getEventDispatcher().subscribe(UpdateListener.class, this);
+        ClientBase.INSTANCE.getEventDispatcher().subscribe(TargetPickListener.class, this, this::getPriority);
     }
 
     @Override
     protected void onDisable() {
         ClientBase.INSTANCE.getEventDispatcher().unsubscribe(UpdateListener.class, this);
+        ClientBase.INSTANCE.getEventDispatcher().unsubscribe(TargetPickListener.class, this);
     }
 
     @Override
@@ -83,6 +86,12 @@ public class KillAuraHack extends Hack implements UpdateListener, ClickSpoof {
     public void onUpdate() {
         if (delay > 0)
             delay--;
+    }
+
+    @Override
+    public void onPickTarget(TargetPickEvent event) {
+        if (aimbot.hasTarget())
+            event.setTarget(event.getTarget());
     }
 
     enum SmartClickingMode {

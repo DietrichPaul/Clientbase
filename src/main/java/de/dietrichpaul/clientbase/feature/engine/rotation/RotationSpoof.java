@@ -60,11 +60,14 @@ public abstract class RotationSpoof {
      */
     public abstract boolean pickTarget();
 
-    public abstract void rotate(float[] rotations, boolean tick, float partialTicks);
+    public abstract void rotate(float[] rotations, float[] prevRotations, boolean tick, float partialTicks);
 
     public abstract boolean isToggled();
 
     public abstract int getPriority();
+
+    public void tick() {
+    }
 
     public float getYawSpeed() {
         return MathHelper.lerp((float) Math.random(), minYawSpeed.getValue(), maxYawSpeed.getValue());

@@ -95,7 +95,8 @@ public class RotationEngine implements SendRotationListener, RaytraceListener, S
 
         if (hasTarget) {
             float[] targetRotations = new float[2];
-            spoof.rotate(targetRotations, tick, partialTicks);
+            if (tick) spoof.tick();
+            spoof.rotate(targetRotations, reportedRotations, tick, partialTicks);
             limitDeltaRotation(reportedRotations, targetRotations,
                     MathHelper.lerp(partialTicks, prevYawSpeed, yawSpeed),
                     MathHelper.lerp(partialTicks, prevPitchSpeed, pitchSpeed),

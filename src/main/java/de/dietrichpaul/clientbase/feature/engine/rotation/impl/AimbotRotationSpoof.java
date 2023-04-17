@@ -11,6 +11,7 @@
  */
 package de.dietrichpaul.clientbase.feature.engine.rotation.impl;
 
+import de.dietrichpaul.clientbase.feature.engine.rotation.impl.aimbot.RotationMode;
 import de.dietrichpaul.clientbase.feature.hack.Hack;
 import de.dietrichpaul.clientbase.feature.engine.rotation.RotationSpoof;
 import de.dietrichpaul.clientbase.feature.engine.rotation.impl.aimbot.Priority;
@@ -26,10 +27,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.*;
 
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -43,7 +41,7 @@ public class AimbotRotationSpoof extends RotationSpoof {
     private final FloatProperty rangeProperty = new FloatProperty("Range", 3, 0, 6);
     private final IntProperty fovProperty = new IntProperty("FOV", 360, 0, 360);
     private final EnumProperty<Priority> priorityProperty = new EnumProperty<>("Priority", Priority.DISTANCE, Priority.values(), Priority.class);
-
+    private final EnumProperty<RotationMode> rotationModeProperty = new EnumProperty<>("Rotation", RotationMode.CLOSEST, RotationMode.values(), RotationMode.class);
     private final Hack parent;
 
     private final List<Entity> targets = new LinkedList<>();
@@ -58,6 +56,13 @@ public class AimbotRotationSpoof extends RotationSpoof {
         targetGroup.addProperty(rangeProperty);
         targetGroup.addProperty(fovProperty);
         targetGroup.addProperty(priorityProperty);
+
+        propertyGroup.addProperty(rotationModeProperty);
+    }
+
+    @Override
+    public void tick() {
+        rotationModeProperty.getValue().getMethod().tick(targets.get(0));
     }
 
     @Override
@@ -90,13 +95,20 @@ public class AimbotRotationSpoof extends RotationSpoof {
         targets.sort(priorityProperty.getValue().getComparator());
         return !targets.isEmpty();
     }
-
     @Override
-    public void rotate(float[] rotations, boolean tick, float partialTicks) {
-        Entity primaryTarget = targets.get(0);
+    public void rotate(float[] rotations, float[] prevRotations, boolean tick, float partialTicks) {
         Vec3d camera = mc.player.getCameraPosVec(partialTicks);
-        Vec3d hitVec = MathUtil.clamp(camera, primaryTarget.getBoundingBox().expand(primaryTarget.getTargetingMargin()));
-        MathUtil.getRotations(camera, hitVec, rotations);
+        Entity primaryTarget = targets.get(0);
+        Box aabb = primaryTarget.getBoundingBox()
+                .offset(-primaryTarget.getX(), -primaryTarget.getY(), -primaryTarget.getZ())
+                .offset(primaryTarget.prevX, primaryTarget.prevY, primaryTarget.prevZ)
+                .offset(new Vec3d(
+                                primaryTarget.getX() - primaryTarget.prevX,
+                                primaryTarget.getY() - primaryTarget.prevY,
+                                primaryTarget.getZ() - primaryTarget.prevZ
+                        ).multiply(partialTicks)
+                );
+        rotationModeProperty.getValue().getMethod().getRotations(camera, aabb, primaryTarget, rotations, prevRotations, partialTicks);
     }
 
     @Override

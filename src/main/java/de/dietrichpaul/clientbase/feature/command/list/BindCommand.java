@@ -20,10 +20,12 @@ import de.dietrichpaul.clientbase.feature.command.argument.KeyArgumentType;
 import de.dietrichpaul.clientbase.feature.command.argument.KeyBindingArgumentType;
 import de.dietrichpaul.clientbase.feature.command.suggestor.HackSuggestor;
 import de.dietrichpaul.clientbase.util.minecraft.ChatUtil;
+import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.command.CommandSource;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 
 public class BindCommand extends Command {
 
@@ -54,9 +56,11 @@ public class BindCommand extends Command {
 
     private int list(CommandContext<CommandSource> ctx) {
         InputUtil.Key key = KeyArgumentType.getKey(ctx, "key");
-        ChatUtil.sendChatMessage(Text.literal(I18n.translate(key.getTranslationKey()) + ":"));
+        ChatUtil.sendChatMessage(Text.translatable("command.bind.list", Text.empty().append(key.getLocalizedText())
+                .formatted(Formatting.GRAY)));
+
         for (String binding : ClientBase.INSTANCE.getKeybindingList().getBindings(key)) {
-            ChatUtil.sendChatMessage(Text.literal("* " + binding));
+            ChatUtil.sendChatMessage(Text.translatable("bullet_point", binding));
         }
         return 1;
     }
@@ -64,14 +68,18 @@ public class BindCommand extends Command {
     private int remove(CommandContext<CommandSource> ctx) {
         InputUtil.Key key = KeyArgumentType.getKey(ctx, "key");
         ClientBase.INSTANCE.getKeybindingList().unbind(key);
-        ChatUtil.sendChatMessage(Text.literal("Unbound everything from: " + I18n.translate(key.getTranslationKey())));
+        ChatUtil.sendChatMessage(Text.translatable("command.bind.remove",
+                Text.empty().append(key.getLocalizedText()).formatted(Formatting.GRAY)));
         return 1;
     }
+
     private int add(CommandContext<CommandSource> ctx) {
         InputUtil.Key key = KeyArgumentType.getKey(ctx, "key");
         String message = StringArgumentType.getString(ctx, "message");
         ClientBase.INSTANCE.getKeybindingList().bind(key, message);
-        ChatUtil.sendChatMessage(Text.literal("Bound: " + I18n.translate(key.getTranslationKey()) + " -> " + message));
+        ChatUtil.sendChatMessage(Text.translatable("command.bind.add",
+                Text.literal(message).formatted(Formatting.GRAY),
+                Text.empty().append(key.getLocalizedText()).formatted(Formatting.GRAY)));
         return 1;
     }
 }

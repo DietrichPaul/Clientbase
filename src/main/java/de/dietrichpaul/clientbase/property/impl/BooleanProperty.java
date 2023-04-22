@@ -19,6 +19,7 @@ import de.dietrichpaul.clientbase.property.Property;
 import de.dietrichpaul.clientbase.util.minecraft.ChatUtil;
 import net.minecraft.command.CommandSource;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 
 public class BooleanProperty extends Property {
 
@@ -55,11 +56,15 @@ public class BooleanProperty extends Property {
                 argument("value", BoolArgumentType.bool())
                         .executes(ctx -> {
                             setState(BoolArgumentType.getBool(ctx, "value"));
-                            ChatUtil.sendChatMessage(Text.literal(getName() + " was set to " + state));
+                            ChatUtil.sendChatMessage(Text.translatable("command.property.set",
+                                    Text.literal(getName()).formatted(Formatting.GRAY),
+                                    Text.literal(String.valueOf(state)).formatted(Formatting.GRAY)));
                             return 1;
                         })
         ).executes(context -> {
-            ChatUtil.sendChatMessage(Text.literal(getName() + " equals " + getState()));
+            ChatUtil.sendChatMessage(Text.translatable("command.property.equals",
+                    Text.literal(getName()).formatted(Formatting.GRAY),
+                    Text.literal(String.valueOf(getState()).formatted(Formatting.GRAY))));
             return 1;
         });
     }

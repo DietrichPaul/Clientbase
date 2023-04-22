@@ -26,7 +26,7 @@ public class ChatUtil {
     }
 
     public static void sendChatMessage(Text text) {
-        text = Text.literal("").append(text).formatted(Formatting.GRAY); // &r -> &7
+        text = Text.literal("").append(text).formatted(Formatting.WHITE); // &r -> &f
         Text line = Text.literal("").append(PREFIX).append(" ").append(text); // prefix + " " + text
         
         MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(line);

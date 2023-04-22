@@ -25,6 +25,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.registry.Registries;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -101,7 +102,9 @@ public class EntityTypeProperty extends Property {
                                             entityTypes.removeBoolean(type);
                                             entityTypes.put(type, true);
                                             reportChanges();
-                                            ChatUtil.sendChatMessage(Text.of("Added " + I18n.translate(type.getTranslationKey()) + " to " + getName()));
+                                            ChatUtil.sendChatMessage(Text.translatable("command.property.add",
+                                                    Text.translatable(type.getTranslationKey()).formatted(Formatting.GRAY),
+                                                    Text.literal(getName()).formatted(Formatting.GRAY)));
                                             return 1;
                                         })
                         )
@@ -114,13 +117,20 @@ public class EntityTypeProperty extends Property {
                                             entityTypes.removeBoolean(type);
                                             entityTypes.put(type, false);
                                             reportChanges();
-                                            ChatUtil.sendChatMessage(Text.of("Removed " + I18n.translate(type.getTranslationKey()) + " from " + getName()));
+                                            ChatUtil.sendChatMessage(Text.translatable("command.property.remove",
+                                                    Text.translatable(type.getTranslationKey()).formatted(Formatting.GRAY),
+                                                    Text.literal(getName()).formatted(Formatting.GRAY)));
                                             return 1;
                                         })
                         )
         ).executes(context -> {
-            ChatUtil.sendChatMessage(Text.of(getName() + " contains " + entityTypes.object2BooleanEntrySet().stream()
-                    .filter(Object2BooleanMap.Entry::getBooleanValue).map(Map.Entry::getKey).map(EntityType::getTranslationKey).map(I18n::translate).collect(Collectors.joining(", "))));
+            ChatUtil.sendChatMessage(Text.translatable("command.property.contains",
+                    Text.literal(getName()).formatted(Formatting.GRAY)));
+            entityTypes.forEach((entityType, aBoolean) -> {
+                if (aBoolean) {
+                    ChatUtil.sendChatMessage(Text.translatable("bullet_point", Text.translatable(entityType.getTranslationKey())));
+                }
+            });
             return 1;
         });
     }

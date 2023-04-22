@@ -33,52 +33,35 @@ public class FriendCommand extends Command {
         super("friend");
     }
 
-    private int list(int page) {
-        String[] friends = ClientBase.INSTANCE.getFriendList().getFriends().toArray(new String[0]);
-        if (friends.length == 0) {
-            ChatUtil.sendChatMessage(Text.literal("You don't have any friends.").formatted(Formatting.RED));
-            return 1;
-        }
-        int pages = MathHelper.ceil(friends.length / (double) friendsPerPage);
-
-
-        if (page <= 0 || page > pages) {
-            ChatUtil.sendChatMessage(Text.literal("Page " + page + " does not exist.").formatted(Formatting.RED));
-            return 1;
-        }
-
-        int pageStart = (page - 1) * friendsPerPage;
-        ChatUtil.sendChatMessage(Text.literal("Friends:").formatted(Formatting.GOLD));
-        for (int i = pageStart; i < Math.min(pageStart + friendsPerPage, friends.length); i++) {
-            String friend = friends[i];
-            ChatUtil.sendChatMessage(Text.literal("• " + friend));
-        }
-        ChatUtil.sendChatMessage(Text.literal("Page " + page + "/" + pages).formatted(Formatting.GOLD));
-        return 1;
-    }
-
     private int add(CommandContext<CommandSource> ctx) {
         String friend = StringArgumentType.getString(ctx, "name");
         ClientBase.INSTANCE.getFriendList().add(friend);
-        ChatUtil.sendChatMessage(Text.of("You have made a friendship with " + friend + "."));
+        ChatUtil.sendChatMessage(Text.translatable("command.friend.add",
+                Text.literal(friend).formatted(Formatting.GRAY)));
         return 1;
     }
 
     private int remove(CommandContext<CommandSource> ctx) {
         String friend = FriendArgumentType.getFriend(ctx, "name");
         ClientBase.INSTANCE.getFriendList().remove(friend);
-        ChatUtil.sendChatMessage(Text.of("You have ended the friendship with " + friend + "."));
+        ChatUtil.sendChatMessage(Text.translatable("command.friend.remove",
+                Text.literal(friend).formatted(Formatting.GRAY)));
+        return 1;
+    }
+
+    private int list() {
+        ChatUtil.sendChatMessage(Text.translatable("command.friend.list"));
+        for (String friend : ClientBase.INSTANCE.getFriendList().getFriends()) {
+            ChatUtil.sendChatMessage(Text.translatable("bullet_point", friend));
+        }
         return 1;
     }
 
     @Override
     public void buildCommand(LiteralArgumentBuilder<CommandSource> root) {
         root
-                .executes(ctx -> list(1))
                 .then(literal("list")
-                        .executes(ctx -> list(1))
-                        .then(argument("page", IntegerArgumentType.integer())
-                                .executes(ctx -> list(IntegerArgumentType.getInteger(ctx, "page")))))
+                        .executes(ctx -> list()))
                 .then(literal("add")
                         .then(argument("name", StringArgumentType.word())
                                 .suggests(new PlayerSuggestor())

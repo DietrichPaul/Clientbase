@@ -19,6 +19,7 @@ import de.dietrichpaul.clientbase.property.Property;
 import de.dietrichpaul.clientbase.util.minecraft.ChatUtil;
 import net.minecraft.command.CommandSource;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.Arrays;
@@ -64,11 +65,15 @@ public class EnumProperty<T extends Enum<T>> extends Property {
                         .executes(context -> {
                             T value = EnumArgumentType.getEnumField(context, "value", clazz);
                             setValue(value);
-                            ChatUtil.sendChatMessage(Text.literal(getName() + " was set to " + getValue()));
+                            ChatUtil.sendChatMessage(Text.translatable("command.property.set",
+                                    Text.literal(getName()).formatted(Formatting.GRAY),
+                                    Text.literal(String.valueOf(value)).formatted(Formatting.GRAY)));
                             return 1;
                         })
         ).executes(context -> {
-            ChatUtil.sendChatMessage(Text.literal(getName() + " equals " + getValue()));
+            ChatUtil.sendChatMessage(Text.translatable("command.property.equals",
+                    Text.literal(getName()).formatted(Formatting.GRAY),
+                    Text.literal(String.valueOf(value).formatted(Formatting.GRAY))));
             return 1;
         });
     }

@@ -19,6 +19,7 @@ import de.dietrichpaul.clientbase.property.Property;
 import de.dietrichpaul.clientbase.util.minecraft.ChatUtil;
 import net.minecraft.command.CommandSource;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.math.MathHelper;
 
 public class FloatProperty extends Property {
@@ -68,11 +69,15 @@ public class FloatProperty extends Property {
                 argument("value", FloatArgumentType.floatArg(min, max))
                         .executes(ctx -> {
                             setValue(FloatArgumentType.getFloat(ctx, "value"));
-                            ChatUtil.sendChatMessage(Text.literal(getName() + " was set to " + getValue()));
+                            ChatUtil.sendChatMessage(Text.translatable("command.property.set",
+                                    Text.literal(getName()).formatted(Formatting.GRAY),
+                                    Text.literal(String.valueOf(value)).formatted(Formatting.GRAY)));
                             return 1;
                         })
         ).executes(context -> {
-            ChatUtil.sendChatMessage(Text.literal(getName() + " equals " + getValue()));
+            ChatUtil.sendChatMessage(Text.translatable("command.property.equals",
+                    Text.literal(getName()).formatted(Formatting.GRAY),
+                    Text.literal(String.valueOf(value).formatted(Formatting.GRAY))));
             return 1;
         });
     }

@@ -36,7 +36,6 @@ import java.util.stream.Collectors;
  * Clientbase by DietrichPaul
  * <p>
  * TODO | General
- *  - BindCommand -> list
  *  - Rewrite some chat messages using Components
  */
 public class ClientBase implements ClientModInitializer {

@@ -44,7 +44,21 @@ public class BindCommand extends Command {
                         argument("key", KeyBindingArgumentType.boundKey())
                                 .executes(this::remove)
                 )
+        ).then(
+                literal("list").then(
+                        argument("key", KeyBindingArgumentType.boundKey())
+                                .executes(this::list)
+                )
         );
+    }
+
+    private int list(CommandContext<CommandSource> ctx) {
+        InputUtil.Key key = KeyArgumentType.getKey(ctx, "key");
+        ChatUtil.sendChatMessage(Text.literal(I18n.translate(key.getTranslationKey()) + ":"));
+        for (String binding : ClientBase.INSTANCE.getKeybindingList().getBindings(key)) {
+            ChatUtil.sendChatMessage(Text.literal("* " + binding));
+        }
+        return 1;
     }
 
     private int remove(CommandContext<CommandSource> ctx) {

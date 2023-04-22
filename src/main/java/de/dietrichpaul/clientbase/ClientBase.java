@@ -36,7 +36,19 @@ import java.util.stream.Collectors;
  * Clientbase by DietrichPaul
  * <p>
  * TODO | General
- *  - Rewrite some chat messages using Components
+ *  - ChatUtil.i18n(key: String, objects: Object...), automatically wrap objects and format them in gray
+ *  - AimbotRotationSpoof target through walls property
+ *  - AimbotRotationSpoof aim around walls
+ *  - AimbotRotationSpoof bestvec forcing when no other way is possible
+ *  - ClickEngine: Killaura on, open Screen, close Screen, Killaura somehow doesn't hit anymore???
+ *      ~ maybe the delay in #doAttack()
+ *  - StrafeMode forcing sprint.
+ *  - KillAura Jitter-Click -> RotationSpoof Rotation Jitter
+ *  - profiles for properties of hacks. Also known as "configs". Load only local files that are located in a "profiles/" folder.
+ *      Structure: Json, like the hacks.json approximately.
+ *      Commands for this: #profile save <file> (<hacks>: for this a new argumenttype is needed), #profile load <file>.
+ *      #profile list. For <file> there must be a new argumenttype too, which has as boolean if the file exists, which
+ *      is suggested or if the file can be overwritten or created: "replace".
  */
 public class ClientBase implements ClientModInitializer {
     public final static ModMetadata METADATA = FabricLoader.getInstance().getModContainer("clientbase").orElseThrow().getMetadata();

@@ -313,8 +313,8 @@ public class FontAtlas {
     }
 
     /*
-    Schlecht gemacht: hier kommt ne eigene methode hin fürs batching mit boolean dropShadow für farbe
-    und setShaderColor muss weg
+    Badly done: here comes an own method for batching with boolean dropShadow for color
+    and setShaderColor must be omitted
      */
     public void renderWithShadow(MatrixStack matrices, Text text, float x, float y, float size, int color) {
         RenderSystem.setShaderColor(0.25F, 0.25F, 0.25F, 1.0F);

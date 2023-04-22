@@ -73,16 +73,16 @@ public class AimbotRotationSpoof extends RotationSpoof {
             if (entity == null || entity instanceof ClientPlayerEntity)
                 continue;
 
-            if (!entityTypeProperty.filter(entity)) // entity ist kein target
+            if (!entityTypeProperty.filter(entity)) // Entity isn't a target
                 continue;
 
-            // entity außer distanz
+            // Entity out of distance
             Vec3d closest = MathUtil.clamp(camera, entity.getBoundingBox().expand(entity.getTargetingMargin()));
             if (camera.distanceTo(closest) > aimRangeProperty.getValue() + rangeProperty.getValue()) {
                 continue;
             }
 
-            // entity ausm fov
+            // Entity out of sight
             if (fovProperty.getValue() < 360) {
                 double angleDiff = MathHelper.wrapDegrees(Math.toDegrees(Math.atan2(entity.getZ() - camera.z, entity.getX() - camera.x)) - 90 - mc.player.getYaw());
                 if (Math.abs(angleDiff) > fovProperty.getValue() / 2.0)

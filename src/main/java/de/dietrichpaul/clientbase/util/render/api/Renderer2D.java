@@ -55,7 +55,7 @@ public class Renderer2D {
         circleShaderRadius.set(radius);
         Matrix4f matrix = matrices.peek().getPositionMatrix();
         float lw = RenderSystem.getShaderLineWidth();
-        float x1 = x + radius + 1 + lw / 2f; // expand wegen AA
+        float x1 = x + radius + 1 + lw / 2f; // expand because AA
         float x2 = x - radius - 1 - lw / 2f;
         float y1 = y + radius + 1 + lw / 2f;
         float y2 = y - radius - 1 - lw / 2f;
@@ -66,7 +66,7 @@ public class Renderer2D {
         BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
-        circleShader.getProgram().lineWidth.set(lw); // IST NICHT NULL >:(
+        circleShader.getProgram().lineWidth.set(lw); // Is not null
         RenderSystem.setShader(circleShader::getProgram);
         bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
         bufferBuilder.vertex(matrix, (float)x1, (float)y2, 0.0F).color(g, h, j, f).next();
@@ -81,7 +81,7 @@ public class Renderer2D {
         fillCircleShaderCenter.set(x, y);
         fillCircleShaderRadius.set(radius);
         Matrix4f matrix = matrices.peek().getPositionMatrix();
-        float x1 = x + radius + 1; // expand wegen AA
+        float x1 = x + radius + 1; // expand because AA
         float x2 = x - radius - 1;
         float y1 = y + radius + 1;
         float y2 = y - radius - 1;

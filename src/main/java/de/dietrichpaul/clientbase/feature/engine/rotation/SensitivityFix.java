@@ -16,7 +16,7 @@ public enum SensitivityFix {
     NONE("None"),
     TICK_BASED("TickBased"),    // 20FPS
     APPROXIMATE("Approximate"), // fps [20;60]
-    REAL("Real");               // mouse deltas werden simuliert für reale fps
+    REAL("Real");               // mouse deltas are being simulated for real fps
 
     private final String name;
 

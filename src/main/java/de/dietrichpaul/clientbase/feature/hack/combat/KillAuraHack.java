@@ -21,6 +21,8 @@ import de.dietrichpaul.clientbase.feature.hack.HackCategory;
 import de.dietrichpaul.clientbase.feature.engine.rotation.impl.AimbotRotationSpoof;
 import de.dietrichpaul.clientbase.property.impl.EnumProperty;
 import de.dietrichpaul.clientbase.property.impl.IntProperty;
+import net.minecraft.util.hit.EntityHitResult;
+import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.MathHelper;
 
 import java.util.function.Predicate;
@@ -30,6 +32,7 @@ public class KillAuraHack extends Hack implements UpdateListener,TargetPickListe
 
     private IntProperty maxCPSProperty = new IntProperty("MaxCPS", 20, 0, 20);
     private IntProperty minCPSProperty = new IntProperty("MinCPS", 20, 0, 20);
+    private IntProperty failRateProperty = new IntProperty("FailRate", 0, 0, 100);
     private EnumProperty<SmartClickingMode> smartClickingProperty = new EnumProperty<>("SmartClicking",
             SmartClickingMode.NONE, SmartClickingMode.values(), SmartClickingMode.class);
 
@@ -40,6 +43,7 @@ public class KillAuraHack extends Hack implements UpdateListener,TargetPickListe
         super("KillAura", HackCategory.COMBAT);
         addProperty(maxCPSProperty);
         addProperty(minCPSProperty);
+        addProperty(failRateProperty);
         addProperty(smartClickingProperty);
 
         aimbot = new AimbotRotationSpoof(this, addPropertyGroup("Rotations"));
@@ -73,6 +77,11 @@ public class KillAuraHack extends Hack implements UpdateListener,TargetPickListe
     public void click(ClickCallback callback) {
         if (delay != 0)
             return;
+
+        HitResult crosshairTarget = mc.crosshairTarget;
+        if (!(crosshairTarget instanceof EntityHitResult) && Math.random() * 100 > failRateProperty.getValue()) {
+            return;
+        }
 
         if (smartClickingProperty.getValue().click.test(aimbot)) {
             callback.left();

@@ -40,9 +40,7 @@ public class RaytraceUtil {
             squaredReach = 6.0;
             blockReach = squaredReach;
         } else {
-            //if (blockReach > 3.0) { immer true
             survivalRange = true;
-            //}
         }
         squaredReach *= squaredReach;
         if (crosshairTarget != null) {

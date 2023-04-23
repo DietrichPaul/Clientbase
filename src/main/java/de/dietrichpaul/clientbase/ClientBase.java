@@ -40,8 +40,6 @@ import java.util.stream.Collectors;
  *  - AimbotRotationSpoof target through walls property
  *  - AimbotRotationSpoof aim around walls
  *  - AimbotRotationSpoof bestvec forcing when no other way is possible
- *  - ClickEngine: Killaura on, open Screen, close Screen, Killaura somehow doesn't hit anymore???
- *      ~ maybe the delay in #doAttack()
  *  - StrafeMode forcing sprint.
  *  - KillAura Jitter-Click -> RotationSpoof Rotation Jitter
  *  - profiles for properties of hacks. Also known as "configs". Load only local files that are located in a "profiles/" folder.

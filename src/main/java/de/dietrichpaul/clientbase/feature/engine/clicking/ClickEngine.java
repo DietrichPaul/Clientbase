@@ -19,6 +19,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
+import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
@@ -61,6 +62,7 @@ public class ClickEngine implements ClickCallback, KeyPressedStateListener {
 
     @Override
     public void left() {
+        if (mc.attackCooldown > 0) return;
         mc.options.attackKey.timesPressed++;
         enableLeft = true;
     }

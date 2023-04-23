@@ -22,12 +22,14 @@ import de.dietrichpaul.clientbase.property.impl.FloatProperty;
 import de.dietrichpaul.clientbase.property.impl.IntProperty;
 import de.dietrichpaul.clientbase.util.math.MathUtil;
 import de.dietrichpaul.clientbase.util.minecraft.rtx.Raytrace;
+import de.dietrichpaul.clientbase.util.minecraft.rtx.RaytraceUtil;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.*;
+import org.apache.commons.compress.compressors.z.ZCompressorInputStream;
 
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -89,6 +91,44 @@ public class AimbotRotationSpoof extends RotationSpoof {
                     continue;
             }
 
+            // can hit entity
+            Box aabb = entity.getBoundingBox().expand(entity.getTargetingMargin());
+            boolean found = false;
+            {
+                Vec3d hitVec = MathUtil.clamp(camera, aabb);
+                float[] rotations = new float[2];
+                MathUtil.getRotations(camera, hitVec, rotations);
+                Raytrace raytrace = RaytraceUtil.raytrace(mc, mc.cameraEntity, rotations, rotations, getRange(), 1.0F);
+                if (raytrace.hitResult() instanceof EntityHitResult) {
+                    found = true;
+                }
+            }
+            if (!found) {
+                bruteforce:
+                {
+                    for (double x = 0; x <= 1; x += 1 / 4.0) {
+                        for (double y = 0; y <= 1; y += 1 / 4.0) {
+                            for (double z = 0; z <= 1; z += 1 / 4.0) {
+                                Vec3d hitVec = new Vec3d(
+                                        MathHelper.lerp(x, aabb.minX, aabb.maxX),
+                                        MathHelper.lerp(y, aabb.minY, aabb.maxY),
+                                        MathHelper.lerp(z, aabb.minZ, aabb.maxZ)
+                                );
+                                float[] rotations = new float[2];
+                                MathUtil.getRotations(camera, hitVec, rotations);
+                                Raytrace raytrace = RaytraceUtil.raytrace(mc, mc.cameraEntity, rotations, rotations, getRange(), 1.0F);
+                                if (raytrace.hitResult() instanceof EntityHitResult) {
+                                    found = true;
+                                    break bruteforce;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            if (!found)
+                continue;
+
             targets.add(entity);
         }
         targets.sort(priorityProperty.getValue().getComparator());
@@ -97,6 +137,7 @@ public class AimbotRotationSpoof extends RotationSpoof {
         }
         return !targets.isEmpty();
     }
+
     @Override
     public void rotate(float[] rotations, float[] prevRotations, boolean tick, float partialTicks) {
         Vec3d camera = mc.player.getCameraPosVec(partialTicks);
@@ -111,6 +152,44 @@ public class AimbotRotationSpoof extends RotationSpoof {
                         ).multiply(partialTicks)
                 );
         rotationModeProperty.getValue().getMethod().getRotations(camera, aabb, primaryTarget, rotations, prevRotations, partialTicks);
+
+        float[] outRotations = new float[2];
+        engine.mouseSensitivity(prevRotations, rotations, outRotations, partialTicks);
+        Raytrace raytrace = RaytraceUtil.raytrace(mc, mc.cameraEntity, outRotations, outRotations, getRange(), partialTicks);
+        if (raytrace.hitResult() instanceof EntityHitResult) {
+            return;
+        }
+
+        float length = Float.MAX_VALUE;
+        for (double x = 0; x <= 1; x += 1 / 12.0) {
+            for (double y = 0; y <= 1; y += 1 / 12.0) {
+                for (double z = 0; z <= 1; z += 1 / 12.0) {
+                    Vec3d hitVec = new Vec3d(
+                            MathHelper.lerp(x, aabb.minX, aabb.maxX),
+                            MathHelper.lerp(y, aabb.minY, aabb.maxY),
+                            MathHelper.lerp(z, aabb.minZ, aabb.maxZ)
+                    );
+                    float[] bruteForce = new float[2];
+                    MathUtil.getRotations(camera, hitVec, bruteForce);
+
+                    engine.mouseSensitivity(prevRotations, bruteForce, outRotations, partialTicks);
+                    float yawDiff = MathHelper.angleBetween(rotations[0], outRotations[0]);
+                    float pitchDiff = MathHelper.angleBetween(rotations[1], outRotations[1]);
+                    float len = MathHelper.sqrt(yawDiff * yawDiff + pitchDiff * pitchDiff);
+                    if (len > length)
+                        continue;
+
+                    raytrace = RaytraceUtil.raytrace(mc, mc.cameraEntity, outRotations, outRotations, getRange(), partialTicks);
+                    if (!(raytrace.hitResult() instanceof EntityHitResult)) {
+                        continue;
+                    }
+
+                    length = len;
+                    rotations[0] = bruteForce[0];
+                    rotations[1] = bruteForce[1];
+                }
+            }
+        }
     }
 
     @Override

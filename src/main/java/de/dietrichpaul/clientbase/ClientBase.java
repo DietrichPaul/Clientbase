@@ -38,7 +38,6 @@ import java.util.stream.Collectors;
  * TODO | General
  *  - ChatUtil.i18n(key: String, objects: Object...), automatically wrap objects and format them in gray
  *  - AimbotRotationSpoof target through walls property
- *  - AimbotRotationSpoof aim around walls
  *  - AimbotRotationSpoof bestvec forcing when no other way is possible
  *  - StrafeMode forcing sprint.
  *  - KillAura Jitter-Click -> RotationSpoof Rotation Jitter

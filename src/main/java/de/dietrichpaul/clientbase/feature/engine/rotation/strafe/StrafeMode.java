@@ -12,6 +12,7 @@
 package de.dietrichpaul.clientbase.feature.engine.rotation.strafe;
 
 import de.dietrichpaul.clientbase.feature.engine.rotation.strafe.impl.BreezilyFix;
+import de.dietrichpaul.clientbase.feature.engine.rotation.strafe.impl.CombatFix;
 import de.dietrichpaul.clientbase.feature.engine.rotation.strafe.impl.ErrorCorrectedFix;
 import de.dietrichpaul.clientbase.feature.engine.rotation.strafe.impl.SilentMoveFix;
 
@@ -22,7 +23,8 @@ public enum StrafeMode {
     SILENT("Silent", true, new SilentMoveFix()),
     ERROR_CORRECTED("ErrorCorrected", true, new ErrorCorrectedFix(1)),
     SEMI_CORRECTED("SemiCorrected", true, new ErrorCorrectedFix(1.0/4.0)),
-    BREEZILY("Breezily", true, new BreezilyFix());
+    BREEZILY("Breezily", true, new BreezilyFix()),
+    COMBAT("Combat", true, new CombatFix());
 
     private String name;
     private boolean fixYaw;

@@ -37,20 +37,17 @@ public class HelpCommand extends Command {
 
 
         if (page <= 0 || page > pages) {
-            ChatUtil.sendChatMessage(Text.translatable("command.help.page.missing",
-                    Text.literal(String.valueOf(page)).formatted(Formatting.GRAY)));
+            ChatUtil.sendI18n("command.help.page.missing", page);
             return 1;
         }
 
         int pageStart = (page - 1) * commandsPerPage;
-        ChatUtil.sendChatMessage(Text.translatable("command.help.usages"));
+        ChatUtil.sendI18n("command.help.usages");
         for (int i = pageStart; i < Math.min(pageStart + commandsPerPage, commands.length); i++) {
             String command = commands[i];
-            ChatUtil.sendChatMessage(Text.translatable("bullet_point", command));
+            ChatUtil.sendI18n("bullet_point", command);
         }
-        ChatUtil.sendChatMessage(Text.translatable("command.help.page",
-                Text.literal(String.valueOf(page)).formatted(Formatting.GRAY),
-                Text.literal(String.valueOf(pages)).formatted(Formatting.GRAY)));
+        ChatUtil.sendI18n("command.help.page", page, pages);
         return 1;
     }
 

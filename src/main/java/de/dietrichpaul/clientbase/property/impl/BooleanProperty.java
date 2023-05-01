@@ -56,15 +56,11 @@ public class BooleanProperty extends Property {
                 argument("value", BoolArgumentType.bool())
                         .executes(ctx -> {
                             setState(BoolArgumentType.getBool(ctx, "value"));
-                            ChatUtil.sendChatMessage(Text.translatable("command.property.set",
-                                    Text.literal(getName()).formatted(Formatting.GRAY),
-                                    Text.literal(String.valueOf(state)).formatted(Formatting.GRAY)));
+                            ChatUtil.sendI18n("command.property.set",getName(), getState());
                             return 1;
                         })
         ).executes(context -> {
-            ChatUtil.sendChatMessage(Text.translatable("command.property.equals",
-                    Text.literal(getName()).formatted(Formatting.GRAY),
-                    Text.literal(String.valueOf(getState()).formatted(Formatting.GRAY))));
+            ChatUtil.sendI18n("command.property.equals",getName(), getState());
             return 1;
         });
     }

@@ -68,15 +68,11 @@ public class IntProperty extends Property {
                         argument("value", IntegerArgumentType.integer(min, max))
                                 .executes(ctx -> {
                                     setValue(IntegerArgumentType.getInteger(ctx, "value"));
-                                    ChatUtil.sendChatMessage(Text.translatable("command.property.set",
-                                            Text.literal(getName()).formatted(Formatting.GRAY),
-                                            Text.literal(String.valueOf(value)).formatted(Formatting.GRAY)));
+                                    ChatUtil.sendI18n("command.property.set",getName(), getValue());
                                     return 1;
                                 })
         ).executes(context -> {
-            ChatUtil.sendChatMessage(Text.translatable("command.property.equals",
-                    Text.literal(getName()).formatted(Formatting.GRAY),
-                    Text.literal(String.valueOf(value).formatted(Formatting.GRAY))));
+            ChatUtil.sendI18n("command.property.equals",getName(), getValue());
             return 1;
         });
     }

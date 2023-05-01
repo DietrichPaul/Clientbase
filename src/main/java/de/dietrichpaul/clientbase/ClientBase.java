@@ -36,7 +36,6 @@ import java.util.stream.Collectors;
  * Clientbase by DietrichPaul
  * <p>
  * TODO | General
- *  - ChatUtil.i18n(key: String, objects: Object...), automatically wrap objects and format them in gray
  *  - AimbotRotationSpoof target through walls property
  *  - AimbotRotationSpoof bestvec forcing when no other way is possible
  *  - StrafeMode forcing sprint.

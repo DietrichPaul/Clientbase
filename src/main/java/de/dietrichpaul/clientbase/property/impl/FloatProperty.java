@@ -69,15 +69,11 @@ public class FloatProperty extends Property {
                 argument("value", FloatArgumentType.floatArg(min, max))
                         .executes(ctx -> {
                             setValue(FloatArgumentType.getFloat(ctx, "value"));
-                            ChatUtil.sendChatMessage(Text.translatable("command.property.set",
-                                    Text.literal(getName()).formatted(Formatting.GRAY),
-                                    Text.literal(String.valueOf(value)).formatted(Formatting.GRAY)));
+                            ChatUtil.sendI18n("command.property.set",getName(), getValue());
                             return 1;
                         })
         ).executes(context -> {
-            ChatUtil.sendChatMessage(Text.translatable("command.property.equals",
-                    Text.literal(getName()).formatted(Formatting.GRAY),
-                    Text.literal(String.valueOf(value).formatted(Formatting.GRAY))));
+            ChatUtil.sendI18n("command.property.equals",getName(), getValue());
             return 1;
         });
     }

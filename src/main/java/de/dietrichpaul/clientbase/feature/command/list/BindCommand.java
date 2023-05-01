@@ -56,11 +56,10 @@ public class BindCommand extends Command {
 
     private int list(CommandContext<CommandSource> ctx) {
         InputUtil.Key key = KeyArgumentType.getKey(ctx, "key");
-        ChatUtil.sendChatMessage(Text.translatable("command.bind.list", Text.empty().append(key.getLocalizedText())
-                .formatted(Formatting.GRAY)));
+        ChatUtil.sendI18n("command.bind.list", key.getLocalizedText());
 
         for (String binding : ClientBase.INSTANCE.getKeybindingList().getBindings(key)) {
-            ChatUtil.sendChatMessage(Text.translatable("bullet_point", binding));
+            ChatUtil.sendI18n("bullet_point", binding);
         }
         return 1;
     }
@@ -68,8 +67,7 @@ public class BindCommand extends Command {
     private int remove(CommandContext<CommandSource> ctx) {
         InputUtil.Key key = KeyArgumentType.getKey(ctx, "key");
         ClientBase.INSTANCE.getKeybindingList().unbind(key);
-        ChatUtil.sendChatMessage(Text.translatable("command.bind.remove",
-                Text.empty().append(key.getLocalizedText()).formatted(Formatting.GRAY)));
+        ChatUtil.sendI18n("command.bind.remove", key.getLocalizedText());
         return 1;
     }
 
@@ -77,9 +75,7 @@ public class BindCommand extends Command {
         InputUtil.Key key = KeyArgumentType.getKey(ctx, "key");
         String message = StringArgumentType.getString(ctx, "message");
         ClientBase.INSTANCE.getKeybindingList().bind(key, message);
-        ChatUtil.sendChatMessage(Text.translatable("command.bind.add",
-                Text.literal(message).formatted(Formatting.GRAY),
-                Text.empty().append(key.getLocalizedText()).formatted(Formatting.GRAY)));
+        ChatUtil.sendI18n("command.bind.add", message, key.getLocalizedText());
         return 1;
     }
 }

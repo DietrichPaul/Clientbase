@@ -38,4 +38,20 @@ public class ChatUtil {
 
         chat.sendMessage(text, false);
     }
+
+    public static MutableText i18n(String key, Object... args) {
+        for (int i = 0; i < args.length; i++) {
+            Object obj = args[i];
+            if (obj instanceof Text text) {
+                args[i] = Text.literal("").append(text).formatted(Formatting.GRAY);
+            } else {
+                args[i] = Text.literal(String.valueOf(obj)).formatted(Formatting.GRAY);
+            }
+        }
+        return Text.translatable(key, args);
+    }
+
+    public static void sendI18n(String key, Object... args) {
+        sendChatMessage(i18n(key, args));
+    }
 }

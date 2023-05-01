@@ -25,7 +25,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.registry.Registries;
 import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -102,9 +101,7 @@ public class EntityTypeProperty extends Property {
                                             entityTypes.removeBoolean(type);
                                             entityTypes.put(type, true);
                                             reportChanges();
-                                            ChatUtil.sendChatMessage(Text.translatable("command.property.add",
-                                                    Text.translatable(type.getTranslationKey()).formatted(Formatting.GRAY),
-                                                    Text.literal(getName()).formatted(Formatting.GRAY)));
+                                            ChatUtil.sendI18n("command.property.add", Text.translatable(type.getTranslationKey()), getName());
                                             return 1;
                                         })
                         )
@@ -117,18 +114,15 @@ public class EntityTypeProperty extends Property {
                                             entityTypes.removeBoolean(type);
                                             entityTypes.put(type, false);
                                             reportChanges();
-                                            ChatUtil.sendChatMessage(Text.translatable("command.property.remove",
-                                                    Text.translatable(type.getTranslationKey()).formatted(Formatting.GRAY),
-                                                    Text.literal(getName()).formatted(Formatting.GRAY)));
+                                            ChatUtil.sendI18n("command.property.remove", Text.translatable(type.getTranslationKey()), getName());
                                             return 1;
                                         })
                         )
         ).executes(context -> {
-            ChatUtil.sendChatMessage(Text.translatable("command.property.contains",
-                    Text.literal(getName()).formatted(Formatting.GRAY)));
+            ChatUtil.sendI18n("command.property.contains", getName());
             entityTypes.forEach((entityType, aBoolean) -> {
                 if (aBoolean) {
-                    ChatUtil.sendChatMessage(Text.translatable("bullet_point", Text.translatable(entityType.getTranslationKey())));
+                    ChatUtil.sendI18n("bullet_point", Text.translatable(entityType.getTranslationKey()));
                 }
             });
             return 1;

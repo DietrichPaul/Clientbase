@@ -65,15 +65,11 @@ public class EnumProperty<T extends Enum<T>> extends Property {
                         .executes(context -> {
                             T value = EnumArgumentType.getEnumField(context, "value", clazz);
                             setValue(value);
-                            ChatUtil.sendChatMessage(Text.translatable("command.property.set",
-                                    Text.literal(getName()).formatted(Formatting.GRAY),
-                                    Text.literal(String.valueOf(value)).formatted(Formatting.GRAY)));
+                            ChatUtil.sendI18n("command.property.set",getName(), getValue());
                             return 1;
                         })
         ).executes(context -> {
-            ChatUtil.sendChatMessage(Text.translatable("command.property.equals",
-                    Text.literal(getName()).formatted(Formatting.GRAY),
-                    Text.literal(String.valueOf(value).formatted(Formatting.GRAY))));
+            ChatUtil.sendI18n("command.property.equals",getName(), getValue());
             return 1;
         });
     }

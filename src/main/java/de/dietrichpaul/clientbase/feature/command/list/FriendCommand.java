@@ -36,23 +36,21 @@ public class FriendCommand extends Command {
     private int add(CommandContext<CommandSource> ctx) {
         String friend = StringArgumentType.getString(ctx, "name");
         ClientBase.INSTANCE.getFriendList().add(friend);
-        ChatUtil.sendChatMessage(Text.translatable("command.friend.add",
-                Text.literal(friend).formatted(Formatting.GRAY)));
+        ChatUtil.sendI18n("command.friend.add", friend);
         return 1;
     }
 
     private int remove(CommandContext<CommandSource> ctx) {
         String friend = FriendArgumentType.getFriend(ctx, "name");
         ClientBase.INSTANCE.getFriendList().remove(friend);
-        ChatUtil.sendChatMessage(Text.translatable("command.friend.remove",
-                Text.literal(friend).formatted(Formatting.GRAY)));
+        ChatUtil.sendI18n("command.friend.remove", friend);
         return 1;
     }
 
     private int list() {
-        ChatUtil.sendChatMessage(Text.translatable("command.friend.list"));
+        ChatUtil.sendI18n("command.friend.list");
         for (String friend : ClientBase.INSTANCE.getFriendList().getFriends()) {
-            ChatUtil.sendChatMessage(Text.translatable("bullet_point", friend));
+            ChatUtil.sendI18n("bullet_point", friend);
         }
         return 1;
     }

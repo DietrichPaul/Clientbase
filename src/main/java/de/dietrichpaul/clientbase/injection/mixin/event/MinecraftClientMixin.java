@@ -11,9 +11,11 @@
  */
 package de.dietrichpaul.clientbase.injection.mixin.event;
 
+import de.dietrichpaul.clientbase.event.OpenScreenListener;
 import de.dietrichpaul.clientbase.event.PreTickRaytraceListener;
 import de.dietrichpaul.clientbase.ClientBase;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.screen.Screen;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -25,5 +27,11 @@ public class MinecraftClientMixin {
     @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/GameRenderer;updateTargetedEntity(F)V", shift = At.Shift.BEFORE))
     public void onPreRaytrace(CallbackInfo ci) {
         ClientBase.INSTANCE.getEventDispatcher().post(new PreTickRaytraceListener.PreTickRaytraceEvent());
+    }
+
+    @Inject(method = "setScreen", at = @At("HEAD"), cancellable = true)
+    public void onSetScreen(Screen screen, CallbackInfo ci) {
+        if (ClientBase.INSTANCE.getEventDispatcher().post(new OpenScreenListener.OpenScreenEvent(screen)).isCancelled())
+            ci.cancel();
     }
 }

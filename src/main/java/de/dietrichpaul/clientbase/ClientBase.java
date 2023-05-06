@@ -17,6 +17,8 @@ import de.dietrichpaul.clientbase.feature.FriendList;
 import de.dietrichpaul.clientbase.feature.KeybindingList;
 import de.dietrichpaul.clientbase.feature.engine.clicking.ClickEngine;
 import de.dietrichpaul.clientbase.feature.command.CommandList;
+import de.dietrichpaul.clientbase.feature.engine.inventory.InventoryEngine;
+import de.dietrichpaul.clientbase.feature.engine.inventory.InventoryHandler;
 import de.dietrichpaul.clientbase.feature.hack.HackList;
 import de.dietrichpaul.clientbase.feature.engine.rotation.RotationEngine;
 import de.dietrichpaul.clientbase.util.render.api.Renderer2D;
@@ -45,6 +47,8 @@ import java.util.stream.Collectors;
  *      Commands for this: #profile save <file> (<hacks>: for this a new argumenttype is needed), #profile load <file>.
  *      #profile list. For <file> there must be a new argumenttype too, which has as boolean if the file exists, which
  *      is suggested or if the file can be overwritten or created: "replace".
+ *  - ChestStealer Close + CloseDelay
+ *  - save Binds
  */
 public class ClientBase implements ClientModInitializer {
     public final static ModMetadata METADATA = FabricLoader.getInstance().getModContainer("clientbase").orElseThrow().getMetadata();
@@ -59,6 +63,7 @@ public class ClientBase implements ClientModInitializer {
     private final File directory = new File(MinecraftClient.getInstance().runDirectory, NAME);
 
     private ClickEngine clickEngine;
+    private InventoryEngine inventoryEngine;
     private RotationEngine rotationEngine;
 
     private FontList fontList;
@@ -77,6 +82,7 @@ public class ClientBase implements ClientModInitializer {
         Renderer2D.loadShaders();
 
         this.clickEngine = new ClickEngine();
+        this.inventoryEngine = new InventoryEngine();
         this.rotationEngine = new RotationEngine();
 
         this.fontList = new FontList();
@@ -108,6 +114,10 @@ public class ClientBase implements ClientModInitializer {
 
     public ClickEngine getClickEngine() {
         return clickEngine;
+    }
+
+    public InventoryEngine getInventoryEngine() {
+        return inventoryEngine;
     }
 
     public RotationEngine getRotationEngine() {

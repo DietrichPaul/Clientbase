@@ -11,10 +11,12 @@
  */
 package de.dietrichpaul.clientbase.feature.hack;
 
+import de.dietrichpaul.clientbase.feature.hack.combat.AutoArmorHack;
 import de.dietrichpaul.clientbase.feature.hack.combat.KillAuraHack;
 import de.dietrichpaul.clientbase.feature.hack.movement.FlightHack;
 import de.dietrichpaul.clientbase.feature.hack.movement.SprintHack;
 import de.dietrichpaul.clientbase.feature.hack.render.HudHack;
+import de.dietrichpaul.clientbase.feature.hack.world.ChestStealerHack;
 
 import java.util.Collection;
 import java.util.Map;
@@ -24,6 +26,7 @@ public class HackList {
     private final Map<String, Hack> hacks = new TreeMap<>();
 
     // combat
+    public AutoArmorHack autoArmor = new AutoArmorHack();
     public KillAuraHack killAura = new KillAuraHack();
 
     // movement
@@ -33,8 +36,12 @@ public class HackList {
     // render
     public HudHack hud = new HudHack();
 
+    // world
+    public ChestStealerHack chestStealer = new ChestStealerHack();
+
     public void registerBuiltIn() {
         // combat
+        register(autoArmor);
         register(killAura);
 
         // movement
@@ -43,6 +50,9 @@ public class HackList {
 
         // render
         register(hud);
+
+        // world
+        register(chestStealer);
     }
 
     public void register(Hack hack) {

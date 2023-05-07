@@ -17,6 +17,7 @@ import de.dietrichpaul.clientbase.feature.hack.movement.FlightHack;
 import de.dietrichpaul.clientbase.feature.hack.movement.SprintHack;
 import de.dietrichpaul.clientbase.feature.hack.render.HudHack;
 import de.dietrichpaul.clientbase.feature.hack.world.ChestStealerHack;
+import de.dietrichpaul.clientbase.feature.hack.world.ScaffoldWalkHack;
 
 import java.util.Collection;
 import java.util.Map;
@@ -38,6 +39,7 @@ public class HackList {
 
     // world
     public ChestStealerHack chestStealer = new ChestStealerHack();
+    public ScaffoldWalkHack scaffoldWalk = new ScaffoldWalkHack();
 
     public void registerBuiltIn() {
         // combat
@@ -53,6 +55,7 @@ public class HackList {
 
         // world
         register(chestStealer);
+        register(scaffoldWalk);
     }
 
     public void register(Hack hack) {

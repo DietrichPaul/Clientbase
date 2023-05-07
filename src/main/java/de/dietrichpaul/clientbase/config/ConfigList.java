@@ -11,6 +11,7 @@
  */
 package de.dietrichpaul.clientbase.config;
 
+import de.dietrichpaul.clientbase.config.list.BindConfig;
 import de.dietrichpaul.clientbase.config.list.HackConfig;
 import de.dietrichpaul.clientbase.event.UpdateListener;
 import de.dietrichpaul.clientbase.ClientBase;
@@ -23,6 +24,7 @@ import java.util.Set;
 public class ConfigList implements UpdateListener {
     private final Set<AbstractConfig> configs = new LinkedHashSet<>();
 
+    public BindConfig bind = new BindConfig();
     public HackConfig hack = new HackConfig();
 
     public ConfigList() {

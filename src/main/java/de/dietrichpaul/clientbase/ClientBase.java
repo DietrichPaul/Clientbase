@@ -48,7 +48,6 @@ import java.util.stream.Collectors;
  *      #profile list. For <file> there must be a new argumenttype too, which has as boolean if the file exists, which
  *      is suggested or if the file can be overwritten or created: "replace".
  *  - ChestStealer Close + CloseDelay
- *  - save Binds
  */
 public class ClientBase implements ClientModInitializer {
     public final static ModMetadata METADATA = FabricLoader.getInstance().getModContainer("clientbase").orElseThrow().getMetadata();

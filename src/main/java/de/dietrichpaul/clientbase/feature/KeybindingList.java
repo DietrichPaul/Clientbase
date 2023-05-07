@@ -32,10 +32,6 @@ public class KeybindingList implements KeyListener {
 
     public KeybindingList() {
         ClientBase.INSTANCE.getEventDispatcher().subscribe(KeyListener.class, this);
-
-        // remove this and save in config (default)
-        bind(InputUtil.fromTranslationKey("key.keyboard.right.shift"), "ClickGui");
-        bind(InputUtil.fromTranslationKey("key.keyboard.r"), "KillAura");
     }
 
     @Override
@@ -57,8 +53,13 @@ public class KeybindingList implements KeyListener {
         }
     }
 
-    public void bind(InputUtil.Key key, String message) {
+    public void bindWithoutSaving(InputUtil.Key key, String message) {
         bindings.computeIfAbsent(key, k -> new LinkedList<>()).add(message);
+    }
+
+    public void bind(InputUtil.Key key, String message) {
+        bindWithoutSaving(key, message);
+        ClientBase.INSTANCE.getConfigList().bind.save();
     }
 
     public List<String> getBindings(InputUtil.Key key) {
@@ -67,6 +68,7 @@ public class KeybindingList implements KeyListener {
 
     public void unbind(InputUtil.Key key) {
         bindings.remove(key);
+        ClientBase.INSTANCE.getConfigList().bind.save();
     }
 
     public Map<InputUtil.Key, List<String>> getBindings() {

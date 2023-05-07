@@ -11,6 +11,7 @@
  */
 package de.dietrichpaul.clientbase.feature.engine.rotation.impl;
 
+import de.dietrichpaul.clientbase.ClientBase;
 import de.dietrichpaul.clientbase.feature.engine.rotation.impl.aimbot.RotationMode;
 import de.dietrichpaul.clientbase.feature.hack.Hack;
 import de.dietrichpaul.clientbase.feature.engine.rotation.RotationSpoof;
@@ -24,6 +25,7 @@ import de.dietrichpaul.clientbase.util.math.MathUtil;
 import de.dietrichpaul.clientbase.util.minecraft.rtx.Raytrace;
 import de.dietrichpaul.clientbase.util.minecraft.rtx.RaytraceUtil;
 import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.network.OtherClientPlayerEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.util.hit.BlockHitResult;
@@ -76,6 +78,9 @@ public class AimbotRotationSpoof extends RotationSpoof {
                 continue;
 
             if (!entityTypeProperty.filter(entity)) // Entity isn't a target
+                continue;
+
+            if (entity instanceof OtherClientPlayerEntity player && ClientBase.INSTANCE.getFriendList().getFriends().contains(player.getGameProfile().getName()))
                 continue;
 
             // Entity out of distance

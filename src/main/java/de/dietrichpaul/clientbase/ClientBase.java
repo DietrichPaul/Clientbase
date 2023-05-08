@@ -49,6 +49,7 @@ import java.util.stream.Collectors;
  *      is suggested or if the file can be overwritten or created: "replace".
  *  - ChestStealer Close + CloseDelay
  *  - hasTarget in RotationSpoof
+ *  - Friend save
  */
 public class ClientBase implements ClientModInitializer {
     public final static ModMetadata METADATA = FabricLoader.getInstance().getModContainer("clientbase").orElseThrow().getMetadata();

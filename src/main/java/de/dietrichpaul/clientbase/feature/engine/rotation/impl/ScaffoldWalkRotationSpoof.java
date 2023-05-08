@@ -23,6 +23,14 @@ public class ScaffoldWalkRotationSpoof extends RotationSpoof {
         parent = hack;
     }
 
+    public BlockPos getBlockPos() {
+        return blockPos;
+    }
+
+    public Direction getFace() {
+        return face;
+    }
+
     @Override
     public boolean pickTarget() {
         hasTarget = false;
@@ -34,16 +42,40 @@ public class ScaffoldWalkRotationSpoof extends RotationSpoof {
         face = null;
 
         Vec3d camera = mc.player.getCameraPosVec(1.0F);
-        for (Direction direction : Direction.values()) {
-            BlockPos offset = below.offset(direction);
-            if (BlockUtil.getBlockState(offset).isAir()) continue;
+        double closest = Double.MAX_VALUE;
 
-            if (camera.squaredDistanceTo(Vec3d.ofCenter(below)) >= camera.squaredDistanceTo(Vec3d.of(offset)))
-                continue;
+        for (int x = -2; x <= 2; x++) {
+            for (int y = -2; y <= 0; y++) {
+                for (int z = -2; z <= 2; z++) {
+                    BlockPos start = below.add(x, y, z);
+                    if (BlockUtil.getBlockState(start).isAir())
+                        continue;
 
-            blockPos = offset;
-            face = direction.getOpposite();
+
+                    for (Direction direction : Direction.values()) {
+                        BlockPos offset = start.offset(direction);
+
+                        if (camera.squaredDistanceTo(Vec3d.ofCenter(offset)) >= camera.squaredDistanceTo(Vec3d.ofCenter(start)))
+                            continue;
+
+                        if (!BlockUtil.getBlockState(offset).isAir())
+                            continue;
+
+                        if (offset.getY() + 1 > mc.player.getY())
+                            continue;
+
+                        double dist = Vec3d.ofCenter(offset).distanceTo(Vec3d.ofCenter(below));
+                        if (dist < closest) {
+                            closest = dist;
+                            blockPos = start;
+                            face = direction;
+                        }
+                    }
+                }
+            }
         }
+
+
 
         return (hasTarget = blockPos != null);
     }

@@ -36,7 +36,7 @@ public class ErrorCorrectedFix extends CorrectMovement {
             event.moveSideways = (int) Math.round(-Math.sin(Math.toRadians(partialAngles + angle - serverYaw)));
             double serverAngle = serverYaw + Math.toDegrees(Math.atan2(-event.moveSideways, event.moveForward));
 
-            partialAngles += MathHelper.wrapDegrees(angle - serverAngle);
+            partialAngles += MathHelper.wrapDegrees(angle - serverAngle) * epsilon;
         }
     }
 }

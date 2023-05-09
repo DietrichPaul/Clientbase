@@ -2,6 +2,7 @@ package de.dietrichpaul.clientbase.feature.engine.rotation.impl;
 
 import de.dietrichpaul.clientbase.feature.engine.rotation.RotationSpoof;
 import de.dietrichpaul.clientbase.feature.hack.world.ScaffoldWalkHack;
+import de.dietrichpaul.clientbase.property.impl.IntProperty;
 import de.dietrichpaul.clientbase.util.math.MathUtil;
 import de.dietrichpaul.clientbase.util.minecraft.BlockUtil;
 import de.dietrichpaul.clientbase.util.minecraft.rtx.Raytrace;
@@ -17,9 +18,13 @@ public class ScaffoldWalkRotationSpoof extends RotationSpoof {
     private Direction face;
 
     private boolean hasTarget;
+    private int keepRotationLength;
+
+    private IntProperty keepRotationProperty = new IntProperty("KeepRotations", 0, 0, 20);
 
     public ScaffoldWalkRotationSpoof(ScaffoldWalkHack hack) {
         super(hack);
+        hack.addProperty(keepRotationProperty);
         parent = hack;
     }
 
@@ -32,11 +37,17 @@ public class ScaffoldWalkRotationSpoof extends RotationSpoof {
     }
 
     @Override
+    public void tick() {
+        if (keepRotationLength > 0)
+            keepRotationLength--;
+    }
+
+    @Override
     public boolean pickTarget() {
         hasTarget = false;
 
         BlockPos below = BlockPos.ofFloored(mc.player.getPos()).down();
-        if (!BlockUtil.getBlockState(below).isAir()) return false;
+        if (!BlockUtil.getBlockState(below).isAir()) return keepRotationLength != 0;
 
         blockPos = null;
         face = null;
@@ -77,14 +88,22 @@ public class ScaffoldWalkRotationSpoof extends RotationSpoof {
 
 
 
-        return (hasTarget = blockPos != null);
+        hasTarget = blockPos != null;
+        if (hasTarget)
+            keepRotationLength = keepRotationProperty.getValue();
+        return hasTarget || keepRotationLength != 0;
     }
 
     @Override
     public void rotate(float[] rotations, float[] prevRotations, boolean tick, float partialTicks) {
-        Vec3d camera = mc.player.getCameraPosVec(1.0F);
-        Vec3d hitVec = Vec3d.ofCenter(blockPos).add(Vec3d.of(face.getVector()).multiply(0.5));
-        MathUtil.getRotations(camera, hitVec, rotations);
+        if (hasTarget) {
+            Vec3d camera = mc.player.getCameraPosVec(1.0F);
+            Vec3d hitVec = Vec3d.ofCenter(blockPos).add(Vec3d.of(face.getVector()).multiply(0.5));
+            MathUtil.getRotations(camera, hitVec, rotations);
+        } else {
+            rotations[0] = prevRotations[0];
+            rotations[1] = prevRotations[1];
+        }
     }
 
     public boolean hasTarget() {

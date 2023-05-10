@@ -100,7 +100,7 @@ public class KillAuraHack extends Hack implements UpdateListener,TargetPickListe
     @Override
     public void onPickTarget(TargetPickEvent event) {
         if (aimbot.hasTarget())
-            event.setTarget(event.getTarget());
+            event.setTarget(aimbot.getPrimaryTarget());
     }
 
     enum SmartClickingMode {

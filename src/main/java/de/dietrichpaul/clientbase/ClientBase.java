@@ -21,6 +21,7 @@ import de.dietrichpaul.clientbase.feature.engine.inventory.InventoryEngine;
 import de.dietrichpaul.clientbase.feature.engine.inventory.InventoryHandler;
 import de.dietrichpaul.clientbase.feature.hack.HackList;
 import de.dietrichpaul.clientbase.feature.engine.rotation.RotationEngine;
+import de.dietrichpaul.clientbase.util.render.api.Blur;
 import de.dietrichpaul.clientbase.util.render.api.Renderer2D;
 import de.florianmichael.dietrichevents.EventDispatcher;
 import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
@@ -80,6 +81,7 @@ public class ClientBase implements ClientModInitializer {
         INSTANCE = this;
 
         this.directory.mkdir();
+        Blur.loadShaders();
         Renderer2D.loadShaders();
 
         this.clickEngine = new ClickEngine();

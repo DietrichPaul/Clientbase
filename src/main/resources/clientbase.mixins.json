@@ -5,6 +5,7 @@
   "compatibilityLevel": "JAVA_17",
   "client": [
     "base.MinecraftClientMixin",
+    "base.render.MinecraftClientMixin",
     "click.MinecraftClientMixin",
     "command.ChatInputSuggestorMixin",
     "command.ChatScreenMixin",

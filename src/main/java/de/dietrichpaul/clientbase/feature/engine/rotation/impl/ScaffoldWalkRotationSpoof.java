@@ -6,6 +6,8 @@ import de.dietrichpaul.clientbase.property.impl.IntProperty;
 import de.dietrichpaul.clientbase.util.math.MathUtil;
 import de.dietrichpaul.clientbase.util.minecraft.BlockUtil;
 import de.dietrichpaul.clientbase.util.minecraft.rtx.Raytrace;
+import net.minecraft.util.hit.BlockHitResult;
+import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
@@ -96,10 +98,23 @@ public class ScaffoldWalkRotationSpoof extends RotationSpoof {
 
     @Override
     public void rotate(float[] rotations, float[] prevRotations, boolean tick, float partialTicks) {
+        BlockPos below = BlockPos.ofFloored(mc.player.getPos()).down();
+        Vec3d camera = mc.player.getCameraPosVec(1.0F);
+        double edgeDist = camera.squaredDistanceTo(Vec3d.ofCenter(blockPos)) - camera.squaredDistanceTo(Vec3d.ofCenter(below));
         if (hasTarget) {
-            Vec3d camera = mc.player.getCameraPosVec(1.0F);
-            Vec3d hitVec = Vec3d.ofCenter(blockPos).add(Vec3d.of(face.getVector()).multiply(0.5));
-            MathUtil.getRotations(camera, hitVec, rotations);
+            if (edgeDist >= 0.5) {
+                Vec3d hitVec = Vec3d.ofCenter(blockPos).add(Vec3d.of(face.getVector()).multiply(0.5));
+                MathUtil.getRotations(camera, hitVec, rotations);
+            } else {
+                HitResult crosshairTarget = mc.crosshairTarget;
+                if (!(crosshairTarget instanceof BlockHitResult) || !((BlockHitResult) crosshairTarget).getBlockPos().equals(blockPos)) {
+                    Vec3d hitVec = Vec3d.ofCenter(blockPos);
+                    MathUtil.getRotations(camera, hitVec, rotations);
+                } else {
+                    rotations[0] = prevRotations[0];
+                    rotations[1] = prevRotations[1];
+                }
+            }
         } else {
             rotations[0] = prevRotations[0];
             rotations[1] = prevRotations[1];

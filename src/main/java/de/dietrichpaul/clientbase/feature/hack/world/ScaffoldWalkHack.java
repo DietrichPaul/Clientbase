@@ -40,7 +40,7 @@ public class ScaffoldWalkHack extends Hack implements ClickSpoof {
             }
         }
         if (mc.crosshairTarget instanceof BlockHitResult bhr) {
-            if (bhr.getBlockPos().equals(rotationSpoof.getBlockPos()) && bhr.getSide().equals(rotationSpoof.getFace()))
+            if (bhr.getBlockPos().equals(rotationSpoof.getBlockPos()))
                 callback.right();
         }
     }

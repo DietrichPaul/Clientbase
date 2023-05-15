@@ -43,11 +43,6 @@ import java.util.stream.Collectors;
  *  - AimbotRotationSpoof target through walls property
  *  - AimbotRotationSpoof priority who dies at first
  *  - KillAura Jitter-Click -> RotationSpoof Rotation Jitter
- *  - profiles for properties of hacks. Also known as "configs". Load only local files that are located in a "profiles/" folder.
- *      Structure: Json, like the hacks.json approximately.
- *      Commands for this: #profile save <file> (<hacks>: for this a new argumenttype is needed), #profile load <file>.
- *      #profile list. For <file> there must be a new argumenttype too, which has as boolean if the file exists, which
- *      is suggested or if the file can be overwritten or created: "replace".
  *  - ChestStealer Close + CloseDelay
  *  - hasTarget in RotationSpoof
  *  - only delay transaction if subscribers for DelayEvent !empty

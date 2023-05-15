@@ -43,7 +43,6 @@ import java.util.stream.Collectors;
  *  - AimbotRotationSpoof target through walls property
  *  - AimbotRotationSpoof priority who dies at first
  *  - KillAura Jitter-Click -> RotationSpoof Rotation Jitter
- *  - ChestStealer Close + CloseDelay
  *  - only delay transaction if subscribers for DelayEvent !empty
  */
 public class ClientBase implements ClientModInitializer {

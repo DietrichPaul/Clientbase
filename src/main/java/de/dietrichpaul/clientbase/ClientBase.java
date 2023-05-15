@@ -41,7 +41,6 @@ import java.util.stream.Collectors;
  * <p>
  * TODO | General
  *  - AimbotRotationSpoof target through walls property
- *  - AimbotRotationSpoof bestvec forcing when no other way is possible
  *  - AimbotRotationSpoof priority who dies at first
  *  - KillAura Jitter-Click -> RotationSpoof Rotation Jitter
  *  - profiles for properties of hacks. Also known as "configs". Load only local files that are located in a "profiles/" folder.

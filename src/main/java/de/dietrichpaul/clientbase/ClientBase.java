@@ -50,7 +50,6 @@ import java.util.stream.Collectors;
  *      is suggested or if the file can be overwritten or created: "replace".
  *  - ChestStealer Close + CloseDelay
  *  - hasTarget in RotationSpoof
- *  - Friend save
  *  - only delay transaction if subscribers for DelayEvent !empty
  */
 public class ClientBase implements ClientModInitializer {

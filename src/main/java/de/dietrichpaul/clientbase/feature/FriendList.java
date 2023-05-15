@@ -11,6 +11,8 @@
  */
 package de.dietrichpaul.clientbase.feature;
 
+import de.dietrichpaul.clientbase.ClientBase;
+
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -19,10 +21,12 @@ public class FriendList {
 
     public void add(String name) {
         friends.add(name);
+        ClientBase.INSTANCE.getConfigList().friend.save();
     }
 
     public void remove(String name) {
         friends.remove(name);
+        ClientBase.INSTANCE.getConfigList().friend.save();
     }
 
     public Set<String> getFriends() {

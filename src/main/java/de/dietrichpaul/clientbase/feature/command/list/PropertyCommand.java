@@ -37,7 +37,7 @@ public class PropertyCommand extends Command {
         }
 
         for (Property property : group.getProperties()) {
-            LiteralArgumentBuilder<CommandSource> propertyLiteral = literal(property.getName().replace(' ', '_'));
+            LiteralArgumentBuilder<CommandSource> propertyLiteral = literal(property.getName().replace(' ', '-'));
             property.buildCommand(propertyLiteral);
             literal.then(propertyLiteral);
         }

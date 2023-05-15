@@ -12,70 +12,42 @@
 package de.dietrichpaul.clientbase.injection.mixin.event;
 
 import com.mojang.authlib.GameProfile;
+import de.dietrichpaul.clientbase.ClientBase;
 import de.dietrichpaul.clientbase.event.PostUpdateListener;
 import de.dietrichpaul.clientbase.event.UpdateListener;
 import de.dietrichpaul.clientbase.event.rotate.RotationSetListener;
 import de.dietrichpaul.clientbase.event.rotate.SendRotationListener;
-import de.dietrichpaul.clientbase.ClientBase;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
-import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ClientPlayerEntity.class)
 public abstract class ClientPlayerEntityMixin extends AbstractClientPlayerEntity {
-
-    @Shadow
-    public abstract float getYaw(float tickDelta);
-
-    @Shadow public abstract void sendMessage(Text message, boolean overlay);
 
     public ClientPlayerEntityMixin(ClientWorld world, GameProfile profile) {
         super(world, profile);
     }
 
-    @Unique
-    private boolean editRotation;
-
-    @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;sendMovementPackets()V", shift = At.Shift.BEFORE))
-    public void onSendMovementPackets1(CallbackInfo ci) {
-        editRotation = true;
+    @Redirect(method = "sendMovementPackets", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;getYaw()F"))
+    public float onGetYaw(ClientPlayerEntity instance) {
+        SendRotationListener.SendRotationEvent sendRotationEvent = ClientBase.INSTANCE.getEventDispatcher().post(new SendRotationListener.SendRotationEvent(instance.getYaw(), SendRotationListener.Type.YAW));
+        return sendRotationEvent.value;
     }
 
-    @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;sendMovementPackets()V", shift = At.Shift.AFTER))
-    public void onSendMovementPackets2(CallbackInfo ci) {
-        editRotation = false;
+    @Redirect(method = "sendMovementPackets", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;getPitch()F"))
+    public float onGetPitch(ClientPlayerEntity instance) {
+        SendRotationListener.SendRotationEvent sendRotationEvent = ClientBase.INSTANCE.getEventDispatcher().post(new SendRotationListener.SendRotationEvent(instance.getPitch(), SendRotationListener.Type.PITCH));
+        return sendRotationEvent.value;
     }
 
     @Inject(method = "tick", at = @At("TAIL"))
     public void onPostTick(CallbackInfo ci) {
         ClientBase.INSTANCE.getEventDispatcher().post(PostUpdateListener.PostUpdateEvent.INSTANCE);
-    }
-
-    @Override
-    public float getYaw() {
-        if (editRotation) {
-            SendRotationListener.SendRotationEvent sendRotationEvent = ClientBase.INSTANCE.getEventDispatcher().post(new SendRotationListener.SendRotationEvent(super.getYaw(), SendRotationListener.Type.YAW));
-            return sendRotationEvent.value;
-        }
-        return super.getYaw();
-    }
-
-    @Override
-    public float getPitch() {
-        if (editRotation) {
-            SendRotationListener.SendRotationEvent sendRotationEvent = ClientBase.INSTANCE.getEventDispatcher().post(new SendRotationListener.SendRotationEvent(super.getPitch(), SendRotationListener.Type.PITCH));
-            return sendRotationEvent.value;
-        }
-        return super.getPitch();
     }
 
     @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/AbstractClientPlayerEntity;tick()V", shift = At.Shift.BEFORE))

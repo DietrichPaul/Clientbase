@@ -121,10 +121,6 @@ public class ScaffoldWalkRotationSpoof extends RotationSpoof {
         }
     }
 
-    public boolean hasTarget() {
-        return hasTarget;
-    }
-
     @Override
     public boolean isToggled() {
         return parent.isToggled();

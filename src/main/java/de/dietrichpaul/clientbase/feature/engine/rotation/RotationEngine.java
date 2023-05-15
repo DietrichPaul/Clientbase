@@ -162,15 +162,18 @@ public class RotationEngine implements SendRotationListener, RaytraceListener, S
             return;
         prevRotations[0] = rotations[0];
         prevRotations[1] = rotations[1];
+        spoofs.forEach(spoof -> spoof.hasTarget = false);
         Optional<RotationSpoof> spoofOpt = spoofs.stream()
                 .filter(RotationSpoof::isToggled)
                 .filter(RotationSpoof::pickTarget)
                 .max(Comparator.comparingInt(RotationSpoof::getPriority));
 
         hasTarget = spoofOpt.isPresent();
+        if (hasTarget) {
+            spoofOpt.get().hasTarget = true;
+        }
         RotationSpoof spoof = hasTarget ? spoofOpt.get() : prevSpoof;
         rotating = spoof != null && (hasTarget || !confirmedClientRotation);
-
 
         if (rotating) {
             prevSpoof = spoof;

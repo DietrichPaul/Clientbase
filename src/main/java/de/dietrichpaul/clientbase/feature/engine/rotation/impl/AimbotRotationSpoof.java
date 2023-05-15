@@ -228,8 +228,4 @@ public class AimbotRotationSpoof extends RotationSpoof {
     public List<Entity> getTargets() {
         return targets;
     }
-
-    public boolean hasTarget() {
-        return !targets.isEmpty();
-    }
 }

@@ -39,6 +39,8 @@ public abstract class RotationSpoof {
     private final EnumProperty<StrafeMode> strafeModeProperty = new EnumProperty<>("Strafe",
             StrafeMode.SILENT, StrafeMode.values(), StrafeMode.class);
 
+    boolean hasTarget;
+
     public RotationSpoof(PropertyGroup propertyGroup) {
         propertyGroup.addProperty(minYawSpeed);
         propertyGroup.addProperty(maxYawSpeed);
@@ -75,6 +77,10 @@ public abstract class RotationSpoof {
 
     public float getPitchSpeed() {
         return MathHelper.lerp((float) Math.random(), minPitchSpeed.getValue(), maxPitchSpeed.getValue());
+    }
+
+    public boolean hasTarget() {
+        return hasTarget;
     }
 
     public boolean rotateBack() {

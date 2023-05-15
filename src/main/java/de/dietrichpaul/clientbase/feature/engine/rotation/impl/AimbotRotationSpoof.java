@@ -121,7 +121,7 @@ public class AimbotRotationSpoof extends RotationSpoof {
                                 );
                                 float[] rotations = new float[2];
                                 MathUtil.getRotations(camera, hitVec, rotations);
-                                Raytrace raytrace = RaytraceUtil.raytrace(mc, mc.cameraEntity, rotations, rotations, getRange(), 1.0F);
+                                Raytrace raytrace = RaytraceUtil.raytrace(mc, mc.cameraEntity, rotations, rotations, getRange() + aimRangeProperty.getValue(), 1.0F);
                                 if (raytrace.hitResult() instanceof EntityHitResult) {
                                     found = true;
                                     break bruteforce;

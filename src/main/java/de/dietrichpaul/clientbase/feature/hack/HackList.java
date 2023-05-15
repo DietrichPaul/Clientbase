@@ -14,6 +14,7 @@ package de.dietrichpaul.clientbase.feature.hack;
 import de.dietrichpaul.clientbase.feature.hack.combat.AutoArmorHack;
 import de.dietrichpaul.clientbase.feature.hack.combat.KillAuraHack;
 import de.dietrichpaul.clientbase.feature.hack.combat.SuperKnockbackHack;
+import de.dietrichpaul.clientbase.feature.hack.combat.BacktrackHack;
 import de.dietrichpaul.clientbase.feature.hack.movement.FlightHack;
 import de.dietrichpaul.clientbase.feature.hack.movement.SprintHack;
 import de.dietrichpaul.clientbase.feature.hack.render.HudHack;
@@ -29,6 +30,7 @@ public class HackList {
 
     // combat
     public AutoArmorHack autoArmor = new AutoArmorHack();
+    public BacktrackHack backtrack = new BacktrackHack();
     public KillAuraHack killAura = new KillAuraHack();
     public SuperKnockbackHack superKnockback = new SuperKnockbackHack();
 
@@ -46,6 +48,7 @@ public class HackList {
     public void registerBuiltIn() {
         // combat
         register(autoArmor);
+        register(backtrack);
         register(killAura);
         register(superKnockback);
 

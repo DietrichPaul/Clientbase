@@ -12,6 +12,7 @@
 package de.dietrichpaul.clientbase.injection.mixin.event;
 
 import com.mojang.authlib.GameProfile;
+import de.dietrichpaul.clientbase.event.PostUpdateListener;
 import de.dietrichpaul.clientbase.event.UpdateListener;
 import de.dietrichpaul.clientbase.event.rotate.RotationSetListener;
 import de.dietrichpaul.clientbase.event.rotate.SendRotationListener;
@@ -52,6 +53,11 @@ public abstract class ClientPlayerEntityMixin extends AbstractClientPlayerEntity
     @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;sendMovementPackets()V", shift = At.Shift.AFTER))
     public void onSendMovementPackets2(CallbackInfo ci) {
         editRotation = false;
+    }
+
+    @Inject(method = "tick", at = @At("TAIL"))
+    public void onPostTick(CallbackInfo ci) {
+        ClientBase.INSTANCE.getEventDispatcher().post(PostUpdateListener.PostUpdateEvent.INSTANCE);
     }
 
     @Override

@@ -19,6 +19,7 @@ import de.dietrichpaul.clientbase.feature.engine.clicking.ClickEngine;
 import de.dietrichpaul.clientbase.feature.command.CommandList;
 import de.dietrichpaul.clientbase.feature.engine.inventory.InventoryEngine;
 import de.dietrichpaul.clientbase.feature.engine.inventory.InventoryHandler;
+import de.dietrichpaul.clientbase.feature.engine.lag.LagEngine;
 import de.dietrichpaul.clientbase.feature.hack.HackList;
 import de.dietrichpaul.clientbase.feature.engine.rotation.RotationEngine;
 import de.dietrichpaul.clientbase.util.render.api.Blur;
@@ -51,6 +52,7 @@ import java.util.stream.Collectors;
  *  - ChestStealer Close + CloseDelay
  *  - hasTarget in RotationSpoof
  *  - Friend save
+ *  - only delay transaction if subscribers for DelayEvent !empty
  */
 public class ClientBase implements ClientModInitializer {
     public final static ModMetadata METADATA = FabricLoader.getInstance().getModContainer("clientbase").orElseThrow().getMetadata();
@@ -67,6 +69,7 @@ public class ClientBase implements ClientModInitializer {
     private ClickEngine clickEngine;
     private InventoryEngine inventoryEngine;
     private RotationEngine rotationEngine;
+    private LagEngine lagEngine;
 
     private FontList fontList;
     private CommandList commandList;
@@ -87,6 +90,7 @@ public class ClientBase implements ClientModInitializer {
         this.clickEngine = new ClickEngine();
         this.inventoryEngine = new InventoryEngine();
         this.rotationEngine = new RotationEngine();
+        this.lagEngine = new LagEngine();
 
         this.fontList = new FontList();
         this.commandList = new CommandList();
@@ -105,6 +109,10 @@ public class ClientBase implements ClientModInitializer {
 
     public void stop() {
         // Not implemented atm
+    }
+
+    public LagEngine getLagEngine() {
+        return lagEngine;
     }
 
     public EventDispatcher getEventDispatcher() {

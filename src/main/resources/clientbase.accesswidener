@@ -2,4 +2,7 @@ accessWidener v1 named
 accessible field net/minecraft/client/util/InputUtil$Key KEYS Ljava/util/Map;
 accessible field net/minecraft/client/option/KeyBinding timesPressed I
 accessible field net/minecraft/client/MinecraftClient attackCooldown I
+accessible field net/minecraft/entity/Entity dimensions Lnet/minecraft/entity/EntityDimensions;
+accessible field net/minecraft/entity/TrackedPosition pos Lnet/minecraft/util/math/Vec3d;
 accessible method net/minecraft/client/gui/screen/Screen addDrawableChild (Lnet/minecraft/client/gui/Element;)Lnet/minecraft/client/gui/Element;
+accessible method net/minecraft/network/ClientConnection handlePacket (Lnet/minecraft/network/packet/Packet;Lnet/minecraft/network/listener/PacketListener;)V

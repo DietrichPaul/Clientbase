@@ -4,6 +4,7 @@ import de.dietrichpaul.clientbase.ClientBase;
 import de.dietrichpaul.clientbase.event.lag.DelayIncomingPacketListener;
 import de.dietrichpaul.clientbase.event.network.ReceivePacketListener;
 import de.florianmichael.dietrichevents.EventDispatcher;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.network.OffThreadException;
 import net.minecraft.network.packet.Packet;
@@ -41,7 +42,7 @@ public class LagEngine implements ReceivePacketListener {
 
     @Override
     public void onReceivePacket(ReceivePacketEvent event) {
-        if (!(event.getListener() instanceof ClientPlayNetworkHandler))
+        if (!(event.getListener() instanceof ClientPlayNetworkHandler) || MinecraftClient.getInstance().player == null)
             return;
         Packet<?> packet = event.getPacket();
         if (this.stopTraffic || isAcknowledgment(packet)) {

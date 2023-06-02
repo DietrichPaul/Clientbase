@@ -11,6 +11,7 @@
  */
 package de.dietrichpaul.clientbase.feature.engine.rotation.impl;
 
+import com.sun.jna.platform.win32.OaIdl;
 import de.dietrichpaul.clientbase.ClientBase;
 import de.dietrichpaul.clientbase.feature.engine.rotation.impl.aimbot.RotationMode;
 import de.dietrichpaul.clientbase.feature.hack.Hack;
@@ -159,7 +160,7 @@ public class AimbotRotationSpoof extends RotationSpoof {
         rotationModeProperty.getValue().getMethod().getRotations(camera, aabb, primaryTarget, rotations, prevRotations, partialTicks);
 
         float[] outRotations = new float[2];
-        engine.mouseSensitivity(prevRotations, rotations, outRotations, partialTicks);
+        engine.mouseSensitivity(prevRotations, rotations, outRotations, 1.0F);
         Raytrace raytrace = RaytraceUtil.raytrace(mc, mc.cameraEntity, outRotations, outRotations, getRange(), partialTicks);
         if (raytrace.hitResult() instanceof EntityHitResult) {
             return;
@@ -177,9 +178,9 @@ public class AimbotRotationSpoof extends RotationSpoof {
                     float[] bruteForce = new float[2];
                     MathUtil.getRotations(camera, hitVec, bruteForce);
 
-                    engine.mouseSensitivity(prevRotations, bruteForce, outRotations, partialTicks);
-                    float yawDiff = MathHelper.angleBetween(rotations[0], outRotations[0]);
-                    float pitchDiff = MathHelper.angleBetween(rotations[1], outRotations[1]);
+                    engine.mouseSensitivity(prevRotations, bruteForce, outRotations, 1.0F);
+                    float yawDiff = MathHelper.angleBetween(prevRotations[0], outRotations[0]);
+                    float pitchDiff = MathHelper.angleBetween(prevRotations[1], outRotations[1]);
                     float len = MathHelper.sqrt(yawDiff * yawDiff + pitchDiff * pitchDiff);
                     if (len > length)
                         continue;

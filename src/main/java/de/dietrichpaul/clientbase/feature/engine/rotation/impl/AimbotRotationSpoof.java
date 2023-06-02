@@ -25,6 +25,7 @@ import de.dietrichpaul.clientbase.property.impl.IntProperty;
 import de.dietrichpaul.clientbase.util.math.MathUtil;
 import de.dietrichpaul.clientbase.util.minecraft.rtx.Raytrace;
 import de.dietrichpaul.clientbase.util.minecraft.rtx.RaytraceUtil;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.network.OtherClientPlayerEntity;
 import net.minecraft.entity.Entity;
@@ -157,7 +158,7 @@ public class AimbotRotationSpoof extends RotationSpoof {
                                 primaryTarget.getZ() - primaryTarget.prevZ
                         ).multiply(partialTicks)
                 );
-        rotationModeProperty.getValue().getMethod().getRotations(camera, aabb, primaryTarget, rotations, prevRotations, partialTicks);
+        rotationModeProperty.getValue().getMethod().getRotations(camera, aabb, primaryTarget, rotations, prevRotations, MinecraftClient.getInstance().getTickDelta());
 
         float[] outRotations = new float[2];
         engine.mouseSensitivity(prevRotations, rotations, outRotations, 1.0F);

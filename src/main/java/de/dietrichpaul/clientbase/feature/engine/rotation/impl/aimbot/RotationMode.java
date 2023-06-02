@@ -2,6 +2,7 @@ package de.dietrichpaul.clientbase.feature.engine.rotation.impl.aimbot;
 
 import de.dietrichpaul.clientbase.util.math.MathUtil;
 import de.dietrichpaul.clientbase.util.math.ProjectedBox;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
@@ -84,6 +85,46 @@ public enum RotationMode {
             double rayLength = camera.distanceTo(box.getCenter()) * 0.5 + camera.distanceTo(MathUtil.clamp(camera, box)) * 0.5;
             MathUtil.getRotations(fixCamera, MathUtil.clamp(fixCamera.add(polar.multiply(rayLength)), box), nearest);
             rotations[1] = MathHelper.lerpAngleDegrees(partialTicks, prevRotations[1], nearest[1]);
+        }
+    }),
+    RANDOM_CENTER("RandomCenter", new RotationMethod() {
+
+        private Vec3d hitVec = new Vec3d(0.5, 0.5, 0.5);
+        private Vec3d prevHitVec;
+        private int step;
+
+        @Override
+        public void tick(Entity target) {
+            prevHitVec = hitVec;
+
+            Box box = target.getBoundingBox();
+
+            double lenX = box.getXLength();
+            double lenY = box.getYLength();
+            double lenZ = box.getZLength();
+            double diagonale = Math.sqrt(lenX * lenX + lenY * lenY + lenZ * lenZ);
+
+            double invX = 1.0 / lenX / diagonale;
+            double invY = 1.0 / lenY / diagonale;
+            double invZ = 1.0 / lenZ / diagonale;
+            float speed = 0.1F;
+
+            float x = (SimplexNoise.noise(((float) invX) * speed * step, 0, 0) + 1) / 2;
+            float y = (SimplexNoise.noise(0, ((float) invY) * speed * step, 0) + 1) / 2;
+            float z = (SimplexNoise.noise(0, 0, ((float) invZ) * speed * step) + 1) / 2;
+            hitVec = new Vec3d(x, y, z);
+            step++;
+        }
+
+        @Override
+        public void getRotations(Vec3d camera, Box aabb, Entity target, float[] rotations, float[] prevRotations, float partialTicks) {
+            Vec3d relativeHitVec = prevHitVec.lerp(this.hitVec, partialTicks);
+            Vec3d hitVec = new Vec3d(
+                    MathHelper.lerp(relativeHitVec.x, aabb.minX, aabb.maxX),
+                    MathHelper.lerp(relativeHitVec.y, aabb.minY, aabb.maxY),
+                    MathHelper.lerp(relativeHitVec.z, aabb.minZ, aabb.maxZ)
+            );
+            MathUtil.getRotations(camera, hitVec, rotations);
         }
     });
 

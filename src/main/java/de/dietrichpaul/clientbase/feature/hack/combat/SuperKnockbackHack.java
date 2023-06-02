@@ -6,6 +6,7 @@ import de.dietrichpaul.clientbase.event.TargetPickListener;
 import de.dietrichpaul.clientbase.event.UpdateListener;
 import de.dietrichpaul.clientbase.feature.hack.Hack;
 import de.dietrichpaul.clientbase.feature.hack.HackCategory;
+import de.dietrichpaul.clientbase.property.impl.BooleanProperty;
 import de.dietrichpaul.clientbase.property.impl.IntProperty;
 import de.dietrichpaul.clientbase.util.math.MathUtil;
 import de.dietrichpaul.clientbase.util.minecraft.ChatUtil;
@@ -19,10 +20,12 @@ import net.minecraft.util.math.Vec3d;
 public class SuperKnockbackHack extends Hack implements KeyPressedStateListener, UpdateListener {
 
     private final IntProperty hurtTimeProperty = new IntProperty("HurtTime", 7, 0, 10);
+    private final BooleanProperty debugProperty = new BooleanProperty("Debug", false);
 
     public SuperKnockbackHack() {
         super("SuperKnockback", HackCategory.COMBAT);
         addProperty(hurtTimeProperty);
+        addProperty(debugProperty);
     }
 
     @Override
@@ -61,7 +64,8 @@ public class SuperKnockbackHack extends Hack implements KeyPressedStateListener,
 
             if (releaseW == 0 && canSprint && event.pressed && living.hurtTime >= hurtTimeProperty.getValue() && isNextTickFurtherAway) {
                 releaseW = 1;
-                ChatUtil.sendChatMessage(Text.of("WTAP"));
+                if (debugProperty.getState())
+                    ChatUtil.sendChatMessage(Text.of("WTAP"));
             }
             if (releaseW != 0) {
                 event.pressed = false;

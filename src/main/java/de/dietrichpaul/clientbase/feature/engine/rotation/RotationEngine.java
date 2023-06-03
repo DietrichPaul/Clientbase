@@ -146,7 +146,7 @@ public class RotationEngine implements SendRotationListener, RaytraceListener, S
 
     @Override
     public void onMoveCamera(float tickDelta) {
-        if (mc.player == null)
+        if (mc.player == null || mc.world == null || mc.cameraEntity == null)
             return;
         if (rotating) {
             if (lockView) rotate(false, tickDelta);
@@ -190,6 +190,7 @@ public class RotationEngine implements SendRotationListener, RaytraceListener, S
 
     @Override
     public void onRaytrace(RaytraceEvent event) {
+        if (mc.player == null || mc.world == null) return;
         if (rotating) {
             event.cancel();
             Raytrace result;

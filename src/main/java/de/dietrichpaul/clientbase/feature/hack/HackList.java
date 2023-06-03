@@ -16,6 +16,7 @@ import de.dietrichpaul.clientbase.feature.hack.combat.KillAuraHack;
 import de.dietrichpaul.clientbase.feature.hack.combat.SuperKnockbackHack;
 import de.dietrichpaul.clientbase.feature.hack.combat.BacktrackHack;
 import de.dietrichpaul.clientbase.feature.hack.movement.FlightHack;
+import de.dietrichpaul.clientbase.feature.hack.movement.SpeedHack;
 import de.dietrichpaul.clientbase.feature.hack.movement.SprintHack;
 import de.dietrichpaul.clientbase.feature.hack.render.HudHack;
 import de.dietrichpaul.clientbase.feature.hack.world.ChestStealerHack;
@@ -36,6 +37,7 @@ public class HackList {
 
     // movement
     public FlightHack flight = new FlightHack();
+    public SpeedHack speed = new SpeedHack();
     public SprintHack sprint = new SprintHack();
 
     // render
@@ -54,6 +56,7 @@ public class HackList {
 
         // movement
         register(flight);
+        register(speed);
         register(sprint);
 
         // render

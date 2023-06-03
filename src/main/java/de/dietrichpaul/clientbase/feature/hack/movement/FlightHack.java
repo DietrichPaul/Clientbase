@@ -17,6 +17,7 @@ import de.dietrichpaul.clientbase.event.network.SendPacketListener;
 import de.dietrichpaul.clientbase.feature.hack.Hack;
 import de.dietrichpaul.clientbase.feature.hack.HackCategory;
 import de.dietrichpaul.clientbase.injection.mixin.hack.PlayerMoveC2SPacketMixin;
+import de.dietrichpaul.clientbase.property.PropertyGroup;
 import de.dietrichpaul.clientbase.property.impl.BooleanProperty;
 import de.dietrichpaul.clientbase.property.impl.EnumProperty;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
@@ -30,7 +31,9 @@ public class FlightHack extends Hack implements SendPacketListener, ReceivePacke
 
     public FlightHack() {
         super("Flight", HackCategory.MOVEMENT);
-        this.addProperty(this.onGroundSpoof);
+        this.addProperty(this.mode);
+        final PropertyGroup vanillaGroup = this.addPropertyGroup("Vanilla");
+        vanillaGroup.addProperty(this.onGroundSpoof);
     }
 
     @Override

@@ -21,6 +21,8 @@
     "event.MinecraftClientMixin",
     "hack.AbstractBlockMixin",
     "hack.BlockModelRendererMixin",
+    "hack.PlayerMoveC2SPacketMixin",
+    "hack.PlayerMoveC2SPacketMixin$IAccessor",
     "inventory.MinecraftClientMixin",
     "rotation.LivingEntityRendererMixin",
     "rotation.PlayerEntityMixin"

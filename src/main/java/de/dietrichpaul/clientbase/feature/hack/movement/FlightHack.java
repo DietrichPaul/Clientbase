@@ -12,18 +12,21 @@
 package de.dietrichpaul.clientbase.feature.hack.movement;
 
 import de.dietrichpaul.clientbase.ClientBase;
-import de.dietrichpaul.clientbase.event.UpdateListener;
+import de.dietrichpaul.clientbase.event.network.ReceivePacketListener;
+import de.dietrichpaul.clientbase.event.network.SendPacketListener;
 import de.dietrichpaul.clientbase.feature.hack.Hack;
 import de.dietrichpaul.clientbase.feature.hack.HackCategory;
+import de.dietrichpaul.clientbase.injection.mixin.hack.PlayerMoveC2SPacketMixin;
 import de.dietrichpaul.clientbase.property.impl.BooleanProperty;
+import de.dietrichpaul.clientbase.property.impl.EnumProperty;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
+import net.minecraft.network.packet.c2s.play.UpdatePlayerAbilitiesC2SPacket;
+import net.minecraft.network.packet.s2c.play.PlayerAbilitiesS2CPacket;
 
-import java.util.Objects;
-
-@SuppressWarnings("DataFlowIssue")
-public class FlightHack extends Hack implements UpdateListener {
+public class FlightHack extends Hack implements SendPacketListener, ReceivePacketListener {
     private final BooleanProperty onGroundSpoof = new BooleanProperty("OnGround", true);
-    private boolean wasFlyingAllowed = false;
+    private final EnumProperty<Mode> mode = new EnumProperty<>("Mode", Mode.CREATIVE, Mode.values(), Mode.class);
+    private boolean realFlyingState = false;
 
     public FlightHack() {
         super("Flight", HackCategory.MOVEMENT);
@@ -32,23 +35,46 @@ public class FlightHack extends Hack implements UpdateListener {
 
     @Override
     protected void onEnable() {
-        ClientBase.INSTANCE.getEventDispatcher().subscribe(UpdateListener.class, this);
+        ClientBase.INSTANCE.getEventDispatcher().subscribe(SendPacketListener.class, this);
+        ClientBase.INSTANCE.getEventDispatcher().subscribe(ReceivePacketListener.class, this);
 
-        this.wasFlyingAllowed = mc.player.getAbilities().allowFlying;
+        if (mc.player == null) return;
+        this.realFlyingState = mc.player.getAbilities().allowFlying;
         mc.player.getAbilities().allowFlying = true;
     }
 
     @Override
     protected void onDisable() {
-        ClientBase.INSTANCE.getEventDispatcher().unsubscribe(UpdateListener.class, this);
+        ClientBase.INSTANCE.getEventDispatcher().unsubscribe(ReceivePacketListener.class, this);
+        ClientBase.INSTANCE.getEventDispatcher().unsubscribe(SendPacketListener.class, this);
 
-        mc.player.getAbilities().allowFlying = this.wasFlyingAllowed;
+        if (mc.player == null) return;
+        mc.player.getAbilities().allowFlying = this.realFlyingState;
     }
 
-    public @Override void onUpdate() {
-        if (!onGroundSpoof.getState() || Objects.requireNonNull(mc.player).fallDistance < 0.3F) return;
-
+    @Override
+    public void onSendPacket(final SendPacketEvent event) {
+        if (mode.getValue() != Mode.CREATIVE) return;
+        if (mc.player == null) return;
+        if (!onGroundSpoof.getState()) return;
+        if (!(event.getPacket() instanceof PlayerMoveC2SPacket packet)) return;
+        ((PlayerMoveC2SPacketMixin.IAccessor) packet).setOnGround(true);
         mc.player.fallDistance = 0.0F;
-        mc.player.networkHandler.sendPacket(new PlayerMoveC2SPacket.OnGroundOnly(true));
+    }
+
+    @Override
+    public void onReceivePacket(final ReceivePacketEvent event) {
+        if (mode.getValue() != Mode.CREATIVE) return;
+        if (!(event.getPacket() instanceof PlayerAbilitiesS2CPacket ||
+                event.getPacket() instanceof UpdatePlayerAbilitiesC2SPacket)) return;
+        this.realFlyingState =
+                (event.getPacket() instanceof PlayerAbilitiesS2CPacket packet) ? packet.isFlying() :
+                        (event.getPacket() instanceof UpdatePlayerAbilitiesC2SPacket packet1) ? packet1.isFlying()
+                                : realFlyingState;
+
+    }
+
+    public enum Mode {
+        CREATIVE
     }
 }

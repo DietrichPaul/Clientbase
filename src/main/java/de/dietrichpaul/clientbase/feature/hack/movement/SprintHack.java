@@ -29,7 +29,7 @@ public class SprintHack extends Hack implements KeyPressedStateListener {
 
     @Override
     protected void onDisable() {
-        ClientBase.INSTANCE.getEventDispatcher().unsubscribe(KeyPressedStateListener.class, this);
+        ClientBase.INSTANCE.getEventDispatcher().unsubscribeInternal(KeyPressedStateListener.class, this);
     }
 
     @Override

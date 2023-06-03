@@ -40,7 +40,7 @@ public class FlightHack extends Hack implements UpdateListener {
 
     @Override
     protected void onDisable() {
-        ClientBase.INSTANCE.getEventDispatcher().unsubscribe(UpdateListener.class, this);
+        ClientBase.INSTANCE.getEventDispatcher().unsubscribeInternal(UpdateListener.class, this);
 
         mc.player.getAbilities().allowFlying = this.wasFlyingAllowed;
     }

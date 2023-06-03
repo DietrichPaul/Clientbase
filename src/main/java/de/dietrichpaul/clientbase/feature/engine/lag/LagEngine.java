@@ -3,7 +3,7 @@ package de.dietrichpaul.clientbase.feature.engine.lag;
 import de.dietrichpaul.clientbase.ClientBase;
 import de.dietrichpaul.clientbase.event.lag.DelayIncomingPacketListener;
 import de.dietrichpaul.clientbase.event.network.ReceivePacketListener;
-import de.florianmichael.dietrichevents.EventDispatcher;
+import de.florianmichael.dietrichevents.DietrichEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.network.OffThreadException;
@@ -25,7 +25,7 @@ public class LagEngine implements ReceivePacketListener {
     private boolean lastWasAck;
 
     public LagEngine() {
-        EventDispatcher eventDispatcher = ClientBase.INSTANCE.getEventDispatcher();
+        DietrichEvents eventDispatcher = ClientBase.INSTANCE.getEventDispatcher();
         eventDispatcher.subscribe(ReceivePacketListener.class, this);
     }
 
@@ -44,8 +44,12 @@ public class LagEngine implements ReceivePacketListener {
     public void onReceivePacket(ReceivePacketEvent event) {
         if (!(event.getListener() instanceof ClientPlayNetworkHandler) || MinecraftClient.getInstance().player == null)
             return;
+
+        boolean hasSubscribers = ClientBase.INSTANCE.getEventDispatcher().hasSubscribers(DelayIncomingPacketListener.class);
+        System.out.println(hasSubscribers);
+
         Packet<?> packet = event.getPacket();
-        if (this.stopTraffic || isAcknowledgment(packet)) {
+        if (this.stopTraffic || hasSubscribers && isAcknowledgment(packet)) {
             incoming.add(new DelayedPacket(packet, event.getListener()));
             event.cancel();
             if (!isAcknowledgment(packet)) {
@@ -57,7 +61,7 @@ public class LagEngine implements ReceivePacketListener {
         }
         DelayIncomingPacketListener.DelayIncomingPacketEvent delayEvent =
                 new DelayIncomingPacketListener.DelayIncomingPacketEvent(packet);
-        ClientBase.INSTANCE.getEventDispatcher().post(delayEvent);
+        if (hasSubscribers) ClientBase.INSTANCE.getEventDispatcher().post(delayEvent);
         if (delayEvent.isStopTraffic()) {
             stopTraffic = true;
             incoming.add(new DelayedPacket(packet, event.getListener()));

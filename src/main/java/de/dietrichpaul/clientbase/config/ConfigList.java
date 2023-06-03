@@ -69,6 +69,6 @@ public class ConfigList implements UpdateListener {
                 e.printStackTrace();
             }
         }
-        ClientBase.INSTANCE.getEventDispatcher().unsubscribe(UpdateListener.class, this);
+        ClientBase.INSTANCE.getEventDispatcher().unsubscribeInternal(UpdateListener.class, this);
     }
 }

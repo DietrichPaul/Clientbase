@@ -64,6 +64,6 @@ public class HudHack extends Hack implements Render2DListener {
 
     @Override
     protected void onDisable() {
-        ClientBase.INSTANCE.getEventDispatcher().unsubscribe(Render2DListener.class, this);
+        ClientBase.INSTANCE.getEventDispatcher().unsubscribeInternal(Render2DListener.class, this);
     }
 }

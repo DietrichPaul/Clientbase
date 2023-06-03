@@ -23,13 +23,10 @@ import de.dietrichpaul.clientbase.property.impl.EnumProperty;
 import de.dietrichpaul.clientbase.property.impl.FloatProperty;
 import de.dietrichpaul.clientbase.property.impl.IntProperty;
 import de.dietrichpaul.clientbase.util.math.MathUtil;
-import de.dietrichpaul.clientbase.util.minecraft.ChatUtil;
-import net.minecraft.text.Text;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.MathHelper;
 
-import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Predicate;
 
@@ -101,7 +98,7 @@ public class KillAuraHack extends Hack implements UpdateListener, TargetPickList
         }
 
         if (smartClickingProperty.getValue().click.test(aimbot)) {
-            if (cpsModeProperty.getValue() == CPSMode.NORMALVERTEILUNG) {
+            if (cpsModeProperty.getValue() == CPSMode.GAUSSIAN) {
                 if (ThreadLocalRandom.current().nextGaussian() > 1) {
                     float randomValue = MathUtil.boxMuellerDistribution(ThreadLocalRandom.current(), 1, 20, meanProperty.getValue(), stdProperty.getValue());
                     cps = randomValue;
@@ -140,7 +137,7 @@ public class KillAuraHack extends Hack implements UpdateListener, TargetPickList
     }
 
     enum CPSMode {
-        CUSTOM("Custom"), NORMALVERTEILUNG("Normalverteilung");
+        CUSTOM("Custom"), GAUSSIAN("Gaussian");
 
         private final String name;
 

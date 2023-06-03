@@ -18,10 +18,7 @@ import de.dietrichpaul.clientbase.feature.hack.Hack;
 import de.dietrichpaul.clientbase.feature.engine.rotation.RotationSpoof;
 import de.dietrichpaul.clientbase.feature.engine.rotation.impl.aimbot.Priority;
 import de.dietrichpaul.clientbase.property.PropertyGroup;
-import de.dietrichpaul.clientbase.property.impl.EntityTypeProperty;
-import de.dietrichpaul.clientbase.property.impl.EnumProperty;
-import de.dietrichpaul.clientbase.property.impl.FloatProperty;
-import de.dietrichpaul.clientbase.property.impl.IntProperty;
+import de.dietrichpaul.clientbase.property.impl.*;
 import de.dietrichpaul.clientbase.util.math.MathUtil;
 import de.dietrichpaul.clientbase.util.minecraft.rtx.Raytrace;
 import de.dietrichpaul.clientbase.util.minecraft.rtx.RaytraceUtil;
@@ -42,6 +39,7 @@ import java.util.List;
 public class AimbotRotationSpoof extends RotationSpoof {
 
     private final EntityTypeProperty entityTypeProperty = new EntityTypeProperty("Entity Type", true, EntityType.PLAYER);
+    private final BooleanProperty checkThroughWallProperty = new BooleanProperty("Exclude through-wall", true);
     private final IntProperty maxTargets = new IntProperty("Max targets", 1, 1, 20);
     private final FloatProperty aimRangeProperty = new FloatProperty("AimRange", 1.5F, 0, 6);
     private final FloatProperty rangeProperty = new FloatProperty("Range", 3, 0, 6);
@@ -62,6 +60,7 @@ public class AimbotRotationSpoof extends RotationSpoof {
         targetGroup.addProperty(rangeProperty);
         targetGroup.addProperty(fovProperty);
         targetGroup.addProperty(priorityProperty);
+        targetGroup.addProperty(checkThroughWallProperty);
 
         propertyGroup.addProperty(rotationModeProperty);
     }
@@ -98,43 +97,45 @@ public class AimbotRotationSpoof extends RotationSpoof {
                     continue;
             }
 
-            // can hit entity
-            Box aabb = entity.getBoundingBox().expand(entity.getTargetingMargin());
-            boolean found = false;
-            {
-                Vec3d hitVec = MathUtil.clamp(camera, aabb);
-                float[] rotations = new float[2];
-                MathUtil.getRotations(camera, hitVec, rotations);
-                Raytrace raytrace = RaytraceUtil.raytrace(mc, mc.cameraEntity, rotations, rotations, getRange(), 1.0F);
-                if (raytrace.hitResult() instanceof EntityHitResult) {
-                    found = true;
-                }
-            }
-            if (!found) {
-                bruteforce:
+            if (checkThroughWallProperty.getState()) {
+                // can hit entity
+                Box aabb = entity.getBoundingBox().expand(entity.getTargetingMargin());
+                boolean found = false;
                 {
-                    for (double x = 0; x <= 1; x += 1 / 4.0) {
-                        for (double y = 0; y <= 1; y += 1 / 4.0) {
-                            for (double z = 0; z <= 1; z += 1 / 4.0) {
-                                Vec3d hitVec = new Vec3d(
-                                        MathHelper.lerp(x, aabb.minX, aabb.maxX),
-                                        MathHelper.lerp(y, aabb.minY, aabb.maxY),
-                                        MathHelper.lerp(z, aabb.minZ, aabb.maxZ)
-                                );
-                                float[] rotations = new float[2];
-                                MathUtil.getRotations(camera, hitVec, rotations);
-                                Raytrace raytrace = RaytraceUtil.raytrace(mc, mc.cameraEntity, rotations, rotations, getRange() + aimRangeProperty.getValue(), 1.0F);
-                                if (raytrace.hitResult() instanceof EntityHitResult) {
-                                    found = true;
-                                    break bruteforce;
+                    Vec3d hitVec = MathUtil.clamp(camera, aabb);
+                    float[] rotations = new float[2];
+                    MathUtil.getRotations(camera, hitVec, rotations);
+                    Raytrace raytrace = RaytraceUtil.raytrace(mc, mc.cameraEntity, rotations, rotations, getRange(), 1.0F);
+                    if (raytrace.hitResult() instanceof EntityHitResult) {
+                        found = true;
+                    }
+                }
+                if (!found) {
+                    bruteforce:
+                    {
+                        for (double x = 0; x <= 1; x += 1 / 4.0) {
+                            for (double y = 0; y <= 1; y += 1 / 4.0) {
+                                for (double z = 0; z <= 1; z += 1 / 4.0) {
+                                    Vec3d hitVec = new Vec3d(
+                                            MathHelper.lerp(x, aabb.minX, aabb.maxX),
+                                            MathHelper.lerp(y, aabb.minY, aabb.maxY),
+                                            MathHelper.lerp(z, aabb.minZ, aabb.maxZ)
+                                    );
+                                    float[] rotations = new float[2];
+                                    MathUtil.getRotations(camera, hitVec, rotations);
+                                    Raytrace raytrace = RaytraceUtil.raytrace(mc, mc.cameraEntity, rotations, rotations, getRange() + aimRangeProperty.getValue(), 1.0F);
+                                    if (raytrace.hitResult() instanceof EntityHitResult) {
+                                        found = true;
+                                        break bruteforce;
+                                    }
                                 }
                             }
                         }
                     }
                 }
+                if (!found)
+                    continue;
             }
-            if (!found)
-                continue;
 
             targets.add(entity);
         }

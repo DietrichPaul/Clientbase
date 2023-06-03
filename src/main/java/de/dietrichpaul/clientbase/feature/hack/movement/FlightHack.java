@@ -45,8 +45,8 @@ public class FlightHack extends Hack implements SendPacketListener, ReceivePacke
 
     @Override
     protected void onDisable() {
-        ClientBase.INSTANCE.getEventDispatcher().unsubscribe(ReceivePacketListener.class, this);
-        ClientBase.INSTANCE.getEventDispatcher().unsubscribe(SendPacketListener.class, this);
+        ClientBase.INSTANCE.getEventDispatcher().unsubscribeInternal(ReceivePacketListener.class, this);
+        ClientBase.INSTANCE.getEventDispatcher().unsubscribeInternal(SendPacketListener.class, this);
 
         if (mc.player == null) return;
         mc.player.getAbilities().allowFlying = this.realFlyingState;

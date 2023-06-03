@@ -24,8 +24,9 @@ import de.dietrichpaul.clientbase.feature.hack.HackList;
 import de.dietrichpaul.clientbase.feature.engine.rotation.RotationEngine;
 import de.dietrichpaul.clientbase.util.render.api.Blur;
 import de.dietrichpaul.clientbase.util.render.api.Renderer2D;
-import de.florianmichael.dietrichevents.EventDispatcher;
+import de.florianmichael.dietrichevents.DietrichEvents;
 import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.metadata.ModMetadata;
@@ -33,6 +34,7 @@ import net.fabricmc.loader.api.metadata.Person;
 import net.minecraft.client.MinecraftClient;
 
 import java.io.File;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("ResultOfMethodCallIgnored")
@@ -54,7 +56,7 @@ public class ClientBase implements ClientModInitializer {
 
     public static ClientBase INSTANCE;
 
-    private final EventDispatcher eventDispatcher = EventDispatcher.create(key -> new Object2ObjectArrayMap<>());
+    private final DietrichEvents eventDispatcher = DietrichEvents.createThreadSafe();
     private final File directory = new File(MinecraftClient.getInstance().runDirectory, NAME);
 
     private ClickEngine clickEngine;
@@ -106,7 +108,7 @@ public class ClientBase implements ClientModInitializer {
         return lagEngine;
     }
 
-    public EventDispatcher getEventDispatcher() {
+    public DietrichEvents getEventDispatcher() {
         return eventDispatcher;
     }
 

@@ -75,8 +75,8 @@ public class KillAuraHack extends Hack implements UpdateListener, TargetPickList
 
     @Override
     protected void onDisable() {
-        ClientBase.INSTANCE.getEventDispatcher().unsubscribe(UpdateListener.class, this);
-        ClientBase.INSTANCE.getEventDispatcher().unsubscribe(TargetPickListener.class, this);
+        ClientBase.INSTANCE.getEventDispatcher().unsubscribeInternal(UpdateListener.class, this);
+        ClientBase.INSTANCE.getEventDispatcher().unsubscribeInternal(TargetPickListener.class, this);
     }
 
     @Override

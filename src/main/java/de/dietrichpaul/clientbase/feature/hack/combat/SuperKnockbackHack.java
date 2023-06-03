@@ -36,8 +36,8 @@ public class SuperKnockbackHack extends Hack implements KeyPressedStateListener,
 
     @Override
     protected void onDisable() {
-        ClientBase.INSTANCE.getEventDispatcher().unsubscribe(KeyPressedStateListener.class, this);
-        ClientBase.INSTANCE.getEventDispatcher().unsubscribe(UpdateListener.class, this);
+        ClientBase.INSTANCE.getEventDispatcher().unsubscribeInternal(KeyPressedStateListener.class, this);
+        ClientBase.INSTANCE.getEventDispatcher().unsubscribeInternal(UpdateListener.class, this);
     }
 
     private int releaseW;

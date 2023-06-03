@@ -43,8 +43,8 @@ public class BacktrackHack extends Hack implements DelayIncomingPacketListener, 
 
     @Override
     protected void onDisable() {
-        ClientBase.INSTANCE.getEventDispatcher().unsubscribe(DelayIncomingPacketListener.class, this);
-        ClientBase.INSTANCE.getEventDispatcher().unsubscribe(PostUpdateListener.class, this);
+        ClientBase.INSTANCE.getEventDispatcher().unsubscribeInternal(DelayIncomingPacketListener.class, this);
+        ClientBase.INSTANCE.getEventDispatcher().unsubscribeInternal(PostUpdateListener.class, this);
         if (trackingBack || forced) {
             ClientBase.INSTANCE.getLagEngine().release();
         }

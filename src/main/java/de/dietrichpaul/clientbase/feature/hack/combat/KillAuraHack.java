@@ -91,7 +91,6 @@ public class KillAuraHack extends Hack implements UpdateListener, TargetPickList
 
     @Override
     public void click(ClickCallback callback) {
-        System.out.println(delay);
         if (delay > 0)
             return;
 

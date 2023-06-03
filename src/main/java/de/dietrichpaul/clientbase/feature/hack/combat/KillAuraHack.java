@@ -20,20 +20,30 @@ import de.dietrichpaul.clientbase.feature.hack.Hack;
 import de.dietrichpaul.clientbase.feature.hack.HackCategory;
 import de.dietrichpaul.clientbase.feature.engine.rotation.impl.AimbotRotationSpoof;
 import de.dietrichpaul.clientbase.property.impl.EnumProperty;
+import de.dietrichpaul.clientbase.property.impl.FloatProperty;
 import de.dietrichpaul.clientbase.property.impl.IntProperty;
+import de.dietrichpaul.clientbase.util.math.MathUtil;
+import de.dietrichpaul.clientbase.util.minecraft.ChatUtil;
+import net.minecraft.text.Text;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.MathHelper;
 
+import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Predicate;
 
-public class KillAuraHack extends Hack implements UpdateListener,TargetPickListener, ClickSpoof {
+public class KillAuraHack extends Hack implements UpdateListener, TargetPickListener, ClickSpoof {
     private final AimbotRotationSpoof aimbot;
 
     private IntProperty maxCPSProperty = new IntProperty("MaxCPS", 20, 0, 20);
     private IntProperty minCPSProperty = new IntProperty("MinCPS", 20, 0, 20);
+    private FloatProperty stdProperty = new FloatProperty("STD", 2, 0, 10);
+    private FloatProperty meanProperty = new FloatProperty("Mean", 15, 0, 20);
+
     private IntProperty failRateProperty = new IntProperty("FailRate", 0, 0, 100);
+    private EnumProperty<CPSMode> cpsModeProperty = new EnumProperty<>("CPSMode", CPSMode.CUSTOM,
+            CPSMode.values(), CPSMode.class);
     private EnumProperty<SmartClickingMode> smartClickingProperty = new EnumProperty<>("SmartClicking",
             SmartClickingMode.NONE, SmartClickingMode.values(), SmartClickingMode.class);
 
@@ -45,6 +55,9 @@ public class KillAuraHack extends Hack implements UpdateListener,TargetPickListe
         super("KillAura", HackCategory.COMBAT);
         addProperty(maxCPSProperty);
         addProperty(minCPSProperty);
+        addProperty(stdProperty);
+        addProperty(meanProperty);
+        addProperty(cpsModeProperty);
         addProperty(failRateProperty);
         addProperty(smartClickingProperty);
 
@@ -78,8 +91,10 @@ public class KillAuraHack extends Hack implements UpdateListener,TargetPickListe
 
     @Override
     public void click(ClickCallback callback) {
-        if (delay != 0)
+        System.out.println(delay);
+        if (delay > 0)
             return;
+
 
         HitResult crosshairTarget = mc.crosshairTarget;
         if (!(crosshairTarget instanceof EntityHitResult) && Math.random() * 100 > failRateProperty.getValue()) {
@@ -87,18 +102,33 @@ public class KillAuraHack extends Hack implements UpdateListener,TargetPickListe
         }
 
         if (smartClickingProperty.getValue().click.test(aimbot)) {
+            if (cpsModeProperty.getValue() == CPSMode.NORMALVERTEILUNG) {
+                if (ThreadLocalRandom.current().nextGaussian() > 1) {
+                    float randomValue = MathUtil.boxMuellerDistribution(ThreadLocalRandom.current(), 1, 20, meanProperty.getValue(), stdProperty.getValue());
+                    cps = randomValue;
+                }
+                double delay = 20.0 / cps;
+                this.delay = (int) Math.floor(delay + partialDelays);
+                partialDelays += delay - this.delay;
+            } else {
+                double delay = 20.0 / cps;
+                this.delay = (int) Math.floor(delay + partialDelays);
+                partialDelays += delay - this.delay;
+            }
             callback.left();
-            double delay = 20.0 / cps;
-            this.delay = (int) (delay + partialDelays);
-            partialDelays += delay - this.delay;
         }
     }
 
     @Override
     public void onUpdate() {
-        if (ThreadLocalRandom.current().nextGaussian() > 0) {
-            cps = MathHelper.lerp(Math.random(), minCPSProperty.getValue(), maxCPSProperty.getValue());
-            partialDelays = 0;
+        if (cpsModeProperty.getValue() == CPSMode.CUSTOM) {
+            if (ThreadLocalRandom.current().nextGaussian() > 0) {
+                double newCps = MathHelper.lerp(Math.random(), minCPSProperty.getValue(), maxCPSProperty.getValue());
+                if (Math.abs(newCps - cps) >= 0.5) {
+                    partialDelays = 0;
+                }
+                cps = newCps;
+            }
         }
         if (delay > 0)
             delay--;
@@ -108,6 +138,21 @@ public class KillAuraHack extends Hack implements UpdateListener,TargetPickListe
     public void onPickTarget(TargetPickEvent event) {
         if (aimbot.hasTarget())
             event.setTarget(aimbot.getPrimaryTarget());
+    }
+
+    enum CPSMode {
+        CUSTOM("Custom"), NORMALVERTEILUNG("Normalverteilung");
+
+        private final String name;
+
+        CPSMode(String name) {
+            this.name = name;
+        }
+
+        @Override
+        public String toString() {
+            return name;
+        }
     }
 
     enum SmartClickingMode {

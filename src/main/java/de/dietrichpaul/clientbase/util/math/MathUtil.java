@@ -15,7 +15,22 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 
+import java.util.Random;
+
 public class MathUtil {
+
+    public static float boxMuellerDistribution(Random random, float min, float max, float mean, float sigma) {
+        float u1, u2;
+        float z0;
+
+        do {
+            u1 = random.nextFloat();
+            u2 = random.nextFloat();
+            z0 = MathHelper.sqrt(-2.0F * (float) Math.log(u1)) * MathHelper.cos(MathHelper.TAU * u2);
+        } while ((int) (z0 * sigma + mean) < min || (int) (z0 * sigma + mean) > max);
+
+        return mean + sigma * z0;
+    }
 
     public static Vec3d clamp(Vec3d vec, Box box) {
         return new Vec3d(

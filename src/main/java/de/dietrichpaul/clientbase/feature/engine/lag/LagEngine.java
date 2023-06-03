@@ -46,7 +46,6 @@ public class LagEngine implements ReceivePacketListener {
             return;
 
         boolean hasSubscribers = ClientBase.INSTANCE.getEventDispatcher().hasSubscribers(DelayIncomingPacketListener.class);
-        System.out.println(hasSubscribers);
 
         Packet<?> packet = event.getPacket();
         if (this.stopTraffic || hasSubscribers && isAcknowledgment(packet)) {

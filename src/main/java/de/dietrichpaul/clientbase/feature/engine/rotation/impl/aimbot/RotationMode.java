@@ -23,14 +23,8 @@ public enum RotationMode {
         MathUtil.getRotations(camera, MathUtil.clamp(camera, aabb), rotations);
     }),
     NEAREST("Nearest", (camera, aabb, target, rotations, prevRotations, partialTicks) -> {
-        float[] targetRotations = new float[2];
-        Box box = target.getBoundingBox();
-        Vec3d fixCamera = mc.player.getCameraPosVec(1.0F);
-        Vec3d polar = Vec3d.fromPolar(prevRotations[1], prevRotations[0]);
-        double rayLength = camera.distanceTo(box.getCenter()) * 0.5 + camera.distanceTo(MathUtil.clamp(camera, box)) * 0.5;
-        MathUtil.getRotations(fixCamera, MathUtil.clamp(fixCamera.add(polar.multiply(rayLength)), box), targetRotations);
-        rotations[0] = MathHelper.lerpAngleDegrees(partialTicks, prevRotations[0], targetRotations[0]);
-        rotations[1] = MathHelper.lerpAngleDegrees(partialTicks, prevRotations[1], targetRotations[1]);
+        rotations[0] = prevRotations[0];
+        rotations[1] = prevRotations[1];
     }),
     SIMPLEX("Simplex", new RotationMethod() {
 

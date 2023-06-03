@@ -69,7 +69,7 @@ public class MoveUtil {
         return (float) Math.toRadians(Math.toDegrees(Math.atan2(
                 mc.player.input.movementForward,
                 mc.player.input.movementSideways
-        )) + mc.player.headYaw); // yRot0?
+        )) + mc.player.headYaw);
     }
 
     public static double getPlayerMoveYawD() {
@@ -77,6 +77,6 @@ public class MoveUtil {
         return Math.toRadians(Math.toDegrees(Math.atan2(
                 mc.player.input.movementForward,
                 mc.player.input.movementSideways
-        )) + mc.player.headYaw); // yRot0?
+        )) + mc.player.headYaw);
     }
 }

@@ -25,6 +25,7 @@ import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.MathHelper;
 
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Predicate;
 
 public class KillAuraHack extends Hack implements UpdateListener,TargetPickListener, ClickSpoof {
@@ -36,6 +37,7 @@ public class KillAuraHack extends Hack implements UpdateListener,TargetPickListe
     private EnumProperty<SmartClickingMode> smartClickingProperty = new EnumProperty<>("SmartClicking",
             SmartClickingMode.NONE, SmartClickingMode.values(), SmartClickingMode.class);
 
+    private double cps;
     private int delay;
     private double partialDelays;
 
@@ -53,6 +55,7 @@ public class KillAuraHack extends Hack implements UpdateListener,TargetPickListe
 
     @Override
     protected void onEnable() {
+        cps = MathHelper.lerp(Math.random(), minCPSProperty.getValue(), maxCPSProperty.getValue());
         ClientBase.INSTANCE.getEventDispatcher().subscribe(UpdateListener.class, this);
         ClientBase.INSTANCE.getEventDispatcher().subscribe(TargetPickListener.class, this, this::getPriority);
     }
@@ -85,7 +88,7 @@ public class KillAuraHack extends Hack implements UpdateListener,TargetPickListe
 
         if (smartClickingProperty.getValue().click.test(aimbot)) {
             callback.left();
-            double delay = 20.0 / MathHelper.lerp(Math.random(), minCPSProperty.getValue(), maxCPSProperty.getValue());
+            double delay = 20.0 / cps;
             this.delay = (int) (delay + partialDelays);
             partialDelays += delay - this.delay;
         }
@@ -93,6 +96,10 @@ public class KillAuraHack extends Hack implements UpdateListener,TargetPickListe
 
     @Override
     public void onUpdate() {
+        if (ThreadLocalRandom.current().nextGaussian() > 0) {
+            cps = MathHelper.lerp(Math.random(), minCPSProperty.getValue(), maxCPSProperty.getValue());
+            partialDelays = 0;
+        }
         if (delay > 0)
             delay--;
     }
